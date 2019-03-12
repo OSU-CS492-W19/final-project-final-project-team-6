@@ -47,6 +47,8 @@ public class StarWarsUtils {
         CategoryListEntryItem[] results;
     }
 
+
+
     static class CategoryListEntryItem {
         String name;
         String title;
@@ -54,7 +56,24 @@ public class StarWarsUtils {
 
     }
 
-
+    static class PersonResult{
+        String name;
+        String height;
+        String mass;
+        String hair_color;
+        String skin_color;
+        String eye_color;
+        String birth_year;
+        String gender;
+        String homeworld;
+        String [] films;
+        String [] species;
+        String [] vehicles;
+        String [] starships;
+        String created;
+        String edited;
+        String url;
+    }
 
     public static String buildForecastURL(String category) {
         if(category.equals("Films")){
@@ -75,6 +94,33 @@ public class StarWarsUtils {
 
     public static String buildIconURL(String icon) {
         return String.format(OWM_ICON_URL_FORMAT_STR, icon);
+    }
+
+    public static PeopleItem parsePeopleJSON(String url){
+        Gson gson = new Gson();
+        PersonResult result = gson.fromJson(url, PersonResult.class);
+        if(result != null){
+            PeopleItem tempPerson = new PeopleItem();
+            tempPerson.name = result.name;
+            tempPerson.height = result.height;
+            tempPerson.mass = result.mass;
+            tempPerson.hair_color = result.hair_color;
+            tempPerson.skin_color = result.skin_color;
+            tempPerson.eye_color = result.eye_color;
+            tempPerson.birth_year = result.birth_year;
+            tempPerson.gender = result.gender;
+            tempPerson.homeworld = result.homeworld;
+            tempPerson.films = result.films;
+            tempPerson.species = result.species;
+            tempPerson.vehicles = result.vehicles;
+            tempPerson.starships = result.starships;
+            tempPerson.created = result.created;
+            tempPerson.edited = result.edited;
+            tempPerson.url = result.url;
+            return tempPerson;
+        }else{
+            return null;
+        }
     }
 
     //Get list of results back

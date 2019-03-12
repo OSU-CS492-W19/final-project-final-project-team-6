@@ -16,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.sqliteweather.data.CategoryItem;
 import com.example.android.sqliteweather.data.Status;
+import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
 
 import java.util.ArrayList;
@@ -35,7 +37,6 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
     private ForecastAdapter mForecastAdapter;
     private ForecastViewModel mForecastViewModel;
     private List<CategoryItem> mCategoryItems;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,31 +69,28 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
             @Override
             public void onChanged(@Nullable List<CategoryItem> categoryItems) {
                 List<String> tempForecastItemListAsString = new ArrayList<String>();
-//                if(categoryItems != null){
-//                    for(CategoryItem tempItem : categoryItems){
-//                        tempForecastItemListAsString.add(tempItem.name);
-//                    }
-//                }
-
-
-
-//                mForecastAdapter.updateForecastItems(tempForecastItemListAsString);
+                List<String> tempURLList = new ArrayList<String>();
 
                 if(categoryItems != null){
                     mCategoryItems.addAll(categoryItems);
 
                     for(CategoryItem tempItem : mCategoryItems){
                         tempForecastItemListAsString.add(tempItem.name);
+                        tempURLList.add(tempItem.query);
                     }
 
+
                     mForecastAdapter.updateForecastItems(tempForecastItemListAsString);
+                    mForecastAdapter.updateURLS(tempURLList);
                 }
                 if(categoryItems != null && mCategoryItems != null && mCategoryItems.size() > 0 && mCategoryItems.get(mCategoryItems.size()-1).next != null){
                     mForecastViewModel.loadForecast(null, null, mCategoryItems.get(mCategoryItems.size() - 1).next);
                     for(CategoryItem tempItem : mCategoryItems){
                         tempForecastItemListAsString.add(tempItem.name);
+                        tempURLList.add(tempItem.query);
                     }
                     mForecastAdapter.updateForecastItems(tempForecastItemListAsString);
+                    mForecastAdapter.updateURLS(tempURLList);
                 }
             }
         });
@@ -131,8 +129,25 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
     @Override
     public void onForecastItemClick(String forecastItem) {
         Intent intent = new Intent(this, CategorySearchActivity.class);
-        intent.putExtra("category", forecastItem);
-        startActivity(intent);
+        mForecastViewModel.loadPerson(forecastItem);
+
+        if(mCategory.equals("People")){
+            mForecastViewModel.getPerson().observe(this, new Observer<PeopleItem>() {
+                @Override
+                public void onChanged(@Nullable PeopleItem person) {
+                    if(person != null && !person.name.equals("testName")){ //check to see if query was successful
+                        PeopleItem temp = person;
+                        Toast.makeText(CategorySearchActivity.this, "Person clicked: " + temp.name,
+                                Toast.LENGTH_LONG).show();
+                        //TODO Remove toast and start detailedPersonActivity after passing in the person
+                    }
+
+                }
+            });
+        }
+
+
+
     }
 
     @Override

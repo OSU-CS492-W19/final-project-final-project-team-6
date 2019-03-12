@@ -5,6 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.android.sqliteweather.utils.PeopleItem;
+
 import java.util.List;
 
 /*
@@ -35,6 +37,9 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 
     private String mCurrentLocation;
     private String mCurrentUnits;
+    private MutableLiveData<PeopleItem> mCurrentPerson;
+    private String mPersonURL;
+
 
     public ForecastRepository() {
         mForecastItems = new MutableLiveData<>();
@@ -45,6 +50,8 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 
         mCurrentLocation = null;
         mCurrentUnits = null;
+        mCurrentPerson = new MutableLiveData<>();
+        mCurrentPerson.setValue(null);
     }
 
     /*
@@ -60,9 +67,9 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
             mLoadingStatus.setValue(Status.LOADING);
             String url = SWAPIUrl;
             Log.d(TAG, "fetching new forecast data with this URL: " + url);
-            LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(url, this, null).execute();
+            LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(url, this, null, null).execute();
             while(tempTask.mNextURL != null){
-                tempTask = (LoadForecastTask) new LoadForecastTask(tempTask.mNextURL, this, null);
+                tempTask = (LoadForecastTask) new LoadForecastTask(tempTask.mNextURL, this, null, null);
             }
 
             Log.d(TAG, "loadForecast: ksjdfkl");
@@ -70,6 +77,17 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 //        } else {
 //            Log.d(TAG, "using cached forecast data");
 //        }
+    }
+
+    public void loadIndividualPerson(String SWAPIUrl){
+        mPersonURL = SWAPIUrl;
+
+        PeopleItem temp = new PeopleItem();
+        temp.url = SWAPIUrl;
+        temp.name = "testName";
+        mCurrentPerson.setValue(temp);
+        Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "People").execute();
     }
 
     /*
@@ -124,6 +142,15 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         } else {
             mLoadingStatus.setValue(Status.ERROR);
         }
+    }
+
+    public LiveData<PeopleItem> getPerson(){
+        return mCurrentPerson;
+    }
+
+    @Override
+    public void onPeopleLoadFinished(PeopleItem people) {
+        mCurrentPerson.setValue(people);
     }
 }
 
