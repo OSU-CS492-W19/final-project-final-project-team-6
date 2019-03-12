@@ -7,8 +7,10 @@ import com.example.android.sqliteweather.utils.NetworkUtils;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.SpeciesItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
 import com.example.android.sqliteweather.utils.StarshipItem;
+import com.example.android.sqliteweather.utils.VehicleItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +35,9 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
         void onStarshipLoadFinished(StarshipItem tempStarship);
 
         void onPlanetLoadFinished(PlanetItem planet);
+
+        void onVehicleLoadFinished(VehicleItem temp);
+        void onSpeciesLoadFinished(SpeciesItem species);
     }
 
     private String mURL;
@@ -78,7 +83,16 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
             PlanetItem planet = StarWarsUtils.parsePlanetJSON(s);
             mCallback.onPlanetLoadFinished(planet);
             return;
+        }else if(s != null && mCurrentCategory != null && mCurrentCategory.equals("Vehicles")){
+            VehicleItem temp = StarWarsUtils.parseVehicleJSON(s);
+            mCallback.onVehicleLoadFinished(temp);
+            return;
+        }else if(s != null && mCurrentCategory != null && mCurrentCategory.equals("Species")){
+            SpeciesItem species = StarWarsUtils.parseSpeciesJSON(s);
+            mCallback.onSpeciesLoadFinished(species);
+            return;
         }
+
 
         if (s != null) {
             categoryItems = StarWarsUtils.parseCategoryJSON(s);

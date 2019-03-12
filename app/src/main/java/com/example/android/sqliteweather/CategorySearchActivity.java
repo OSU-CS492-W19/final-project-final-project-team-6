@@ -23,8 +23,11 @@ import com.example.android.sqliteweather.data.Status;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.FilmItem;
+import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.SpeciesItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
 import com.example.android.sqliteweather.utils.StarshipItem;
+import com.example.android.sqliteweather.utils.VehicleItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -184,6 +187,36 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
 
                 }
             });
+        }else if(mCategory.equals("Species")){
+
+            mEntryViewModel.loadSpecies(forecastItem);
+
+            mEntryViewModel.getmSpecies().observe(this, new Observer<SpeciesItem>() {
+                @Override
+                public void onChanged(@Nullable SpeciesItem species) {
+                    if(species != null && !species.name.equals("testName")){ //check to see if query was successful
+                        SpeciesItem temp = species;
+                        Toast.makeText(CategorySearchActivity.this, "Person clicked: " + temp.name,
+                                Toast.LENGTH_LONG).show();
+                        //TODO Remove toast and start detailedPersonActivity after passing in the person
+                    }
+
+                }
+            });
+        }else if(mCategory.equals("Vehicles")){
+            mEntryViewModel.loadVehicle(forecastItem);
+
+            mEntryViewModel.getmVehicle().observe(this, new Observer<VehicleItem>() {
+                @Override
+                public void onChanged(@Nullable VehicleItem vehicleItem) {
+                    if(vehicleItem != null && !vehicleItem.name.equals("testName")){
+                        Toast.makeText(CategorySearchActivity.this, "Vehicle clicked: " + vehicleItem.name,
+                                Toast.LENGTH_LONG).show();
+                        //TODO Remove toast and start detailedVehicleActivity after passing in the vehicle
+                    }
+                }
+            });
+
         }
     }
 
