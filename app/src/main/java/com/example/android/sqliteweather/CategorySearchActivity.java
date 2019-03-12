@@ -24,6 +24,7 @@ import com.example.android.sqliteweather.data.Status;
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
+import com.example.android.sqliteweather.utils.StarshipItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,13 +154,24 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
         }else if(mCategory.equals("Films")){
 
             mForecastViewModel.loadFilm(forecastItem);
-
             mForecastViewModel.getFilm().observe(this, new Observer<FilmItem>() {
                 @Override
                 public void onChanged(@Nullable FilmItem filmItem) {
                     if(filmItem != null && !filmItem.title.equals("testName")){
                         FilmItem temp = filmItem;
                         Toast.makeText(CategorySearchActivity.this, "Film clicked: " + temp.title,
+                                Toast.LENGTH_LONG).show();
+                        //TODO Remove toast and start detailedFilmActivity after passing in the film
+                    }
+                }
+            });
+        }else if(mCategory.equals("Spaceships")){ //starships
+            mForecastViewModel.loadStarship(forecastItem);
+            mForecastViewModel.getStarship().observe(this, new Observer<StarshipItem>() {
+                @Override
+                public void onChanged(@Nullable StarshipItem starshipItem) {
+                    if(starshipItem != null && !starshipItem.name.equals("testName")){
+                        Toast.makeText(CategorySearchActivity.this, "Starship clicked: " + starshipItem.name,
                                 Toast.LENGTH_LONG).show();
                         //TODO Remove toast and start detailedFilmActivity after passing in the film
                     }

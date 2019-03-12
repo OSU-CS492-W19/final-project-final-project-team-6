@@ -6,6 +6,7 @@ import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.NetworkUtils;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
+import com.example.android.sqliteweather.utils.StarshipItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
         void onPeopleLoadFinished(PeopleItem people);
 
         void onFilmLoadFinished(FilmItem tempFilm);
+
+        void onStarshipLoadFinished(StarshipItem tempStarship);
     }
 
     private String mURL;
@@ -62,6 +65,10 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
         }else if (s != null && mCurrentCategory != null && mCurrentCategory.equals("Films")){
             FilmItem tempFilm = StarWarsUtils.parseFilmJSON(s);
             mCallback.onFilmLoadFinished(tempFilm);
+            return;
+        }else if (s != null && mCurrentCategory != null && mCurrentCategory.equals("Starships")){
+            StarshipItem tempStarship = StarWarsUtils.parseStarshipJSON(s);
+            mCallback.onStarshipLoadFinished(tempStarship);
             return;
         }
 

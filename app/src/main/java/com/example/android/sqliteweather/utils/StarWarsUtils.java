@@ -91,6 +91,26 @@ public class StarWarsUtils {
         String url;
     }
 
+    static class StarshipResult{
+        String name;
+        String model;
+        String manufacturer;
+        String cost_in_credits;
+        String length;
+        String max_atomosphering_speed;
+        String crew;
+        String cargo_capacity;
+        String consumables;
+        String hyperdrive_rating;
+        String MGLT;
+        String starship_class;
+        String [] pilots;
+        String [] films;
+        String created;
+        String edited;
+        String url;
+    }
+
     public static String buildForecastURL(String category) {
         if(category.equals("Films")){
             return FILMS_API;
@@ -132,6 +152,35 @@ public class StarWarsUtils {
             tempFilm.url = result.url;
 
             return tempFilm;
+        }else{
+            return null;
+        }
+    }
+
+    public static StarshipItem parseStarshipJSON(String url){
+        Gson gson = new Gson();
+        StarshipResult result = gson.fromJson(url, StarshipResult.class);
+        if(result != null){
+            StarshipItem temp = new StarshipItem();
+            temp.name = result.name;
+            temp.model = result.model;
+            temp.manufacturer = result.manufacturer;
+            temp.cost_in_credits = result.cost_in_credits;
+            temp.length = result.length;
+            temp.max_atomosphering_speed = result.max_atomosphering_speed;
+            temp.crew = result.crew;
+            temp.cargo_capacity = result.cargo_capacity;
+            temp.consumables = result.consumables;
+            temp.hyperdrive_rating = result.hyperdrive_rating;
+            temp.MGLT = result.MGLT;
+            temp.starship_class = result.starship_class;
+            temp.pilots = result.pilots;
+            temp.films = result.films;
+            temp.created = result.created;
+            temp.edited = result.edited;
+            temp.url = result.url;
+
+            return temp;
         }else{
             return null;
         }
