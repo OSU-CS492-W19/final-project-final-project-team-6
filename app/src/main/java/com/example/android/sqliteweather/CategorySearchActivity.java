@@ -29,6 +29,7 @@ import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.SpeciesItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
 import com.example.android.sqliteweather.utils.StarshipItem;
+import com.example.android.sqliteweather.utils.VehicleItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -213,6 +214,20 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
 
                 }
             });
+        }else if(mCategory.equals("Vehicles")){
+            mForecastViewModel.loadVehicle(forecastItem);
+
+            mForecastViewModel.getmVehicle().observe(this, new Observer<VehicleItem>() {
+                @Override
+                public void onChanged(@Nullable VehicleItem vehicleItem) {
+                    if(vehicleItem != null && !vehicleItem.name.equals("testName")){
+                        Toast.makeText(CategorySearchActivity.this, "Vehicle clicked: " + vehicleItem.name,
+                                Toast.LENGTH_LONG).show();
+                        //TODO Remove toast and start detailedVehicleActivity after passing in the vehicle
+                    }
+                }
+            });
+
         }
 
 

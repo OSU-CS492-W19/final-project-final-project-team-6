@@ -113,7 +113,24 @@ public class StarWarsUtils {
 
     }
 
-
+    static class VehicleResult{
+        String name;
+        String model;
+        String manufacturer;
+        String cost_in_credits;
+        String length;
+        String max_atmosphering_speed;
+        String crew;
+        String passengers;
+        String cargo_capacity;
+        String consumables;
+        String vehicle_class;
+        String [] pilots;
+        String [] films;
+        String created;
+        String edited;
+        String url;
+    }
 
     static class StarshipResult{
         String name;
@@ -220,6 +237,34 @@ public class StarWarsUtils {
             tempFilm.url = result.url;
 
             return tempFilm;
+        }else{
+            return null;
+        }
+    }
+
+    public static VehicleItem parseVehicleJSON(String url){
+        Gson gson = new Gson();
+        VehicleResult result = gson.fromJson(url, VehicleResult.class);
+        if(result != null){
+            VehicleItem temp = new VehicleItem();
+            temp.name = result.name;
+            temp.model = result.model;
+            temp.manufacturer = result.manufacturer;
+            temp.cost_in_credits = result.cost_in_credits;
+            temp.length = result.length;
+            temp.max_atmosphering_speed = result.max_atmosphering_speed;
+            temp.crew = result.crew;
+            temp.passengers = result.passengers;
+            temp.cargo_capacity = result.cargo_capacity;
+            temp.consumables = result.consumables;
+            temp.vehicle_class = result.vehicle_class;
+            temp.pilots = result.pilots;
+            temp.films = result.films;
+            temp.created = result.created;
+            temp.edited = result.edited;
+            temp.url = result.url;
+
+            return temp;
         }else{
             return null;
         }
