@@ -11,6 +11,7 @@ import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarshipItem;
+import com.example.android.sqliteweather.utils.VehicleItem;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     private MutableLiveData<StarshipItem> mCurrentStarship;
     private MutableLiveData<PlanetItem> mCurrentPlanet;
     private String mPlanetURL;
-
+    private MutableLiveData<VehicleItem> mCurrentVehicle;
 
 
 
@@ -72,6 +73,9 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 
         mCurrentPlanet = new MutableLiveData<>();
         mCurrentPlanet.setValue(null);
+
+        mCurrentVehicle = new MutableLiveData<>();
+        mCurrentVehicle.setValue(null);
     }
 
     /*
@@ -228,5 +232,18 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         mCurrentPlanet.setValue(planet);
     }
 
+    @Override
+    public void onVehicleLoadFinished(VehicleItem temp) {
+        mCurrentVehicle.setValue(temp);
+    }
+
+    public LiveData<VehicleItem> getVehicle(){return mCurrentVehicle;}
+
+    public void loadIndividualVehicle(String SWAPIUrl) {
+        VehicleItem temp = new VehicleItem();
+        temp.name = "testName";
+        mCurrentVehicle.setValue(temp);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Vehicles").execute();
+    }
 }
 
