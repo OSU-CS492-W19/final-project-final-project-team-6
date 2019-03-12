@@ -5,12 +5,14 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -130,8 +132,12 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
 
     @Override
     public void onForecastItemClick(String forecastItem) {
-        Intent intent = new Intent(this, CategorySearchActivity.class);
-        intent.putExtra("category", forecastItem);
+        Intent intent = new Intent(this, ForecastItemDetailActivity.class);
+        Log.d("NAME: ", String.valueOf(mCategoryItems.get(2)));
+
+
+        intent.putExtra("category", (mCategory).toLowerCase());
+        intent.putExtra("position",1);
         startActivity(intent);
     }
 

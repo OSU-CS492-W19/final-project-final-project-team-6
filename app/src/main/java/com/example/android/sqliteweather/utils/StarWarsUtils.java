@@ -51,7 +51,12 @@ public class StarWarsUtils {
         String name;
         String title;
         String url;
-
+        String height;
+       String hair_color;
+         String eye_color;
+        String birth_year;
+       String gender;
+    String homeworld;
     }
 
 
