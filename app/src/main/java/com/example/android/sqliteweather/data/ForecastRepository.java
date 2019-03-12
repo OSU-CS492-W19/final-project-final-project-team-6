@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.StarshipItem;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     private MutableLiveData<PeopleItem> mCurrentPerson;
     private MutableLiveData<FilmItem> mCurrentFilm;
     private String mPersonURL;
+    private MutableLiveData<StarshipItem> mCurrentStarship;
 
     public ForecastRepository() {
         mForecastItems = new MutableLiveData<>();
@@ -56,6 +58,9 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 
         mCurrentFilm = new MutableLiveData<>();
         mCurrentFilm.setValue(null);
+
+        mCurrentStarship = new MutableLiveData<>();
+        mCurrentStarship.setValue(null);
     }
 
     /*
@@ -101,6 +106,12 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Films").execute();
     }
 
+    public void loadIndividualStarship(String SWAPIUrl) {
+        StarshipItem temp = new StarshipItem();
+        temp.name = "testName";
+        mCurrentStarship.setValue(temp);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Starships").execute();
+    }
 
     /*
      * Returns the LiveData object containing the forecast data.  An observer can be hooked to this
@@ -172,6 +183,16 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     @Override
     public void onFilmLoadFinished(FilmItem tempFilm) {
         mCurrentFilm.setValue(tempFilm);
+    }
+
+    @Override
+    public void onStarshipLoadFinished(StarshipItem tempStarship) {
+        mCurrentStarship.setValue(tempStarship);
+    }
+
+
+    public LiveData<StarshipItem> getStarship() {
+        return mCurrentStarship;
     }
 }
 
