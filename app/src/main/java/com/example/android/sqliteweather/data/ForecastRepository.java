@@ -8,6 +8,10 @@ import android.util.Log;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.PlanetItem;
 
+import com.example.android.sqliteweather.utils.FilmItem;
+import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.StarshipItem;
+
 import java.util.List;
 
 /*
@@ -39,10 +43,13 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     private String mCurrentLocation;
     private String mCurrentUnits;
     private MutableLiveData<PeopleItem> mCurrentPerson;
-    private MutableLiveData<PlanetItem> mCurrentPlanet;
-
+    private MutableLiveData<FilmItem> mCurrentFilm;
     private String mPersonURL;
+    private MutableLiveData<StarshipItem> mCurrentStarship;
+    private MutableLiveData<PlanetItem> mCurrentPlanet;
     private String mPlanetURL;
+
+
 
 
     public ForecastRepository() {
@@ -56,6 +63,13 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         mCurrentUnits = null;
         mCurrentPerson = new MutableLiveData<>();
         mCurrentPerson.setValue(null);
+
+        mCurrentFilm = new MutableLiveData<>();
+        mCurrentFilm.setValue(null);
+
+        mCurrentStarship = new MutableLiveData<>();
+        mCurrentStarship.setValue(null);
+
         mCurrentPlanet = new MutableLiveData<>();
         mCurrentPlanet.setValue(null);
     }
@@ -95,6 +109,22 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
         LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "People").execute();
     }
+
+    public void loadIndividualFilm(String SWAPIUrl){
+        FilmItem temp = new FilmItem();
+        temp.title = "testName";
+        mCurrentFilm.setValue(temp);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Films").execute();
+    }
+
+    public void loadIndividualStarship(String SWAPIUrl) {
+        StarshipItem temp = new StarshipItem();
+        temp.name = "testName";
+        mCurrentStarship.setValue(temp);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Starships").execute();
+    }
+
+
     public void loadIndividualPlanet(String SWAPIUrl){
         mPlanetURL = SWAPIUrl;
 
@@ -163,13 +193,36 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     public LiveData<PeopleItem> getPerson(){
         return mCurrentPerson;
     }
-    public LiveData<PlanetItem> getPlanet(){
-        return mCurrentPlanet;
+
+    public LiveData<FilmItem> getFilm(){
+        return mCurrentFilm;
     }
+
     @Override
     public void onPeopleLoadFinished(PeopleItem people) {
         mCurrentPerson.setValue(people);
     }
+
+    @Override
+    public void onFilmLoadFinished(FilmItem tempFilm) {
+        mCurrentFilm.setValue(tempFilm);
+    }
+
+    @Override
+    public void onStarshipLoadFinished(StarshipItem tempStarship) {
+        mCurrentStarship.setValue(tempStarship);
+    }
+
+
+    public LiveData<StarshipItem> getStarship() {
+        return mCurrentStarship;
+    }
+
+
+    public LiveData<PlanetItem> getPlanet(){
+        return mCurrentPlanet;
+    }
+
     @Override
     public void onPlanetLoadFinished(PlanetItem planet) {
         mCurrentPlanet.setValue(planet);

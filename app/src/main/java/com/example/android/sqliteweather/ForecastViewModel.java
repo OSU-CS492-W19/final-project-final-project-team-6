@@ -8,6 +8,9 @@ import com.example.android.sqliteweather.data.ForecastRepository;
 import com.example.android.sqliteweather.data.Status;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.PlanetItem;
+import com.example.android.sqliteweather.utils.FilmItem;
+import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.StarshipItem;
 
 import java.util.List;
 
@@ -25,12 +28,16 @@ public class ForecastViewModel extends ViewModel {
     private LiveData<PeopleItem> mPerson;
     private LiveData<PlanetItem> mPlanet;
     private LiveData<List<String>> mCategoryItems;
+    private LiveData<FilmItem> mFilm;
+    private LiveData<StarshipItem> mStarship;
 
     public ForecastViewModel() {
         mRepository = new ForecastRepository();
         mForecastItems = mRepository.getForecast();
         mLoadingStatus = mRepository.getLoadingStatus();
         mPerson = mRepository.getPerson();
+        mFilm = mRepository.getFilm();
+        mStarship = mRepository.getStarship();
         mPlanet = mRepository.getPlanet();
     }
 
@@ -54,6 +61,21 @@ public class ForecastViewModel extends ViewModel {
     public void loadPerson(String URL){
         mRepository.loadIndividualPerson(URL);
     }
+
+    public LiveData<PeopleItem> getPerson(){return mPerson;}
+
+    public void loadFilm(String URL){
+        mRepository.loadIndividualFilm(URL);
+    }
+
+    public LiveData<FilmItem> getFilm(){return mFilm;}
+
+    public void loadStarship(String URL){
+        mRepository.loadIndividualStarship(URL);
+    }
+
+    public LiveData<StarshipItem> getStarship(){return mStarship;}
+
 public void loadPlanet(String URL){
     mRepository.loadIndividualPlanet(URL);
 
@@ -61,5 +83,4 @@ public void loadPlanet(String URL){
     public LiveData<PlanetItem> getPlanet(){return mPlanet;}
 
 
-    public LiveData<PeopleItem> getPerson(){return mPerson;}
 }

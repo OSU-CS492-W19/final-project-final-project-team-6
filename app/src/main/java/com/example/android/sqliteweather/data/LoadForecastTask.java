@@ -2,10 +2,13 @@ package com.example.android.sqliteweather.data;
 
 import android.os.AsyncTask;
 
+import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.NetworkUtils;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.PlanetItem;
+import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
+import com.example.android.sqliteweather.utils.StarshipItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +27,11 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
     public interface AsyncCallback {
         void onForecastLoadFinished(List<CategoryItem> categoryItems);
         void onPeopleLoadFinished(PeopleItem people);
+
+        void onFilmLoadFinished(FilmItem tempFilm);
+
+        void onStarshipLoadFinished(StarshipItem tempStarship);
+
         void onPlanetLoadFinished(PlanetItem planet);
     }
 
@@ -58,8 +66,15 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
             PeopleItem person = StarWarsUtils.parsePeopleJSON(s);
             mCallback.onPeopleLoadFinished(person);
             return;
-        }
-        if(s != null && mCurrentCategory != null && mCurrentCategory.equals("Planet")){
+        }else if (s != null && mCurrentCategory != null && mCurrentCategory.equals("Films")){
+            FilmItem tempFilm = StarWarsUtils.parseFilmJSON(s);
+            mCallback.onFilmLoadFinished(tempFilm);
+            return;
+        }else if (s != null && mCurrentCategory != null && mCurrentCategory.equals("Starships")){
+            StarshipItem tempStarship = StarWarsUtils.parseStarshipJSON(s);
+            mCallback.onStarshipLoadFinished(tempStarship);
+            return;
+        }else if(s != null && mCurrentCategory != null && mCurrentCategory.equals("Planet")){
             PlanetItem planet = StarWarsUtils.parsePlanetJSON(s);
             mCallback.onPlanetLoadFinished(planet);
             return;

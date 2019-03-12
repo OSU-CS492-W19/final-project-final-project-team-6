@@ -80,7 +80,6 @@ public class StarWarsUtils {
         String url;
     }
     static class PlanetResult{
-
         public String name;
         String rotation_period;
         String orbital_period;
@@ -95,6 +94,45 @@ public class StarWarsUtils {
         String created;
         String edited;
         public String url;
+
+    }
+
+    static class FilmResult{
+        String title;
+        String episode_id;
+        String opening_crawl;
+        String director;
+        String producer;
+        String release_date;
+        String [] characters;
+        String [] vehicles;
+        String [] species;
+        String created;
+        String edited;
+        String url;
+
+    }
+
+
+
+    static class StarshipResult{
+        String name;
+        String model;
+        String manufacturer;
+        String cost_in_credits;
+        String length;
+        String max_atomosphering_speed;
+        String crew;
+        String cargo_capacity;
+        String consumables;
+        String hyperdrive_rating;
+        String MGLT;
+        String starship_class;
+        String [] pilots;
+        String [] films;
+        String created;
+        String edited;
+        String url;
     }
 
     public static String buildForecastURL(String category) {
@@ -116,6 +154,60 @@ public class StarWarsUtils {
 
     public static String buildIconURL(String icon) {
         return String.format(OWM_ICON_URL_FORMAT_STR, icon);
+    }
+
+    //Parses the query for films
+    public static FilmItem parseFilmJSON(String url){
+        Gson gson = new Gson();
+        FilmResult result = gson.fromJson(url, FilmResult.class);
+        if(result != null){
+            FilmItem tempFilm = new FilmItem();
+            tempFilm.title = result.title;
+            tempFilm.episode_id = result.episode_id;
+            tempFilm.opening_crawl = result.opening_crawl;
+            tempFilm.director = result.director;
+            tempFilm.producer = result.producer;
+            tempFilm.release_date = result.release_date;
+            tempFilm.characters = result.characters;
+            tempFilm.vehicles = result.vehicles;
+            tempFilm.species = result.species;
+            tempFilm.created = result.created;
+            tempFilm.edited = result.edited;
+            tempFilm.url = result.url;
+
+            return tempFilm;
+        }else{
+            return null;
+        }
+    }
+
+    public static StarshipItem parseStarshipJSON(String url){
+        Gson gson = new Gson();
+        StarshipResult result = gson.fromJson(url, StarshipResult.class);
+        if(result != null){
+            StarshipItem temp = new StarshipItem();
+            temp.name = result.name;
+            temp.model = result.model;
+            temp.manufacturer = result.manufacturer;
+            temp.cost_in_credits = result.cost_in_credits;
+            temp.length = result.length;
+            temp.max_atomosphering_speed = result.max_atomosphering_speed;
+            temp.crew = result.crew;
+            temp.cargo_capacity = result.cargo_capacity;
+            temp.consumables = result.consumables;
+            temp.hyperdrive_rating = result.hyperdrive_rating;
+            temp.MGLT = result.MGLT;
+            temp.starship_class = result.starship_class;
+            temp.pilots = result.pilots;
+            temp.films = result.films;
+            temp.created = result.created;
+            temp.edited = result.edited;
+            temp.url = result.url;
+
+            return temp;
+        }else{
+            return null;
+        }
     }
 
     public static PeopleItem parsePeopleJSON(String url){
@@ -143,7 +235,8 @@ public class StarWarsUtils {
         }else{
             return null;
         }
-}
+    }
+
     public static PlanetItem parsePlanetJSON(String url){
         Gson gson = new Gson();
         PlanetResult result = gson.fromJson(url, PlanetResult.class);
