@@ -47,6 +47,8 @@ public class StarWarsUtils {
         CategoryListEntryItem[] results;
     }
 
+
+
     static class CategoryListEntryItem {
         String name;
         String title;
@@ -59,7 +61,41 @@ public class StarWarsUtils {
     String homeworld;
     }
 
+    static class PersonResult{
+        String name;
+        String height;
+        String mass;
+        String hair_color;
+        String skin_color;
+        String eye_color;
+        String birth_year;
+        String gender;
+        String homeworld;
+        String [] films;
+        String [] species;
+        String [] vehicles;
+        String [] starships;
+        String created;
+        String edited;
+        String url;
+    }
+    static class PlanetResult{
 
+        public String name;
+        String rotation_period;
+        String orbital_period;
+        String diameter;
+        String climate;
+        String gravity;
+        String terrain;
+        String surface_water;
+        String population;
+        String [] residents;
+        String [] films;
+        String created;
+        String edited;
+        public String url;
+    }
 
     public static String buildForecastURL(String category) {
         if(category.equals("Films")){
@@ -82,6 +118,56 @@ public class StarWarsUtils {
         return String.format(OWM_ICON_URL_FORMAT_STR, icon);
     }
 
+    public static PeopleItem parsePeopleJSON(String url){
+        Gson gson = new Gson();
+        PersonResult result = gson.fromJson(url, PersonResult.class);
+        if(result != null){
+            PeopleItem tempPerson = new PeopleItem();
+            tempPerson.name = result.name;
+            tempPerson.height = result.height;
+            tempPerson.mass = result.mass;
+            tempPerson.hair_color = result.hair_color;
+            tempPerson.skin_color = result.skin_color;
+            tempPerson.eye_color = result.eye_color;
+            tempPerson.birth_year = result.birth_year;
+            tempPerson.gender = result.gender;
+            tempPerson.homeworld = result.homeworld;
+            tempPerson.films = result.films;
+            tempPerson.species = result.species;
+            tempPerson.vehicles = result.vehicles;
+            tempPerson.starships = result.starships;
+            tempPerson.created = result.created;
+            tempPerson.edited = result.edited;
+            tempPerson.url = result.url;
+            return tempPerson;
+        }else{
+            return null;
+        }
+}
+    public static PlanetItem parsePlanetJSON(String url){
+        Gson gson = new Gson();
+        PlanetResult result = gson.fromJson(url, PlanetResult.class);
+        if(result != null){
+            PlanetItem tempPlanet = new PlanetItem();
+            tempPlanet.name = result.name;
+            tempPlanet.rotation_period = result.rotation_period;
+            tempPlanet.orbital_period = result.orbital_period;
+            tempPlanet.diameter = result.diameter;
+            tempPlanet.climate = result.climate;
+            tempPlanet.gravity = result.gravity;
+            tempPlanet.terrain = result.terrain;
+            tempPlanet.surface_water = result.surface_water;
+            tempPlanet.population = result.population;
+            tempPlanet.residents = result.residents;
+            tempPlanet.films = result.films;
+            tempPlanet.created = result.created;
+            tempPlanet.edited = result.edited;
+            tempPlanet.url = result.url;
+            return tempPlanet;
+        }else{
+            return null;
+        }
+    }
     //Get list of results back
     public static ArrayList<CategoryItem> parseCategoryJSON(String forecastJSON) {
         Gson gson = new Gson();

@@ -3,6 +3,8 @@ package com.example.android.sqliteweather.data;
 import android.os.AsyncTask;
 
 import com.example.android.sqliteweather.utils.NetworkUtils;
+import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
 
 import java.io.IOException;
@@ -21,16 +23,20 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
 
     public interface AsyncCallback {
         void onForecastLoadFinished(List<CategoryItem> categoryItems);
+        void onPeopleLoadFinished(PeopleItem people);
+        void onPlanetLoadFinished(PlanetItem planet);
     }
 
     private String mURL;
     String mNextURL;
     private AsyncCallback mCallback;
+    private String mCurrentCategory;
 
-    LoadForecastTask(String url, AsyncCallback callback, String next) {
+    LoadForecastTask(String url, AsyncCallback callback, String next, String category) {
         mURL = url;
         mCallback = callback;
         mNextURL = next;
+        mCurrentCategory = category;
     }
 
     @Override
@@ -47,6 +53,18 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         ArrayList<CategoryItem> categoryItems = null;
+
+        if(s != null && mCurrentCategory != null && mCurrentCategory.equals("People")){
+            PeopleItem person = StarWarsUtils.parsePeopleJSON(s);
+            mCallback.onPeopleLoadFinished(person);
+            return;
+        }
+        if(s != null && mCurrentCategory != null && mCurrentCategory.equals("Planet")){
+            PlanetItem planet = StarWarsUtils.parsePlanetJSON(s);
+            mCallback.onPlanetLoadFinished(planet);
+            return;
+        }
+
         if (s != null) {
             categoryItems = StarWarsUtils.parseCategoryJSON(s);
             mNextURL = categoryItems.get(categoryItems.size() - 1).next;

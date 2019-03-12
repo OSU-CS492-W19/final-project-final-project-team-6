@@ -5,6 +5,9 @@ import android.arch.lifecycle.MutableLiveData;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.PlanetItem;
+
 import java.util.List;
 
 /*
@@ -35,6 +38,12 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 
     private String mCurrentLocation;
     private String mCurrentUnits;
+    private MutableLiveData<PeopleItem> mCurrentPerson;
+    private MutableLiveData<PlanetItem> mCurrentPlanet;
+
+    private String mPersonURL;
+    private String mPlanetURL;
+
 
     public ForecastRepository() {
         mForecastItems = new MutableLiveData<>();
@@ -45,6 +54,10 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 
         mCurrentLocation = null;
         mCurrentUnits = null;
+        mCurrentPerson = new MutableLiveData<>();
+        mCurrentPerson.setValue(null);
+        mCurrentPlanet = new MutableLiveData<>();
+        mCurrentPlanet.setValue(null);
     }
 
     /*
@@ -60,9 +73,9 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
             mLoadingStatus.setValue(Status.LOADING);
             String url = SWAPIUrl;
             Log.d(TAG, "fetching new forecast data with this URL: " + url);
-            LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(url, this, null).execute();
+            LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(url, this, null, null).execute();
             while(tempTask.mNextURL != null){
-                tempTask = (LoadForecastTask) new LoadForecastTask(tempTask.mNextURL, this, null);
+                tempTask = (LoadForecastTask) new LoadForecastTask(tempTask.mNextURL, this, null, null);
             }
 
             Log.d(TAG, "loadForecast: ksjdfkl");
@@ -70,6 +83,27 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 //        } else {
 //            Log.d(TAG, "using cached forecast data");
 //        }
+    }
+
+    public void loadIndividualPerson(String SWAPIUrl){
+        mPersonURL = SWAPIUrl;
+
+        PeopleItem temp = new PeopleItem();
+        temp.url = SWAPIUrl;
+        temp.name = "testName";
+        mCurrentPerson.setValue(temp);
+        Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "People").execute();
+    }
+    public void loadIndividualPlanet(String SWAPIUrl){
+        mPlanetURL = SWAPIUrl;
+
+        PlanetItem temp = new PlanetItem();
+        temp.url = SWAPIUrl;
+        temp.name = "testName";
+        mCurrentPlanet.setValue(temp);
+        Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Planet").execute();
     }
 
     /*
@@ -125,5 +159,21 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
             mLoadingStatus.setValue(Status.ERROR);
         }
     }
+
+    public LiveData<PeopleItem> getPerson(){
+        return mCurrentPerson;
+    }
+    public LiveData<PlanetItem> getPlanet(){
+        return mCurrentPlanet;
+    }
+    @Override
+    public void onPeopleLoadFinished(PeopleItem people) {
+        mCurrentPerson.setValue(people);
+    }
+    @Override
+    public void onPlanetLoadFinished(PlanetItem planet) {
+        mCurrentPlanet.setValue(planet);
+    }
+
 }
 

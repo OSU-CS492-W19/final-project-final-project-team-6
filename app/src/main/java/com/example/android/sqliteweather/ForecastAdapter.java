@@ -18,6 +18,7 @@ import java.util.List;
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastItemViewHolder> {
 
     private List<String> mForecastItems;
+    private List<String> mURLS;
     private OnForecastItemClickListener mForecastItemClickListener;
 
     public interface OnForecastItemClickListener {
@@ -31,6 +32,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     public void updateForecastItems(List<String> forecastItems) {
         mForecastItems = forecastItems;
         notifyDataSetChanged();
+    }
+
+    public void updateURLS(List<String> urls){
+        mURLS = urls;
     }
 
     @Override
@@ -86,7 +91,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
         @Override
         public void onClick(View v) {
-            String forecastItem = mForecastItems.get(getAdapterPosition());
+            String forecastItem;
+            if(mURLS == null){
+                forecastItem = mForecastItems.get(getAdapterPosition());
+            }else{
+                forecastItem = mURLS.get(getAdapterPosition());
+            }
+
             mForecastItemClickListener.onForecastItemClick(forecastItem);
         }
     }
