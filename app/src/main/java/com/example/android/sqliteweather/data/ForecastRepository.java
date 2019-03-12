@@ -10,6 +10,7 @@ import com.example.android.sqliteweather.utils.PlanetItem;
 
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.SpeciesItem;
 import com.example.android.sqliteweather.utils.StarshipItem;
 import com.example.android.sqliteweather.utils.VehicleItem;
 
@@ -49,6 +50,7 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     private MutableLiveData<StarshipItem> mCurrentStarship;
     private MutableLiveData<PlanetItem> mCurrentPlanet;
     private String mPlanetURL;
+    private MutableLiveData<SpeciesItem> mCurrentSpecies;
     private MutableLiveData<VehicleItem> mCurrentVehicle;
 
 
@@ -76,6 +78,9 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 
         mCurrentVehicle = new MutableLiveData<>();
         mCurrentVehicle.setValue(null);
+
+        mCurrentSpecies = new MutableLiveData<>();
+        mCurrentSpecies.setValue(null);
     }
 
     /*
@@ -101,6 +106,15 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 //        } else {
 //            Log.d(TAG, "using cached forecast data");
 //        }
+    }
+    public void loadIndividualSpecies(String SWAPIUrl){
+
+        SpeciesItem temp = new SpeciesItem();
+        temp.url = SWAPIUrl;
+        temp.name = "testName";
+        mCurrentSpecies.setValue(temp);
+        Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Species").execute();
     }
 
     public void loadIndividualPerson(String SWAPIUrl){
@@ -230,6 +244,15 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     @Override
     public void onPlanetLoadFinished(PlanetItem planet) {
         mCurrentPlanet.setValue(planet);
+    }
+
+    public LiveData<SpeciesItem> getSpecies(){
+        return mCurrentSpecies;
+    }
+
+    @Override
+    public void onSpeciesLoadFinished(SpeciesItem species) {
+        mCurrentSpecies.setValue(species);
     }
 
     @Override

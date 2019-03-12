@@ -26,6 +26,7 @@ import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.SpeciesItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
 import com.example.android.sqliteweather.utils.StarshipItem;
 import com.example.android.sqliteweather.utils.VehicleItem;
@@ -190,6 +191,22 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
                 public void onChanged(@Nullable PlanetItem planet) {
                     if(planet != null && !planet.name.equals("testName")){ //check to see if query was successful
                         PlanetItem temp = planet;
+                        Toast.makeText(CategorySearchActivity.this, "Person clicked: " + temp.name,
+                                Toast.LENGTH_LONG).show();
+                        //TODO Remove toast and start detailedPersonActivity after passing in the person
+                    }
+
+                }
+            });
+        }else if(mCategory.equals("Species")){
+
+            mForecastViewModel.loadSpecies(forecastItem);
+
+            mForecastViewModel.getmSpecies().observe(this, new Observer<SpeciesItem>() {
+                @Override
+                public void onChanged(@Nullable SpeciesItem species) {
+                    if(species != null && !species.name.equals("testName")){ //check to see if query was successful
+                        SpeciesItem temp = species;
                         Toast.makeText(CategorySearchActivity.this, "Person clicked: " + temp.name,
                                 Toast.LENGTH_LONG).show();
                         //TODO Remove toast and start detailedPersonActivity after passing in the person

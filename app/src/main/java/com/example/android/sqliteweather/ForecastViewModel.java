@@ -10,6 +10,7 @@ import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.SpeciesItem;
 import com.example.android.sqliteweather.utils.StarshipItem;
 import com.example.android.sqliteweather.utils.VehicleItem;
 
@@ -31,6 +32,7 @@ public class ForecastViewModel extends ViewModel {
     private LiveData<List<String>> mCategoryItems;
     private LiveData<FilmItem> mFilm;
     private LiveData<StarshipItem> mStarship;
+    private LiveData<SpeciesItem> mSpecies;
     private LiveData<VehicleItem> mVehicle;
 
     public ForecastViewModel() {
@@ -42,7 +44,13 @@ public class ForecastViewModel extends ViewModel {
         mStarship = mRepository.getStarship();
         mPlanet = mRepository.getPlanet();
         mVehicle = mRepository.getVehicle();
+        mSpecies = mRepository.getSpecies();
     }
+
+    public void loadSpecies(String URL){
+        mRepository.loadIndividualSpecies(URL);
+    }
+    public LiveData<SpeciesItem> getmSpecies(){return mSpecies;}
 
     public void loadForecast(String location, String units, String URL) {
         mRepository.loadForecast(location, units, URL);
