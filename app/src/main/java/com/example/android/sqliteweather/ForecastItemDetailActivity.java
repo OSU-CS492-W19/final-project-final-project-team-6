@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.example.android.sqliteweather.data.CategoryItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
 
+//Not used, can probably remove
+
 public class ForecastItemDetailActivity extends AppCompatActivity {
 
     private TextView mDateTV;

@@ -17,15 +17,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.android.sqliteweather.data.CategoryItem;
 import com.example.android.sqliteweather.data.Status;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.FilmItem;
-import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
 import com.example.android.sqliteweather.utils.StarshipItem;
 
@@ -33,15 +30,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CategorySearchActivity extends AppCompatActivity implements ForecastAdapter.OnForecastItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class CategorySearchActivity extends AppCompatActivity implements EntryAdapter.OnEntryItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private String mCategory;
-    private TextView mForecastLocationTV;
-    private RecyclerView mForecastItemsRV;
+    private RecyclerView mEntryItemsRV;
     private ProgressBar mLoadingIndicatorPB;
     private TextView mLoadingErrorMessageTV;
 
-    private ForecastAdapter mForecastAdapter;
-    private ForecastViewModel mForecastViewModel;
+    private EntryAdapter mEntryAdapter;
+    private EntryViewModel mEntryViewModel;
     private List<CategoryItem> mCategoryItems;
 
     @Override
@@ -58,20 +54,20 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
 
         mLoadingIndicatorPB = findViewById(R.id.pb_loading_indicator2);
         mLoadingErrorMessageTV = findViewById(R.id.tv_loading_error_message2);
-        mForecastItemsRV = findViewById(R.id.rv_forecast_items2);
+        mEntryItemsRV = findViewById(R.id.rv_forecast_items2);
 
-        mForecastAdapter = new ForecastAdapter(this);
-        mForecastItemsRV.setAdapter(mForecastAdapter);
-        mForecastItemsRV.setLayoutManager(new LinearLayoutManager(this));
-        mForecastItemsRV.setHasFixedSize(true);
+        mEntryAdapter = new EntryAdapter(this);
+        mEntryItemsRV.setAdapter(mEntryAdapter);
+        mEntryItemsRV.setLayoutManager(new LinearLayoutManager(this));
+        mEntryItemsRV.setHasFixedSize(true);
 
-        mForecastViewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
+        mEntryViewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
 
         List<String> mCategoriesList = Arrays.asList(getResources().getStringArray(R.array.SWAPI_categories));
 
 
         //BELOW is used to put people in recyclerview
-        mForecastViewModel.getForecast().observe(this, new Observer<List<CategoryItem>>() {
+        mEntryViewModel.getForecast().observe(this, new Observer<List<CategoryItem>>() {
             @Override
             public void onChanged(@Nullable List<CategoryItem> categoryItems) {
                 List<String> tempForecastItemListAsString = new ArrayList<String>();
@@ -85,23 +81,22 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
                         tempURLList.add(tempItem.query);
                     }
 
-
-                    mForecastAdapter.updateForecastItems(tempForecastItemListAsString);
-                    mForecastAdapter.updateURLS(tempURLList);
+                    mEntryAdapter.updateForecastItems(tempForecastItemListAsString);
+                    mEntryAdapter.updateURLS(tempURLList);
                 }
                 if(categoryItems != null && mCategoryItems != null && mCategoryItems.size() > 0 && mCategoryItems.get(mCategoryItems.size()-1).next != null){
-                    mForecastViewModel.loadForecast(null, null, mCategoryItems.get(mCategoryItems.size() - 1).next);
+                    mEntryViewModel.loadEntries(null, null, mCategoryItems.get(mCategoryItems.size() - 1).next);
                     for(CategoryItem tempItem : mCategoryItems){
                         tempForecastItemListAsString.add(tempItem.name);
                         tempURLList.add(tempItem.query);
                     }
-                    mForecastAdapter.updateForecastItems(tempForecastItemListAsString);
-                    mForecastAdapter.updateURLS(tempURLList);
+                    mEntryAdapter.updateForecastItems(tempForecastItemListAsString);
+                    mEntryAdapter.updateURLS(tempURLList);
                 }
             }
         });
 
-        mForecastViewModel.getLoadingStatus().observe(this, new Observer<Status>() {
+        mEntryViewModel.getLoadingStatus().observe(this, new Observer<Status>() {
             @Override
             public void onChanged(@Nullable Status status) {
                 if (status == Status.LOADING) {
@@ -109,10 +104,10 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
                 } else if (status == Status.SUCCESS) {
                     mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
                     mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
-                    mForecastItemsRV.setVisibility(View.VISIBLE);
+                    mEntryItemsRV.setVisibility(View.VISIBLE);
                 } else {
                     mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
-                    mForecastItemsRV.setVisibility(View.INVISIBLE);
+                    mEntryItemsRV.setVisibility(View.INVISIBLE);
                     mLoadingErrorMessageTV.setVisibility(View.VISIBLE);
                 }
             }
@@ -132,16 +127,12 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
         super.onDestroy();
     }
 
+    //TODO: this
     @Override
-    public void onForecastItemClick(String forecastItem) {
-        Intent intent = new Intent(this, CategorySearchActivity.class);
-
-
-
+    public void onEntryItemClick(String forecastItem) {
         if(mCategory.equals("People")){
-            mForecastViewModel.loadPerson(forecastItem);
-
-            mForecastViewModel.getPerson().observe(this, new Observer<PeopleItem>() {
+            mEntryViewModel.loadPerson(forecastItem);
+            mEntryViewModel.getPerson().observe(this, new Observer<PeopleItem>() {
                 @Override
                 public void onChanged(@Nullable PeopleItem person) {
                     if(person != null && !person.name.equals("testName")){ //check to see if query was successful
@@ -155,9 +146,8 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
             });
 
         }else if(mCategory.equals("Films")){
-
-            mForecastViewModel.loadFilm(forecastItem);
-            mForecastViewModel.getFilm().observe(this, new Observer<FilmItem>() {
+            mEntryViewModel.loadFilm(forecastItem);
+            mEntryViewModel.getFilm().observe(this, new Observer<FilmItem>() {
                 @Override
                 public void onChanged(@Nullable FilmItem filmItem) {
                     if(filmItem != null && !filmItem.title.equals("testName")){
@@ -169,8 +159,8 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
                 }
             });
         }else if(mCategory.equals("Spaceships")){ //starships
-            mForecastViewModel.loadStarship(forecastItem);
-            mForecastViewModel.getStarship().observe(this, new Observer<StarshipItem>() {
+            mEntryViewModel.loadStarship(forecastItem);
+            mEntryViewModel.getStarship().observe(this, new Observer<StarshipItem>() {
                 @Override
                 public void onChanged(@Nullable StarshipItem starshipItem) {
                     if(starshipItem != null && !starshipItem.name.equals("testName")){
@@ -181,10 +171,8 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
                 }
             });
         }else if(mCategory.equals("Planets")){
-
-            mForecastViewModel.loadPlanet(forecastItem);
-
-            mForecastViewModel.getPlanet().observe(this, new Observer<PlanetItem>() {
+            mEntryViewModel.loadPlanet(forecastItem);
+            mEntryViewModel.getPlanet().observe(this, new Observer<PlanetItem>() {
                 @Override
                 public void onChanged(@Nullable PlanetItem planet) {
                     if(planet != null && !planet.name.equals("testName")){ //check to see if query was successful
@@ -197,9 +185,6 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
                 }
             });
         }
-
-
-
     }
 
     @Override
@@ -223,6 +208,7 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
         }
     }
 
+    //Can probably remove this
     public void loadForecast(SharedPreferences preferences) {
         String location = preferences.getString(
                 getString(R.string.pref_location_key),
@@ -234,9 +220,10 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
         );
 
 
-        mForecastViewModel.loadForecast(location, units, StarWarsUtils.buildForecastURL(mCategory));
+        mEntryViewModel.loadEntries(location, units, StarWarsUtils.buildForecastURL(mCategory));
     }
 
+    //Can probably remove this
     public void showForecastLocationInMap() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String forecastLocation = sharedPreferences.getString(
@@ -252,6 +239,7 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
         }
     }
 
+    //Can probably remove this
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         loadForecast(sharedPreferences);

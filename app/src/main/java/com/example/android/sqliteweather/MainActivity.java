@@ -3,12 +3,9 @@ package com.example.android.sqliteweather;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -19,24 +16,23 @@ import android.widget.TextView;
 
 import com.example.android.sqliteweather.data.CategoryItem;
 import com.example.android.sqliteweather.data.Status;
-import com.example.android.sqliteweather.utils.StarWarsUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements ForecastAdapter.OnForecastItemClickListener{
+        implements EntryAdapter.OnEntryItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
 
-    private RecyclerView mForecastItemsRV;
+    private RecyclerView mCategoryItemsRV;
     private ProgressBar mLoadingIndicatorPB;
     private TextView mLoadingErrorMessageTV;
 
-    private ForecastAdapter mForecastAdapter;
-    private ForecastViewModel mForecastViewModel;
+    private EntryAdapter mEntryAdapter;
+    private EntryViewModel mEntryViewModel;
     private List<CategoryItem> mCategoryItems;
 
     @Override
@@ -52,19 +48,19 @@ public class MainActivity extends AppCompatActivity
 
         mLoadingIndicatorPB = findViewById(R.id.pb_loading_indicator);
         mLoadingErrorMessageTV = findViewById(R.id.tv_loading_error_message);
-        mForecastItemsRV = findViewById(R.id.rv_forecast_items);
+        mCategoryItemsRV = findViewById(R.id.rv_forecast_items);
 
-        mForecastAdapter = new ForecastAdapter(this);
-        mForecastItemsRV.setAdapter(mForecastAdapter);
-        mForecastItemsRV.setLayoutManager(new LinearLayoutManager(this));
-        mForecastItemsRV.setHasFixedSize(true);
+        mEntryAdapter = new EntryAdapter(this);
+        mCategoryItemsRV.setAdapter(mEntryAdapter);
+        mCategoryItemsRV.setLayoutManager(new LinearLayoutManager(this));
+        mCategoryItemsRV.setHasFixedSize(true);
 
         /*
          * This version of the app code uses the new ViewModel architecture to manage data for
          * the activity.  See the classes in the data package for more about how the ViewModel
          * is set up.  Here, we simply grab the forecast data ViewModel.
          */
-        mForecastViewModel = ViewModelProviders.of(this).get(ForecastViewModel.class);
+        mEntryViewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
 
         /*
          * Attach an Observer to the forecast data.  Whenever the forecast data changes, this
@@ -72,23 +68,8 @@ public class MainActivity extends AppCompatActivity
          */
 
         List<String> mCategoriesList = Arrays.asList(getResources().getStringArray(R.array.SWAPI_categories));
-        mForecastAdapter.updateForecastItems(mCategoriesList);
+        mEntryAdapter.updateForecastItems(mCategoriesList);
 
-        //BELOW is used to put people in recyclerview
-//        mForecastViewModel.getForecast().observe(this, new Observer<List<CategoryItem>>() {
-//            @Override
-//            public void onChanged(@Nullable List<CategoryItem> forecastItems) {
-//                mForecastAdapter.updateForecastItems(forecastItems);
-//                if(forecastItems != null){
-//                    mCategoryItems.addAll(forecastItems);
-//                    mForecastAdapter.updateForecastItems(mCategoryItems);
-//                }
-//                if(forecastItems != null && mCategoryItems != null && mCategoryItems.size() > 0 && mCategoryItems.get(mCategoryItems.size()-1).next != null){
-//                    mForecastViewModel.loadForecast(null, null, mCategoryItems.get(mCategoryItems.size() - 1).next);
-//                    mForecastAdapter.updateForecastItems(mCategoryItems);
-//                }
-//            }
-//        });
 
         /*
          * Attach an Observer to the network loading status.  Whenever the loading status changes,
@@ -97,7 +78,9 @@ public class MainActivity extends AppCompatActivity
          * Otherwise, it will display the RecyclerView if forecast data was successfully fetched,
          * or it will display the error message if there was an error fetching data.
          */
-        mForecastViewModel.getLoadingStatus().observe(this, new Observer<Status>() {
+
+        //Can probably remove this
+        mEntryViewModel.getLoadingStatus().observe(this, new Observer<Status>() {
             @Override
             public void onChanged(@Nullable Status status) {
                 if (status == Status.LOADING) {
@@ -105,10 +88,10 @@ public class MainActivity extends AppCompatActivity
                 } else if (status == Status.SUCCESS) {
                     mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
                     mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
-                    mForecastItemsRV.setVisibility(View.VISIBLE);
+                    mCategoryItemsRV.setVisibility(View.VISIBLE);
                 } else {
                     mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
-                    mForecastItemsRV.setVisibility(View.INVISIBLE);
+                    mCategoryItemsRV.setVisibility(View.INVISIBLE);
                     mLoadingErrorMessageTV.setVisibility(View.VISIBLE);
                 }
             }
@@ -118,7 +101,7 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public void onForecastItemClick(String forecastItem) {
+    public void onEntryItemClick(String forecastItem) {
         Intent intent = new Intent(this, CategorySearchActivity.class);
         intent.putExtra("category", forecastItem);
         startActivity(intent);

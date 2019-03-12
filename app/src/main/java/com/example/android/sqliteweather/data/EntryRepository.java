@@ -9,7 +9,6 @@ import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.PlanetItem;
 
 import com.example.android.sqliteweather.utils.FilmItem;
-import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarshipItem;
 
 import java.util.List;
@@ -33,9 +32,9 @@ import java.util.List;
  * the cached version when appropriate.  See the docs for the method shouldFetchForecast() to see
  * when cached results are returned.
  */
-public class ForecastRepository implements LoadForecastTask.AsyncCallback {
+public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
-    private static final String TAG = ForecastRepository.class.getSimpleName();
+    private static final String TAG = EntryRepository.class.getSimpleName();
 
     private MutableLiveData<List<CategoryItem>> mForecastItems;
     private MutableLiveData<Status> mLoadingStatus;
@@ -49,10 +48,7 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     private MutableLiveData<PlanetItem> mCurrentPlanet;
     private String mPlanetURL;
 
-
-
-
-    public ForecastRepository() {
+    public EntryRepository() {
         mForecastItems = new MutableLiveData<>();
         mForecastItems.setValue(null);
 
@@ -79,7 +75,7 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
      * units.  New data is not fetched if valid cached data exists matching the specified location
      * and units.
      */
-    public void loadForecast(String location, String units, String SWAPIUrl) {
+    public void loadEntries(String location, String units, String SWAPIUrl) {
 //        if (shouldFetchForecast(location, units)) {
             mCurrentLocation = location;
             mCurrentUnits = units;
@@ -92,7 +88,7 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
                 tempTask = (LoadForecastTask) new LoadForecastTask(tempTask.mNextURL, this, null, null);
             }
 
-            Log.d(TAG, "loadForecast: ksjdfkl");
+            Log.d(TAG, "loadEntries: ksjdfkl");
 
 //        } else {
 //            Log.d(TAG, "using cached forecast data");
@@ -152,34 +148,14 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         return mLoadingStatus;
     }
 
-    /*
-     * This method determines whether a new network call should be made to fetch forecast data.
-     * New forecast data is fetched if one of the following conditions holds:
-     *   * The requested location or units don't match the ones corresponding to the cached
-     *     forecast items.
-     *   * If there are currently no cached forecast items.
-     *   * If the timestamp on the first cached forecast item is before the current time (i.e. the
-     *     cached forecast items are outdated).
-     */
-    private boolean shouldFetchForecast(String location, String units) {
-        if (!TextUtils.equals(location, mCurrentLocation) || !TextUtils.equals(units, mCurrentUnits)) {
-            return true;
-        } else {
-            List<CategoryItem> categoryItems = mForecastItems.getValue();
-            if (categoryItems == null || categoryItems.size() == 0) {
-                return true;
-            } else {
-//                return categoryItems.get(0).dateTime.before(new Date());
-                return false;
-            }
-        }
-    }
 
     /*
      * This is the callback method provided to the AsyncTask that loads new forecast data.  It
      * updates the Repository's forecast data and loading status with new values when the loading
      * finishes.
      */
+
+    //Can probably remove this
     @Override
     public void onForecastLoadFinished(List<CategoryItem> categoryItems) {
         mForecastItems.setValue(categoryItems);

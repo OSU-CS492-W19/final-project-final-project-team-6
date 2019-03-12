@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+//Not used, can probably remove
+
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
