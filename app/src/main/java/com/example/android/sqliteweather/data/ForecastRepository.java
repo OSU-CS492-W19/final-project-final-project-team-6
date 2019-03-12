@@ -5,6 +5,9 @@ import android.arch.lifecycle.MutableLiveData;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.PlanetItem;
+
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarshipItem;
@@ -43,6 +46,11 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     private MutableLiveData<FilmItem> mCurrentFilm;
     private String mPersonURL;
     private MutableLiveData<StarshipItem> mCurrentStarship;
+    private MutableLiveData<PlanetItem> mCurrentPlanet;
+    private String mPlanetURL;
+
+
+
 
     public ForecastRepository() {
         mForecastItems = new MutableLiveData<>();
@@ -61,6 +69,9 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 
         mCurrentStarship = new MutableLiveData<>();
         mCurrentStarship.setValue(null);
+
+        mCurrentPlanet = new MutableLiveData<>();
+        mCurrentPlanet.setValue(null);
     }
 
     /*
@@ -111,6 +122,18 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         temp.name = "testName";
         mCurrentStarship.setValue(temp);
         LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Starships").execute();
+    }
+
+
+    public void loadIndividualPlanet(String SWAPIUrl){
+        mPlanetURL = SWAPIUrl;
+
+        PlanetItem temp = new PlanetItem();
+        temp.url = SWAPIUrl;
+        temp.name = "testName";
+        mCurrentPlanet.setValue(temp);
+        Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Planet").execute();
     }
 
     /*
@@ -194,5 +217,16 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     public LiveData<StarshipItem> getStarship() {
         return mCurrentStarship;
     }
+
+
+    public LiveData<PlanetItem> getPlanet(){
+        return mCurrentPlanet;
+    }
+
+    @Override
+    public void onPlanetLoadFinished(PlanetItem planet) {
+        mCurrentPlanet.setValue(planet);
+    }
+
 }
 

@@ -57,6 +57,8 @@ public class ForecastItemDetailActivity extends AppCompatActivity {
             );
             fillInLayout(mCategoryItem);
         }
+        fillInLayout(mCategoryItem);
+
     }
 
     @Override
@@ -94,14 +96,15 @@ public class ForecastItemDetailActivity extends AppCompatActivity {
     private void fillInLayout(CategoryItem categoryItem) {
 //
 //
-//        mDateTV.setText(dateString);
-//        mTempDescriptionTV.setText(detailString);
-//        mLowHighTempTV.setText(lowHighTempString);
-//        mWindTV.setText(windString);
-//        mHumidityTV.setText(humidityString);
-//
-////        String iconURL = StarWarsUtils.buildIconURL(categoryItem.icon);
-//        String iconURL = "Test";
+        Bundle bundle = getIntent().getExtras();
+
+        mDateTV.setText(bundle.getString("category"));
+        mTempDescriptionTV.setText("hi");
+        mLowHighTempTV.setText("hi");
+        mWindTV.setText("hi");
+        mHumidityTV.setText("hi");
+
+
 
     }
 }

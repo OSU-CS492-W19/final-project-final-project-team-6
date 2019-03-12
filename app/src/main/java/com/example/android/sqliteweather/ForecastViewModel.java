@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModel;
 import com.example.android.sqliteweather.data.CategoryItem;
 import com.example.android.sqliteweather.data.ForecastRepository;
 import com.example.android.sqliteweather.data.Status;
+import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarshipItem;
@@ -24,6 +26,7 @@ public class ForecastViewModel extends ViewModel {
 
     private ForecastRepository mRepository;
     private LiveData<PeopleItem> mPerson;
+    private LiveData<PlanetItem> mPlanet;
     private LiveData<List<String>> mCategoryItems;
     private LiveData<FilmItem> mFilm;
     private LiveData<StarshipItem> mStarship;
@@ -35,6 +38,7 @@ public class ForecastViewModel extends ViewModel {
         mPerson = mRepository.getPerson();
         mFilm = mRepository.getFilm();
         mStarship = mRepository.getStarship();
+        mPlanet = mRepository.getPlanet();
     }
 
     public void loadForecast(String location, String units, String URL) {
@@ -71,5 +75,12 @@ public class ForecastViewModel extends ViewModel {
     }
 
     public LiveData<StarshipItem> getStarship(){return mStarship;}
+
+public void loadPlanet(String URL){
+    mRepository.loadIndividualPlanet(URL);
+
+}
+    public LiveData<PlanetItem> getPlanet(){return mPlanet;}
+
 
 }

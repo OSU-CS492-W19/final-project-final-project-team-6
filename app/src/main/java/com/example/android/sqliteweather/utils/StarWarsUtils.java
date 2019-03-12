@@ -53,23 +53,12 @@ public class StarWarsUtils {
         String name;
         String title;
         String url;
-
-    }
-
-    static class FilmResult{
-        String title;
-        String episode_id;
-        String opening_crawl;
-        String director;
-        String producer;
-        String release_date;
-        String [] characters;
-        String [] vehicles;
-        String [] species;
-        String created;
-        String edited;
-        String url;
-
+        String height;
+       String hair_color;
+         String eye_color;
+        String birth_year;
+       String gender;
+    String homeworld;
     }
 
     static class PersonResult{
@@ -90,6 +79,41 @@ public class StarWarsUtils {
         String edited;
         String url;
     }
+    static class PlanetResult{
+        public String name;
+        String rotation_period;
+        String orbital_period;
+        String diameter;
+        String climate;
+        String gravity;
+        String terrain;
+        String surface_water;
+        String population;
+        String [] residents;
+        String [] films;
+        String created;
+        String edited;
+        public String url;
+
+    }
+
+    static class FilmResult{
+        String title;
+        String episode_id;
+        String opening_crawl;
+        String director;
+        String producer;
+        String release_date;
+        String [] characters;
+        String [] vehicles;
+        String [] species;
+        String created;
+        String edited;
+        String url;
+
+    }
+
+
 
     static class StarshipResult{
         String name;
@@ -213,6 +237,30 @@ public class StarWarsUtils {
         }
     }
 
+    public static PlanetItem parsePlanetJSON(String url){
+        Gson gson = new Gson();
+        PlanetResult result = gson.fromJson(url, PlanetResult.class);
+        if(result != null){
+            PlanetItem tempPlanet = new PlanetItem();
+            tempPlanet.name = result.name;
+            tempPlanet.rotation_period = result.rotation_period;
+            tempPlanet.orbital_period = result.orbital_period;
+            tempPlanet.diameter = result.diameter;
+            tempPlanet.climate = result.climate;
+            tempPlanet.gravity = result.gravity;
+            tempPlanet.terrain = result.terrain;
+            tempPlanet.surface_water = result.surface_water;
+            tempPlanet.population = result.population;
+            tempPlanet.residents = result.residents;
+            tempPlanet.films = result.films;
+            tempPlanet.created = result.created;
+            tempPlanet.edited = result.edited;
+            tempPlanet.url = result.url;
+            return tempPlanet;
+        }else{
+            return null;
+        }
+    }
     //Get list of results back
     public static ArrayList<CategoryItem> parseCategoryJSON(String forecastJSON) {
         Gson gson = new Gson();

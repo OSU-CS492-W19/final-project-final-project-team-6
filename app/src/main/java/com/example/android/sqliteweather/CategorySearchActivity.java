@@ -17,10 +17,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.android.sqliteweather.data.CategoryItem;
 import com.example.android.sqliteweather.data.Status;
+import com.example.android.sqliteweather.utils.PeopleItem;
+import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
@@ -175,6 +178,22 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
                                 Toast.LENGTH_LONG).show();
                         //TODO Remove toast and start detailedFilmActivity after passing in the film
                     }
+                }
+            });
+        }else if(mCategory.equals("Planets")){
+
+            mForecastViewModel.loadPlanet(forecastItem);
+
+            mForecastViewModel.getPlanet().observe(this, new Observer<PlanetItem>() {
+                @Override
+                public void onChanged(@Nullable PlanetItem planet) {
+                    if(planet != null && !planet.name.equals("testName")){ //check to see if query was successful
+                        PlanetItem temp = planet;
+                        Toast.makeText(CategorySearchActivity.this, "Person clicked: " + temp.name,
+                                Toast.LENGTH_LONG).show();
+                        //TODO Remove toast and start detailedPersonActivity after passing in the person
+                    }
+
                 }
             });
         }
