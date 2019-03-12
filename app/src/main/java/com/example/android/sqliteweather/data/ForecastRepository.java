@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
 
 import java.util.List;
@@ -38,8 +39,8 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
     private String mCurrentLocation;
     private String mCurrentUnits;
     private MutableLiveData<PeopleItem> mCurrentPerson;
+    private MutableLiveData<FilmItem> mCurrentFilm;
     private String mPersonURL;
-
 
     public ForecastRepository() {
         mForecastItems = new MutableLiveData<>();
@@ -52,6 +53,9 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         mCurrentUnits = null;
         mCurrentPerson = new MutableLiveData<>();
         mCurrentPerson.setValue(null);
+
+        mCurrentFilm = new MutableLiveData<>();
+        mCurrentFilm.setValue(null);
     }
 
     /*
@@ -89,6 +93,14 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
         LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "People").execute();
     }
+
+    public void loadIndividualFilm(String SWAPIUrl){
+        FilmItem temp = new FilmItem();
+        temp.title = "testName";
+        mCurrentFilm.setValue(temp);
+        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Films").execute();
+    }
+
 
     /*
      * Returns the LiveData object containing the forecast data.  An observer can be hooked to this
@@ -148,9 +160,18 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         return mCurrentPerson;
     }
 
+    public LiveData<FilmItem> getFilm(){
+        return mCurrentFilm;
+    }
+
     @Override
     public void onPeopleLoadFinished(PeopleItem people) {
         mCurrentPerson.setValue(people);
+    }
+
+    @Override
+    public void onFilmLoadFinished(FilmItem tempFilm) {
+        mCurrentFilm.setValue(tempFilm);
     }
 }
 

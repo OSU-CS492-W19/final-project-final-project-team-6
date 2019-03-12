@@ -56,6 +56,22 @@ public class StarWarsUtils {
 
     }
 
+    static class FilmResult{
+        String title;
+        String episode_id;
+        String opening_crawl;
+        String director;
+        String producer;
+        String release_date;
+        String [] characters;
+        String [] vehicles;
+        String [] species;
+        String created;
+        String edited;
+        String url;
+
+    }
+
     static class PersonResult{
         String name;
         String height;
@@ -94,6 +110,31 @@ public class StarWarsUtils {
 
     public static String buildIconURL(String icon) {
         return String.format(OWM_ICON_URL_FORMAT_STR, icon);
+    }
+
+    //Parses the query for films
+    public static FilmItem parseFilmJSON(String url){
+        Gson gson = new Gson();
+        FilmResult result = gson.fromJson(url, FilmResult.class);
+        if(result != null){
+            FilmItem tempFilm = new FilmItem();
+            tempFilm.title = result.title;
+            tempFilm.episode_id = result.episode_id;
+            tempFilm.opening_crawl = result.opening_crawl;
+            tempFilm.director = result.director;
+            tempFilm.producer = result.producer;
+            tempFilm.release_date = result.release_date;
+            tempFilm.characters = result.characters;
+            tempFilm.vehicles = result.vehicles;
+            tempFilm.species = result.species;
+            tempFilm.created = result.created;
+            tempFilm.edited = result.edited;
+            tempFilm.url = result.url;
+
+            return tempFilm;
+        }else{
+            return null;
+        }
     }
 
     public static PeopleItem parsePeopleJSON(String url){
