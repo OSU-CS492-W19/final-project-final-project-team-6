@@ -2,7 +2,6 @@ package com.example.android.sqliteweather;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -12,10 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.example.android.sqliteweather.data.ForecastItem;
-import com.example.android.sqliteweather.utils.OpenWeatherMapUtils;
-
-import java.text.DateFormat;
+import com.example.android.sqliteweather.data.CategoryItem;
+import com.example.android.sqliteweather.utils.StarWarsUtils;
 
 public class ForecastItemDetailActivity extends AppCompatActivity {
 
@@ -26,7 +23,7 @@ public class ForecastItemDetailActivity extends AppCompatActivity {
     private TextView mHumidityTV;
     private ImageView mWeatherIconIV;
 
-    private ForecastItem mForecastItem;
+    private CategoryItem mCategoryItem;
     private String mForecastLocation;
     private String mTemperatureUnitsAbbr;
 
@@ -51,14 +48,14 @@ public class ForecastItemDetailActivity extends AppCompatActivity {
                 getString(R.string.pref_units_key),
                 getString(R.string.pref_units_default_value)
         );
-        mTemperatureUnitsAbbr = OpenWeatherMapUtils.getTemperatureUnitsAbbr(this, temperatureUnitsValue);
+        mTemperatureUnitsAbbr = StarWarsUtils.getTemperatureUnitsAbbr(this, temperatureUnitsValue);
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(OpenWeatherMapUtils.EXTRA_FORECAST_ITEM)) {
-            mForecastItem = (ForecastItem)intent.getSerializableExtra(
-                    OpenWeatherMapUtils.EXTRA_FORECAST_ITEM
+        if (intent != null && intent.hasExtra(StarWarsUtils.EXTRA_FORECAST_ITEM)) {
+            mCategoryItem = (CategoryItem)intent.getSerializableExtra(
+                    StarWarsUtils.EXTRA_FORECAST_ITEM
             );
-            fillInLayout(mForecastItem);
+            fillInLayout(mCategoryItem);
         }
     }
 
@@ -80,12 +77,12 @@ public class ForecastItemDetailActivity extends AppCompatActivity {
     }
 
     public void shareForecast() {
-//        if (mForecastItem != null) {
+//        if (mCategoryItem != null) {
 //            String dateString = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
-//                    .format(mForecastItem.dateTime);
+//                    .format(mCategoryItem.dateTime);
 //            String shareText = getString(R.string.forecast_item_share_text, mForecastLocation,
-//                    dateString, mForecastItem.temperature, mTemperatureUnitsAbbr,
-//                    mForecastItem.description);
+//                    dateString, mCategoryItem.temperature, mTemperatureUnitsAbbr,
+//                    mCategoryItem.description);
 //            ShareCompat.IntentBuilder.from(this)
 //                    .setType("text/plain")
 //                    .setText(shareText)
@@ -94,7 +91,7 @@ public class ForecastItemDetailActivity extends AppCompatActivity {
 //        }
     }
 
-    private void fillInLayout(ForecastItem forecastItem) {
+    private void fillInLayout(CategoryItem categoryItem) {
 //
 //
 //        mDateTV.setText(dateString);
@@ -103,7 +100,7 @@ public class ForecastItemDetailActivity extends AppCompatActivity {
 //        mWindTV.setText(windString);
 //        mHumidityTV.setText(humidityString);
 //
-////        String iconURL = OpenWeatherMapUtils.buildIconURL(forecastItem.icon);
+////        String iconURL = StarWarsUtils.buildIconURL(categoryItem.icon);
 //        String iconURL = "Test";
 
     }

@@ -17,9 +17,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.android.sqliteweather.data.ForecastItem;
+import com.example.android.sqliteweather.data.CategoryItem;
 import com.example.android.sqliteweather.data.Status;
-import com.example.android.sqliteweather.utils.OpenWeatherMapUtils;
+import com.example.android.sqliteweather.utils.StarWarsUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +34,7 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
 
     private ForecastAdapter mForecastAdapter;
     private ForecastViewModel mForecastViewModel;
-    private List<ForecastItem> mForecastItems;
+    private List<CategoryItem> mCategoryItems;
 
 
     @Override
@@ -47,7 +47,7 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
         mCategory = intent.getStringExtra("category");
         getSupportActionBar().setTitle(mCategory);
 
-        mForecastItems = new ArrayList<>();
+        mCategoryItems = new ArrayList<>();
 
         mLoadingIndicatorPB = findViewById(R.id.pb_loading_indicator2);
         mLoadingErrorMessageTV = findViewById(R.id.tv_loading_error_message2);
@@ -64,12 +64,12 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
 
 
         //BELOW is used to put people in recyclerview
-        mForecastViewModel.getForecast().observe(this, new Observer<List<ForecastItem>>() {
+        mForecastViewModel.getForecast().observe(this, new Observer<List<CategoryItem>>() {
             @Override
-            public void onChanged(@Nullable List<ForecastItem> forecastItems) {
+            public void onChanged(@Nullable List<CategoryItem> categoryItems) {
                 List<String> tempForecastItemListAsString = new ArrayList<String>();
-//                if(forecastItems != null){
-//                    for(ForecastItem tempItem : forecastItems){
+//                if(categoryItems != null){
+//                    for(CategoryItem tempItem : categoryItems){
 //                        tempForecastItemListAsString.add(tempItem.name);
 //                    }
 //                }
@@ -78,18 +78,18 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
 
 //                mForecastAdapter.updateForecastItems(tempForecastItemListAsString);
 
-                if(forecastItems != null){
-                    mForecastItems.addAll(forecastItems);
+                if(categoryItems != null){
+                    mCategoryItems.addAll(categoryItems);
 
-                    for(ForecastItem tempItem : mForecastItems){
+                    for(CategoryItem tempItem : mCategoryItems){
                         tempForecastItemListAsString.add(tempItem.name);
                     }
 
                     mForecastAdapter.updateForecastItems(tempForecastItemListAsString);
                 }
-                if(forecastItems != null && mForecastItems != null && mForecastItems.size() > 0 && mForecastItems.get(mForecastItems.size()-1).next != null){
-                    mForecastViewModel.loadForecast(null, null, mForecastItems.get(mForecastItems.size() - 1).next);
-                    for(ForecastItem tempItem : mForecastItems){
+                if(categoryItems != null && mCategoryItems != null && mCategoryItems.size() > 0 && mCategoryItems.get(mCategoryItems.size()-1).next != null){
+                    mForecastViewModel.loadForecast(null, null, mCategoryItems.get(mCategoryItems.size() - 1).next);
+                    for(CategoryItem tempItem : mCategoryItems){
                         tempForecastItemListAsString.add(tempItem.name);
                     }
                     mForecastAdapter.updateForecastItems(tempForecastItemListAsString);
@@ -167,7 +167,7 @@ public class CategorySearchActivity extends AppCompatActivity implements Forecas
         );
 
 
-        mForecastViewModel.loadForecast(location, units, OpenWeatherMapUtils.buildForecastURL(location, units));
+        mForecastViewModel.loadForecast(location, units, StarWarsUtils.buildForecastURL(mCategory));
     }
 
     public void showForecastLocationInMap() {

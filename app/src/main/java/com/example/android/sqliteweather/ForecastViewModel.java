@@ -3,7 +3,7 @@ package com.example.android.sqliteweather;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.example.android.sqliteweather.data.ForecastItem;
+import com.example.android.sqliteweather.data.CategoryItem;
 import com.example.android.sqliteweather.data.ForecastRepository;
 import com.example.android.sqliteweather.data.Status;
 
@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ForecastViewModel extends ViewModel {
 
-    private LiveData<List<ForecastItem>> mForecastItems;
+    private LiveData<List<CategoryItem>> mForecastItems;
     private LiveData<Status> mLoadingStatus;
 
     private ForecastRepository mRepository;
@@ -33,7 +33,7 @@ public class ForecastViewModel extends ViewModel {
         mRepository.loadForecast(location, units, URL);
     }
 
-    public LiveData<List<ForecastItem>> getForecast() {
+    public LiveData<List<CategoryItem>> getForecast() {
         return mForecastItems;
     }
 

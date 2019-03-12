@@ -17,38 +17,39 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.android.sqliteweather.data.ForecastItem;
+import com.example.android.sqliteweather.data.CategoryItem;
 import com.example.android.sqliteweather.data.Status;
-import com.example.android.sqliteweather.utils.OpenWeatherMapUtils;
+import com.example.android.sqliteweather.utils.StarWarsUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements ForecastAdapter.OnForecastItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+        implements ForecastAdapter.OnForecastItemClickListener{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private TextView mForecastLocationTV;
+
     private RecyclerView mForecastItemsRV;
     private ProgressBar mLoadingIndicatorPB;
     private TextView mLoadingErrorMessageTV;
 
     private ForecastAdapter mForecastAdapter;
     private ForecastViewModel mForecastViewModel;
-    private List<ForecastItem> mForecastItems;
+    private List<CategoryItem> mCategoryItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mForecastItems = new ArrayList<ForecastItem>();
+        mCategoryItems = new ArrayList<CategoryItem>();
 
         // Remove shadow under action bar.
         getSupportActionBar().setElevation(0);
 
-        mForecastLocationTV = findViewById(R.id.tv_forecast_location);
+        getSupportActionBar().setTitle("Star Wars Wiki");
+
         mLoadingIndicatorPB = findViewById(R.id.pb_loading_indicator);
         mLoadingErrorMessageTV = findViewById(R.id.tv_loading_error_message);
         mForecastItemsRV = findViewById(R.id.rv_forecast_items);
@@ -74,17 +75,17 @@ public class MainActivity extends AppCompatActivity
         mForecastAdapter.updateForecastItems(mCategoriesList);
 
         //BELOW is used to put people in recyclerview
-//        mForecastViewModel.getForecast().observe(this, new Observer<List<ForecastItem>>() {
+//        mForecastViewModel.getForecast().observe(this, new Observer<List<CategoryItem>>() {
 //            @Override
-//            public void onChanged(@Nullable List<ForecastItem> forecastItems) {
+//            public void onChanged(@Nullable List<CategoryItem> forecastItems) {
 //                mForecastAdapter.updateForecastItems(forecastItems);
 //                if(forecastItems != null){
-//                    mForecastItems.addAll(forecastItems);
-//                    mForecastAdapter.updateForecastItems(mForecastItems);
+//                    mCategoryItems.addAll(forecastItems);
+//                    mForecastAdapter.updateForecastItems(mCategoryItems);
 //                }
-//                if(forecastItems != null && mForecastItems != null && mForecastItems.size() > 0 && mForecastItems.get(mForecastItems.size()-1).next != null){
-//                    mForecastViewModel.loadForecast(null, null, mForecastItems.get(mForecastItems.size() - 1).next);
-//                    mForecastAdapter.updateForecastItems(mForecastItems);
+//                if(forecastItems != null && mCategoryItems != null && mCategoryItems.size() > 0 && mCategoryItems.get(mCategoryItems.size()-1).next != null){
+//                    mForecastViewModel.loadForecast(null, null, mCategoryItems.get(mCategoryItems.size() - 1).next);
+//                    mForecastAdapter.updateForecastItems(mCategoryItems);
 //                }
 //            }
 //        });
@@ -113,16 +114,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        preferences.registerOnSharedPreferenceChangeListener(this);
-        loadForecast(preferences);
     }
 
-    @Override
-    protected void onDestroy() {
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
-        super.onDestroy();
-    }
 
     @Override
     public void onForecastItemClick(String forecastItem) {
@@ -141,7 +134,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_location:
-                showForecastLocationInMap();
                 return true;
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
@@ -152,37 +144,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void loadForecast(SharedPreferences preferences) {
-        String location = preferences.getString(
-                getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default_value)
-        );
-        String units = preferences.getString(
-                getString(R.string.pref_units_key),
-                getString(R.string.pref_units_default_value)
-        );
 
-        mForecastLocationTV.setText(location);
-        mForecastViewModel.loadForecast(location, units, OpenWeatherMapUtils.buildForecastURL(location, units));
-    }
 
-    public void showForecastLocationInMap() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String forecastLocation = sharedPreferences.getString(
-                getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default_value)
-        );
-        Uri geoUri = Uri.parse("geo:0,0").buildUpon()
-                .appendQueryParameter("q", forecastLocation)
-                .build();
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri);
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent);
-        }
-    }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        loadForecast(sharedPreferences);
-    }
 }

@@ -3,7 +3,7 @@ package com.example.android.sqliteweather.data;
 import android.os.AsyncTask;
 
 import com.example.android.sqliteweather.utils.NetworkUtils;
-import com.example.android.sqliteweather.utils.OpenWeatherMapUtils;
+import com.example.android.sqliteweather.utils.StarWarsUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
 class LoadForecastTask extends AsyncTask<Void, Void, String> {
 
     public interface AsyncCallback {
-        void onForecastLoadFinished(List<ForecastItem> forecastItems);
+        void onForecastLoadFinished(List<CategoryItem> categoryItems);
     }
 
     private String mURL;
@@ -46,15 +46,15 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        ArrayList<ForecastItem> forecastItems = null;
+        ArrayList<CategoryItem> categoryItems = null;
         if (s != null) {
-            forecastItems = OpenWeatherMapUtils.parseForecastJSON(s);
-            mNextURL = forecastItems.get(forecastItems.size() - 1).next;
+            categoryItems = StarWarsUtils.parseCategoryJSON(s);
+            mNextURL = categoryItems.get(categoryItems.size() - 1).next;
 
-//            while(forecastItems.get(forecastItems.size() - 1) != null){
-//                forecastItems.addAll(OpenWeatherMapUtils.parseForecastJSON(forecastItems.get(forecastItems.size() - 1).next));
+//            while(categoryItems.get(categoryItems.size() - 1) != null){
+//                categoryItems.addAll(StarWarsUtils.parseCategoryJSON(categoryItems.get(categoryItems.size() - 1).next));
 //            }
         }
-        mCallback.onForecastLoadFinished(forecastItems);
+        mCallback.onForecastLoadFinished(categoryItems);
     }
 }

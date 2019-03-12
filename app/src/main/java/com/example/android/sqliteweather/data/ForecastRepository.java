@@ -5,9 +5,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.android.sqliteweather.utils.OpenWeatherMapUtils;
-
-import java.util.Date;
 import java.util.List;
 
 /*
@@ -33,7 +30,7 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
 
     private static final String TAG = ForecastRepository.class.getSimpleName();
 
-    private MutableLiveData<List<ForecastItem>> mForecastItems;
+    private MutableLiveData<List<CategoryItem>> mForecastItems;
     private MutableLiveData<Status> mLoadingStatus;
 
     private String mCurrentLocation;
@@ -79,7 +76,7 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
      * Returns the LiveData object containing the forecast data.  An observer can be hooked to this
      * to react to changes in the forecast.
      */
-    public LiveData<List<ForecastItem>> getForecast() {
+    public LiveData<List<CategoryItem>> getForecast() {
         return mForecastItems;
     }
 
@@ -104,11 +101,11 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
         if (!TextUtils.equals(location, mCurrentLocation) || !TextUtils.equals(units, mCurrentUnits)) {
             return true;
         } else {
-            List<ForecastItem> forecastItems = mForecastItems.getValue();
-            if (forecastItems == null || forecastItems.size() == 0) {
+            List<CategoryItem> categoryItems = mForecastItems.getValue();
+            if (categoryItems == null || categoryItems.size() == 0) {
                 return true;
             } else {
-//                return forecastItems.get(0).dateTime.before(new Date());
+//                return categoryItems.get(0).dateTime.before(new Date());
                 return false;
             }
         }
@@ -120,9 +117,9 @@ public class ForecastRepository implements LoadForecastTask.AsyncCallback {
      * finishes.
      */
     @Override
-    public void onForecastLoadFinished(List<ForecastItem> forecastItems) {
-        mForecastItems.setValue(forecastItems);
-        if (forecastItems != null) {
+    public void onForecastLoadFinished(List<CategoryItem> categoryItems) {
+        mForecastItems.setValue(categoryItems);
+        if (categoryItems != null) {
             mLoadingStatus.setValue(Status.SUCCESS);
         } else {
             mLoadingStatus.setValue(Status.ERROR);

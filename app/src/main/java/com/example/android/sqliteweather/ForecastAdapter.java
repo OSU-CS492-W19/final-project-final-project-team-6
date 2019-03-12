@@ -11,10 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.example.android.sqliteweather.data.ForecastItem;
-import com.example.android.sqliteweather.utils.OpenWeatherMapUtils;
+import com.example.android.sqliteweather.utils.StarWarsUtils;
 
-import java.text.DateFormat;
 import java.util.List;
 
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastItemViewHolder> {
@@ -77,7 +75,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                     context.getString(R.string.pref_units_key),
                     context.getString(R.string.pref_units_default_value)
             );
-            String temperatureUnitsAbbr = OpenWeatherMapUtils.getTemperatureUnitsAbbr(context, temperatureUnitsValue);
+            String temperatureUnitsAbbr = StarWarsUtils.getTemperatureUnitsAbbr(context, temperatureUnitsValue);
 
             String dateString = forecastItem;
 
