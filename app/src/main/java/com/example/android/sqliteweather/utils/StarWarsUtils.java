@@ -135,6 +135,25 @@ public class StarWarsUtils {
         String url;
     }
 
+    static class SpeciesResult{
+        String name;
+        String classification;
+        String designation;
+        String average_height;
+        String skin_colors;
+        String hair_colors;
+        String eye_colors;
+        String average_lifespan;
+        String homeworld;
+        String language;
+        String [] people;
+        String [] films;
+        String created;
+        String edited;
+        String url;
+
+    }
+
     public static String buildForecastURL(String category) {
         if(category.equals("Films")){
             return FILMS_API;
@@ -155,7 +174,32 @@ public class StarWarsUtils {
     public static String buildIconURL(String icon) {
         return String.format(OWM_ICON_URL_FORMAT_STR, icon);
     }
+    public static SpeciesItem parseSpeciesJSON(String url){
+        Gson gson = new Gson();
+        SpeciesResult result = gson.fromJson(url, SpeciesResult.class);
+        if(result != null){
+            SpeciesItem tempSpecies = new SpeciesItem();
+            tempSpecies.name = result.name;
+            tempSpecies.classification = result.classification;
+            tempSpecies.average_height = result.average_height;
+            tempSpecies.average_lifespan = result.average_lifespan;
+            tempSpecies.designation = result.designation;
+            tempSpecies.homeworld = result.homeworld;
+            tempSpecies.eye_colors = result.eye_colors;
+            tempSpecies.films = result.films;
+            tempSpecies.hair_colors = result.hair_colors;
+            tempSpecies.language = result.language;
+            tempSpecies.skin_colors = result.skin_colors;
+            tempSpecies.created = result.created;
+            tempSpecies.people = result.people;
+            tempSpecies.edited = result.edited;
+            tempSpecies.url = result.url;
 
+            return tempSpecies;
+        }else{
+            return null;
+        }
+    }
     //Parses the query for films
     public static FilmItem parseFilmJSON(String url){
         Gson gson = new Gson();
