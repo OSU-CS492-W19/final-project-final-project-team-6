@@ -2,7 +2,7 @@
     <string name="app_name">SQLite Weather</string>
 
     <string name="forecast_for">Forecast for</string>
-    <string name="loading_error_message">Woops.  We couldn\'t load your forecast.  Verify that you\'ve entered a valid OpenWeatherMap API key, check your internet connection, and try again.</string>
+    <string name="loading_error_message">Woops.  We couldn\'t load your data.  Check your internet connection, and try again.</string>
 
     <string name="action_share">Share forecast</string>
     <string name="action_location">Show forecast location</string>
@@ -37,4 +37,10 @@
     <string name="title_activity_item_detail">ItemDetailActivity</string>
 
     <string name="action_fav_title">Favorite</string>
+    <string name="planets_title">Planets</string>
+    <string name="people_title">People</string>
+    <string name="films_title">Films</string>
+    <string name="species_title">Species</string>
+    <string name="starships_title">Starships</string>
+    <string name="vehicles_title">Vehicles</string>
 </resources>

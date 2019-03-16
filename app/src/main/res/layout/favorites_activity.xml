@@ -1,7 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".FavoritesActivity" />
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_favs"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/favorites_lists"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/fav_planets_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:padding="16dp"
+                android:textColor="#000"
+                android:text="@string/planets_title"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fav_planets_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/fav_films_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:padding="16dp"
+                android:textColor="#000"
+                android:text="@string/films_title"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fav_films_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/fav_people_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:padding="16dp"
+                android:textColor="#000"
+                android:text="@string/people_title"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fav_people_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/fav_species_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:padding="16dp"
+                android:textColor="#000"
+                android:text="@string/species_title"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fav_species_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/fav_starships_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:padding="16dp"
+                android:textColor="#000"
+                android:text="@string/starships_title"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fav_starships_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/fav_vehicles_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:padding="16dp"
+                android:textColor="#000"
+                android:text="@string/vehicles_title"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fav_vehicles_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_loading_error_message_f"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:padding="16dp"
+            android:layout_marginHorizontal="8dp"
+            android:background="@android:color/holo_red_light"
+            android:textColor="#fff"
+            android:visibility="invisible"
+            android:text="@string/loading_error_message" />
+
+        <ProgressBar
+            android:id="@+id/pb_loading_favorites"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_margin="32dp"
+            android:layout_gravity="top|center_horizontal"
+            android:visibility="invisible"/>
+
+    </FrameLayout>
+
+</LinearLayout>

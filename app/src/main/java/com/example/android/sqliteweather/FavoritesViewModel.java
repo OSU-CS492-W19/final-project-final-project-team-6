@@ -1,4 +1,4 @@
-package com.example.android.sqliteweather.ui.favorites;
+package com.example.android.sqliteweather;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
