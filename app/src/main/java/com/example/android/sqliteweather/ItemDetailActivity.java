@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.android.sqliteweather.data.FilmItem;
@@ -30,6 +32,8 @@ public class ItemDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
@@ -43,9 +47,49 @@ public class ItemDetailActivity extends AppCompatActivity {
             planetItem = (PlanetItem) intent.getSerializableExtra("planet");
             return planetItem.name;
         }
+        if(mCategory.equals("Films")){
+            filmItem = (FilmItem) intent.getSerializableExtra("film");
+            return filmItem.title;
+        }
+        if(mCategory.equals("People")){
+            peopleItem = (PeopleItem) intent.getSerializableExtra("person");
+            return peopleItem.name;
+        }
+        if(mCategory.equals("Species")){
+            speciesItem = (SpeciesItem) intent.getSerializableExtra("species");
+            return speciesItem.name;
+        }
+        if(mCategory.equals("Vehicles")){
+            vehicleItem = (VehicleItem) intent.getSerializableExtra("vehicle");
+            return vehicleItem.name;
+        }
+        if(mCategory.equals("Starships")){
+            starshipItem = (StarshipItem) intent.getSerializableExtra("starship");
+            return starshipItem.name;
+        }
         else {
             return null;
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.detail_action_favorite:
+                return true;
+            case android.R.id.home:
+                Intent intent = new Intent(this, CategorySearchActivity.class);
+                intent.putExtra("category", mCategory);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

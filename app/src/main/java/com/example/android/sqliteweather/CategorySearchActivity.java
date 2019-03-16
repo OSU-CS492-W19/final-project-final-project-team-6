@@ -113,7 +113,7 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
             if(people != null) {
                 for (PeopleItem person : people) {
                     if(person.name.equals(categoryItem.name)){
-                        intent.putExtra("people", person);
+                        intent.putExtra("person", person);
                     }
                 }
             }
