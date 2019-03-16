@@ -21,12 +21,9 @@ public class StarWarsUtils {
     private final static String VEHICLES_API = "vehicles";
     private final static String FILMS_API = "films";
     private final static String SPECIES_API = "species";
-    private final static String SLASH = "/";
 
     /*
-     * The below several classes are used only for JSON parsing with Gson.  The main class that's
-     * used to represent a single forecast item throughout the rest of the app is the CategoryItem
-     * class in the data package.
+     * The below several classes are used only for JSON parsing with Gson.
      */
     static class StarWarsSearchPlanetsResults {
         Integer count;
@@ -35,49 +32,27 @@ public class StarWarsUtils {
 
     static class StarWarsSearchPeopleResults {
         Integer count;
-        //String next;
-        //String previous;
         ArrayList<PeopleItem> results;
     }
 
     static class StarWarsSearchStarshipsResults {
         Integer count;
-        //String next;
-        //String previous;
         ArrayList<StarshipItem> results;
     }
 
     static class StarWarsSearchVehiclesResults {
         Integer count;
-        //String next;
-        //String previous;
         ArrayList<VehicleItem> results;
     }
 
     static class StarWarsSearchFilmsResults {
         Integer count;
-        //String next;
-        //String previous;
         ArrayList<FilmItem> results;
     }
 
     static class StarWarsSearchSpeciesResults {
         Integer count;
-        //String next;
-        //String previous;
         ArrayList<SpeciesItem> results;
-    }
-
-    static class CategoryResults {
-        //String next;
-        CategoryListEntryItem[] results;
-    }
-
-
-    static class CategoryListEntryItem {
-        String name;
-        String title;
-        String url;
     }
 
     public static String buildStarWarsURL(String category) {
@@ -154,37 +129,6 @@ public class StarWarsUtils {
         StarWarsSearchVehiclesResults vehiclesResults = gson.fromJson(url, StarWarsSearchVehiclesResults.class);
         if(vehiclesResults != null && vehiclesResults.results != null){
             return vehiclesResults.results;
-        } else {
-            return null;
-        }
-    }
-
-
-    //Get list of results back
-    public static ArrayList<CategoryItem> parseCategoryJSON(String forecastJSON) {
-        Gson gson = new Gson();
-        CategoryResults results = gson.fromJson(forecastJSON, CategoryResults.class);
-        if (results != null && results.results != null) {
-            ArrayList<CategoryItem> categoryItems = new ArrayList<>();
-
-            /*
-             * Loop through all results parsed from JSON and condense each one into one
-             * single-level CategoryItem object.
-             */
-            for (CategoryListEntryItem listItem : results.results) {
-                CategoryItem categoryItem = new CategoryItem();
-                categoryItem.name = listItem.name;
-                if(categoryItem.name == null){//this will only happen if it's a film, in which case take the "title" field instead of name
-                    categoryItem.name = listItem.title;
-                }
-
-                //categoryItem.next = results.next;
-                //categoryItem.query = listItem.url;
-
-                categoryItems.add(categoryItem);
-            }
-
-            return categoryItems;
         } else {
             return null;
         }

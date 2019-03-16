@@ -86,6 +86,69 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
     @Override
     public void onEntryItemClick(CategoryItem categoryItem) {
         Toast.makeText(CategorySearchActivity.this, "Item clicked: " + categoryItem.name, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, ItemDetailActivity.class);
+        intent.putExtra("category", mCategory);
+        if(mCategory.equals("Planets")){
+            List<PlanetItem> planets = mEntryViewModel.getPlanet().getValue();
+            if(planets != null) {
+                for (PlanetItem planet : planets) {
+                    if(planet.name.equals(categoryItem.name)){
+                        intent.putExtra("planet", planet);
+                    }
+                }
+            }
+        }
+        if(mCategory.equals("Films")){
+            List<FilmItem> films = mEntryViewModel.getFilm().getValue();
+            if(films != null) {
+                for (FilmItem film : films) {
+                    if(film.title.equals(categoryItem.name)){
+                        intent.putExtra("film", film);
+                    }
+                }
+            }
+        }
+        if(mCategory.equals("People")){
+            List<PeopleItem> people = mEntryViewModel.getPerson().getValue();
+            if(people != null) {
+                for (PeopleItem person : people) {
+                    if(person.name.equals(categoryItem.name)){
+                        intent.putExtra("people", person);
+                    }
+                }
+            }
+        }
+        if(mCategory.equals("Species")){
+            List<SpeciesItem> speciesItems = mEntryViewModel.getSpecies().getValue();
+            if(speciesItems != null) {
+                for (SpeciesItem species : speciesItems) {
+                    if(species.name.equals(categoryItem.name)){
+                        intent.putExtra("species", species);
+                    }
+                }
+            }
+        }
+        if(mCategory.equals("Vehicles")){
+            List<VehicleItem> vehicles = mEntryViewModel.getVehicle().getValue();
+            if(vehicles != null) {
+                for (VehicleItem vehicle : vehicles) {
+                    if(vehicle.name.equals(categoryItem.name)){
+                        intent.putExtra("vehicle", vehicle);
+                    }
+                }
+            }
+        }
+        if(mCategory.equals("Starships")){
+            List<StarshipItem> starships = mEntryViewModel.getStarship().getValue();
+            if(starships != null) {
+                for (StarshipItem ship : starships) {
+                    if(ship.name.equals(categoryItem.name)){
+                        intent.putExtra("starship", ship);
+                    }
+                }
+            }
+        }
+        startActivity(intent);
     }
 
     public void setObserverCategory(){
