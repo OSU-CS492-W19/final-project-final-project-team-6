@@ -3,12 +3,9 @@ package com.example.android.sqliteweather;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -19,29 +16,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.sqliteweather.data.CategoryItem;
+import com.example.android.sqliteweather.data.SpeciesItem;
 import com.example.android.sqliteweather.data.Status;
-import com.example.android.sqliteweather.utils.PeopleItem;
-import com.example.android.sqliteweather.utils.PlanetItem;
-import com.example.android.sqliteweather.utils.FilmItem;
-import com.example.android.sqliteweather.utils.PeopleItem;
-import com.example.android.sqliteweather.utils.SpeciesItem;
-import com.example.android.sqliteweather.utils.StarWarsUtils;
-import com.example.android.sqliteweather.utils.StarshipItem;
-import com.example.android.sqliteweather.utils.VehicleItem;
+import com.example.android.sqliteweather.data.PeopleItem;
+import com.example.android.sqliteweather.data.PlanetItem;
+import com.example.android.sqliteweather.data.FilmItem;
+import com.example.android.sqliteweather.data.StarshipItem;
+import com.example.android.sqliteweather.data.VehicleItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CategorySearchActivity extends AppCompatActivity implements EntryAdapter.OnEntryItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class CategorySearchActivity extends AppCompatActivity implements EntryAdapter.OnEntryItemClickListener {
     private String mCategory;
     private RecyclerView mEntryItemsRV;
     private ProgressBar mLoadingIndicatorPB;
     private TextView mLoadingErrorMessageTV;
 
-    private EntryAdapter mEntryAdapter;
-    private EntryViewModel mEntryViewModel;
     private List<CategoryItem> mCategoryItems;
+    private EntryViewModel mEntryViewModel;
+    private EntryAdapter mEntryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,50 +49,17 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
         getSupportActionBar().setTitle(mCategory);
 
         mCategoryItems = new ArrayList<>();
-
         mLoadingIndicatorPB = findViewById(R.id.pb_loading_indicator2);
         mLoadingErrorMessageTV = findViewById(R.id.tv_loading_error_message2);
         mEntryItemsRV = findViewById(R.id.rv_forecast_items2);
 
-        mEntryAdapter = new EntryAdapter(this);
-        mEntryItemsRV.setAdapter(mEntryAdapter);
         mEntryItemsRV.setLayoutManager(new LinearLayoutManager(this));
         mEntryItemsRV.setHasFixedSize(true);
 
+        mEntryAdapter = new EntryAdapter(this);
+        mEntryItemsRV.setAdapter(mEntryAdapter);
+
         mEntryViewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
-
-        List<String> mCategoriesList = Arrays.asList(getResources().getStringArray(R.array.SWAPI_categories));
-
-
-        //BELOW is used to put people in recyclerview
-        mEntryViewModel.getForecast().observe(this, new Observer<List<CategoryItem>>() {
-            @Override
-            public void onChanged(@Nullable List<CategoryItem> categoryItems) {
-                List<String> tempForecastItemListAsString = new ArrayList<String>();
-                List<String> tempURLList = new ArrayList<String>();
-
-                if(categoryItems != null){
-                    mCategoryItems.addAll(categoryItems);
-
-                    for(CategoryItem tempItem : mCategoryItems){
-                        tempForecastItemListAsString.add(tempItem.name);
-                        tempURLList.add(tempItem.query);
-                    }
-
-                    mEntryAdapter.updateForecastItems(tempForecastItemListAsString);
-                    mEntryAdapter.updateURLS(tempURLList);
-                }
-                if(categoryItems != null && mCategoryItems != null && mCategoryItems.size() > 0 && mCategoryItems.get(mCategoryItems.size()-1).next != null){
-                    mEntryViewModel.loadEntries(null, null, mCategoryItems.get(mCategoryItems.size() - 1).next);
-                    for(CategoryItem tempItem : mCategoryItems){
-                        tempForecastItemListAsString.add(tempItem.name);
-                        tempURLList.add(tempItem.query);
-                    }
-                    mEntryAdapter.updateForecastItems(tempForecastItemListAsString);
-                    mEntryAdapter.updateURLS(tempURLList);
-                }
-            }
-        });
 
         mEntryViewModel.getLoadingStatus().observe(this, new Observer<Status>() {
             @Override
@@ -116,107 +78,118 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
             }
         });
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        preferences.registerOnSharedPreferenceChangeListener(this);
-        loadForecast(preferences);
-
+        setObserverCategory();
+        mEntryViewModel.loadCategoryItems(mCategory);
 
     }
 
-
     @Override
-    protected void onDestroy() {
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
-        super.onDestroy();
+    public void onEntryItemClick(CategoryItem categoryItem) {
+        Toast.makeText(CategorySearchActivity.this, "Item clicked: " + categoryItem.name, Toast.LENGTH_LONG).show();
     }
 
-    //TODO: this
-    @Override
-    public void onEntryItemClick(String forecastItem) {
+    public void setObserverCategory(){
+        if(mCategory.equals("Planets")){
+            mEntryViewModel.getPlanet().observe(this, new Observer<List<PlanetItem>>() {
+                @Override
+                public void onChanged(@Nullable List<PlanetItem> planetItems) {
+                    if(planetItems != null) {
+                        for (PlanetItem item : planetItems) {
+                            CategoryItem categoryItem = new CategoryItem();
+                            categoryItem.name = item.name;
+                            categoryItem.title = null;
+                            categoryItem.url = item.url;
+                            mCategoryItems.add(categoryItem);
+                        }
+                        mEntryAdapter.updateEntryItems(mCategoryItems);
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("Films")){
+            mEntryViewModel.getFilm().observe(this, new Observer<List<FilmItem>>() {
+                @Override
+                public void onChanged(@Nullable List<FilmItem> filmItems) {
+                    if(filmItems != null) {
+                        for (FilmItem item : filmItems) {
+                            CategoryItem categoryItem = new CategoryItem();
+                            categoryItem.name = item.title;
+                            categoryItem.title = item.title;
+                            categoryItem.url = item.url;
+                            mCategoryItems.add(categoryItem);
+                        }
+                        mEntryAdapter.updateEntryItems(mCategoryItems);
+                    }
+                }
+            });
+        }
         if(mCategory.equals("People")){
-            mEntryViewModel.loadPerson(forecastItem);
-            mEntryViewModel.getPerson().observe(this, new Observer<PeopleItem>() {
+            mEntryViewModel.getPerson().observe(this, new Observer<List<PeopleItem>>() {
                 @Override
-                public void onChanged(@Nullable PeopleItem person) {
-                    if(person != null && !person.name.equals("testName")){ //check to see if query was successful
-                        PeopleItem temp = person;
-                        Toast.makeText(CategorySearchActivity.this, "Person clicked: " + temp.name,
-                                Toast.LENGTH_LONG).show();
-                        //TODO Remove toast and start detailedPersonActivity after passing in the person
-                    }
-
-                }
-            });
-
-        }else if(mCategory.equals("Films")){
-            mEntryViewModel.loadFilm(forecastItem);
-            mEntryViewModel.getFilm().observe(this, new Observer<FilmItem>() {
-                @Override
-                public void onChanged(@Nullable FilmItem filmItem) {
-                    if(filmItem != null && !filmItem.title.equals("testName")){
-                        FilmItem temp = filmItem;
-                        Toast.makeText(CategorySearchActivity.this, "Film clicked: " + temp.title,
-                                Toast.LENGTH_LONG).show();
-                        //TODO Remove toast and start detailedFilmActivity after passing in the film
+                public void onChanged(@Nullable List<PeopleItem> peopleItems) {
+                    if(peopleItems != null) {
+                        for (PeopleItem item : peopleItems) {
+                            CategoryItem categoryItem = new CategoryItem();
+                            categoryItem.name = item.name;
+                            categoryItem.title = null;
+                            categoryItem.url = item.url;
+                            mCategoryItems.add(categoryItem);
+                        }
+                        mEntryAdapter.updateEntryItems(mCategoryItems);
                     }
                 }
             });
-        }else if(mCategory.equals("Spaceships")){ //starships
-            mEntryViewModel.loadStarship(forecastItem);
-            mEntryViewModel.getStarship().observe(this, new Observer<StarshipItem>() {
+        }
+        if(mCategory.equals("Species")){
+            mEntryViewModel.getSpecies().observe(this, new Observer<List<SpeciesItem>>() {
                 @Override
-                public void onChanged(@Nullable StarshipItem starshipItem) {
-                    if(starshipItem != null && !starshipItem.name.equals("testName")){
-                        Toast.makeText(CategorySearchActivity.this, "Starship clicked: " + starshipItem.name,
-                                Toast.LENGTH_LONG).show();
-                        //TODO Remove toast and start detailedFilmActivity after passing in the film
+                public void onChanged(@Nullable List<SpeciesItem> speciesItems) {
+                    if(speciesItems != null){
+                        for(SpeciesItem item : speciesItems){
+                            CategoryItem categoryItem = new CategoryItem();
+                            categoryItem.name = item.name;
+                            categoryItem.title = null;
+                            categoryItem.url = item.url;
+                            mCategoryItems.add(categoryItem);
+                        }
+                        mEntryAdapter.updateEntryItems(mCategoryItems);
                     }
                 }
             });
-        }else if(mCategory.equals("Planets")){
-            mEntryViewModel.loadPlanet(forecastItem);
-            mEntryViewModel.getPlanet().observe(this, new Observer<PlanetItem>() {
+        }
+        if(mCategory.equals("Vehicles")){
+            mEntryViewModel.getVehicle().observe(this, new Observer<List<VehicleItem>>() {
                 @Override
-                public void onChanged(@Nullable PlanetItem planet) {
-                    if(planet != null && !planet.name.equals("testName")){ //check to see if query was successful
-                        PlanetItem temp = planet;
-                        Toast.makeText(CategorySearchActivity.this, "Person clicked: " + temp.name,
-                                Toast.LENGTH_LONG).show();
-                        //TODO Remove toast and start detailedPersonActivity after passing in the person
-                    }
-
-                }
-            });
-        }else if(mCategory.equals("Species")){
-
-            mEntryViewModel.loadSpecies(forecastItem);
-
-            mEntryViewModel.getmSpecies().observe(this, new Observer<SpeciesItem>() {
-                @Override
-                public void onChanged(@Nullable SpeciesItem species) {
-                    if(species != null && !species.name.equals("testName")){ //check to see if query was successful
-                        SpeciesItem temp = species;
-                        Toast.makeText(CategorySearchActivity.this, "Person clicked: " + temp.name,
-                                Toast.LENGTH_LONG).show();
-                        //TODO Remove toast and start detailedPersonActivity after passing in the person
-                    }
-
-                }
-            });
-        }else if(mCategory.equals("Vehicles")){
-            mEntryViewModel.loadVehicle(forecastItem);
-
-            mEntryViewModel.getmVehicle().observe(this, new Observer<VehicleItem>() {
-                @Override
-                public void onChanged(@Nullable VehicleItem vehicleItem) {
-                    if(vehicleItem != null && !vehicleItem.name.equals("testName")){
-                        Toast.makeText(CategorySearchActivity.this, "Vehicle clicked: " + vehicleItem.name,
-                                Toast.LENGTH_LONG).show();
-                        //TODO Remove toast and start detailedVehicleActivity after passing in the vehicle
+                public void onChanged(@Nullable List<VehicleItem> vehicleItems) {
+                    if(vehicleItems != null){
+                        for(VehicleItem item : vehicleItems){
+                            CategoryItem categoryItem = new CategoryItem();
+                            categoryItem.name = item.name;
+                            categoryItem.title = null;
+                            categoryItem.url = item.url;
+                            mCategoryItems.add(categoryItem);
+                        }
+                        mEntryAdapter.updateEntryItems(mCategoryItems);
                     }
                 }
             });
-
+        }
+        if(mCategory.equals("Starships")){
+            mEntryViewModel.getStarship().observe(this, new Observer<List<StarshipItem>>() {
+                @Override
+                public void onChanged(@Nullable List<StarshipItem> starshipItems) {
+                    if(starshipItems != null){
+                        for(StarshipItem item : starshipItems){
+                            CategoryItem categoryItem = new CategoryItem();
+                            categoryItem.name = item.name;
+                            categoryItem.title = null;
+                            categoryItem.url = item.url;
+                            mCategoryItems.add(categoryItem);
+                        }
+                        mEntryAdapter.updateEntryItems(mCategoryItems);
+                    }
+                }
+            });
         }
     }
 
@@ -229,9 +202,6 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_location:
-                showForecastLocationInMap();
-                return true;
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
@@ -241,42 +211,6 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
         }
     }
 
-    //Can probably remove this
-    public void loadForecast(SharedPreferences preferences) {
-        String location = preferences.getString(
-                getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default_value)
-        );
-        String units = preferences.getString(
-                getString(R.string.pref_units_key),
-                getString(R.string.pref_units_default_value)
-        );
-
-
-        mEntryViewModel.loadEntries(location, units, StarWarsUtils.buildForecastURL(mCategory));
-    }
-
-    //Can probably remove this
-    public void showForecastLocationInMap() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String forecastLocation = sharedPreferences.getString(
-                getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default_value)
-        );
-        Uri geoUri = Uri.parse("geo:0,0").buildUpon()
-                .appendQueryParameter("q", forecastLocation)
-                .build();
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoUri);
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent);
-        }
-    }
-
-    //Can probably remove this
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        loadForecast(sharedPreferences);
-    }
 }
 
 
