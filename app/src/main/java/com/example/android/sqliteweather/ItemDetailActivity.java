@@ -82,6 +82,8 @@ public class ItemDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.detail_action_favorite:
+                Intent fav = new Intent(this, FavoritesActivity.class);
+                startActivity(fav);
                 return true;
             case android.R.id.home:
                 Intent intent = new Intent(this, CategorySearchActivity.class);

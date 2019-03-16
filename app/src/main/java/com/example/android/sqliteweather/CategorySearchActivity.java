@@ -265,8 +265,8 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            case R.id.action_favorites:
+                Intent settingsIntent = new Intent(this, FavoritesActivity.class);
                 startActivity(settingsIntent);
                 return true;
             default:
