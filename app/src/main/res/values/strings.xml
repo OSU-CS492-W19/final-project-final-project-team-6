@@ -34,4 +34,7 @@
     <string name="pref_location_key" translatable="false">pref_location</string>
     <string name="pref_location_title">Weather location</string>
     <string name="pref_location_default_value">Corvallis, OR, US</string>
+    <string name="title_activity_item_detail">ItemDetailActivity</string>
+
+    <string name="action_fav_title">Favorite</string>
 </resources>

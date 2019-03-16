@@ -22,35 +22,31 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements EntryAdapter.OnEntryItemClickListener {
+        implements CategoryAdapter.OnCategoryItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
 
     private RecyclerView mCategoryItemsRV;
-    private ProgressBar mLoadingIndicatorPB;
-    private TextView mLoadingErrorMessageTV;
 
-    private EntryAdapter mEntryAdapter;
-    private EntryViewModel mEntryViewModel;
-    private List<CategoryItem> mCategoryItems;
+    private CategoryAdapter mEntryAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mCategoryItems = new ArrayList<CategoryItem>();
+        //mCategoryItems = new ArrayList<CategoryItem>();
 
         // Remove shadow under action bar.
         getSupportActionBar().setElevation(0);
 
         getSupportActionBar().setTitle("Star Wars Wiki");
 
-        mLoadingIndicatorPB = findViewById(R.id.pb_loading_indicator);
-        mLoadingErrorMessageTV = findViewById(R.id.tv_loading_error_message);
+
         mCategoryItemsRV = findViewById(R.id.rv_forecast_items);
 
-        mEntryAdapter = new EntryAdapter(this);
+        mEntryAdapter = new CategoryAdapter(this);
         mCategoryItemsRV.setAdapter(mEntryAdapter);
         mCategoryItemsRV.setLayoutManager(new LinearLayoutManager(this));
         mCategoryItemsRV.setHasFixedSize(true);
@@ -60,7 +56,7 @@ public class MainActivity extends AppCompatActivity
          * the activity.  See the classes in the data package for more about how the ViewModel
          * is set up.  Here, we simply grab the forecast data ViewModel.
          */
-        mEntryViewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
+        //mEntryViewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
 
         /*
          * Attach an Observer to the forecast data.  Whenever the forecast data changes, this
@@ -68,7 +64,7 @@ public class MainActivity extends AppCompatActivity
          */
 
         List<String> mCategoriesList = Arrays.asList(getResources().getStringArray(R.array.SWAPI_categories));
-        mEntryAdapter.updateForecastItems(mCategoriesList);
+        mEntryAdapter.updateCategoryItems(mCategoriesList);
 
 
         /*
@@ -80,30 +76,14 @@ public class MainActivity extends AppCompatActivity
          */
 
         //Can probably remove this
-        mEntryViewModel.getLoadingStatus().observe(this, new Observer<Status>() {
-            @Override
-            public void onChanged(@Nullable Status status) {
-                if (status == Status.LOADING) {
-                    mLoadingIndicatorPB.setVisibility(View.VISIBLE);
-                } else if (status == Status.SUCCESS) {
-                    mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
-                    mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
-                    mCategoryItemsRV.setVisibility(View.VISIBLE);
-                } else {
-                    mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
-                    mCategoryItemsRV.setVisibility(View.INVISIBLE);
-                    mLoadingErrorMessageTV.setVisibility(View.VISIBLE);
-                }
-            }
-        });
 
     }
 
 
     @Override
-    public void onEntryItemClick(String forecastItem) {
+    public void onCategoryItemClick(String categoryItem) {
         Intent intent = new Intent(this, CategorySearchActivity.class);
-        intent.putExtra("category", forecastItem);
+        intent.putExtra("category", categoryItem);
         startActivity(intent);
     }
 
@@ -116,12 +96,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_location:
-                return true;
-            case R.id.action_settings:
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            case R.id.action_favorites:
+                Intent settingsIntent = new Intent(this, FavoritesActivity.class);
                 startActivity(settingsIntent);
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

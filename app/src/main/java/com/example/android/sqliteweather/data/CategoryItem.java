@@ -9,8 +9,7 @@ import java.util.Date;
 public class CategoryItem implements Serializable {
 
     public String name;
-    public String next;
-    public String query;
-    public String height;
+    public String title;
+    public String url;
 
 }

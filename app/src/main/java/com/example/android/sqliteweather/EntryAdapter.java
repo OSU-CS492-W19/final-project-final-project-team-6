@@ -6,31 +6,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.sqliteweather.data.CategoryItem;
+
 
 import java.util.List;
 
 public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryItemViewHolder> {
 
-    private List<String> mEntryItems;
+    private List<CategoryItem> mEntryItems;
     private List<String> mURLS;
-    private OnEntryItemClickListener mForecastItemClickListener;
+    private OnEntryItemClickListener mEntryItemClickListener;
 
     public interface OnEntryItemClickListener {
-        void onEntryItemClick(String forecastItem);
+        void onEntryItemClick(CategoryItem entryItem);
     }
 
     public EntryAdapter(OnEntryItemClickListener clickListener) {
-        mForecastItemClickListener = clickListener;
+        mEntryItemClickListener = clickListener;
     }
 
-    public void updateForecastItems(List<String> forecastItems) {
-        mEntryItems = forecastItems;
+    public void updateEntryItems(List<CategoryItem> entryItems) {
+        mEntryItems = entryItems;
         notifyDataSetChanged();
     }
 
-    public void updateURLS(List<String> urls){
-        mURLS = urls;
-    }
 
     @Override
     public int getItemCount() {
@@ -54,34 +53,28 @@ public class EntryAdapter extends RecyclerView.Adapter<EntryAdapter.EntryItemVie
 //        holder.bind(mEntryItems.get());
     }
 
-    class EntryItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class EntryItemViewHolder extends RecyclerView.ViewHolder{
         private TextView mEntryTextTV;
 
 
         public EntryItemViewHolder(View itemView) {
             super(itemView);
             mEntryTextTV = itemView.findViewById(R.id.tv_entry_text);
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CategoryItem entryItem = mEntryItems.get(getAdapterPosition());
+                    mEntryItemClickListener.onEntryItemClick(entryItem);
+                }
+            });
         }
 
-        public void bind(String forecastItem) {
-            String entryText = forecastItem;
+        public void bind(CategoryItem entryText) {
 
-            mEntryTextTV.setText(entryText);
+            mEntryTextTV.setText(entryText.name);
 
 
         }
 
-        @Override
-        public void onClick(View v) {
-            String forecastItem;
-            if(mURLS == null){
-                forecastItem = mEntryItems.get(getAdapterPosition());
-            }else{
-                forecastItem = mURLS.get(getAdapterPosition());
-            }
-
-            mForecastItemClickListener.onEntryItemClick(forecastItem);
-        }
     }
 }

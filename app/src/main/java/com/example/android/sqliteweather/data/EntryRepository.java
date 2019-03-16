@@ -11,6 +11,7 @@ import com.example.android.sqliteweather.utils.PlanetItem;
 import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.PeopleItem;
 import com.example.android.sqliteweather.utils.SpeciesItem;
+import com.example.android.sqliteweather.utils.StarWarsUtils;
 import com.example.android.sqliteweather.utils.StarshipItem;
 import com.example.android.sqliteweather.utils.VehicleItem;
 import com.example.android.sqliteweather.utils.VehicleItem;
@@ -40,47 +41,39 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
     private static final String TAG = EntryRepository.class.getSimpleName();
 
-    private MutableLiveData<List<CategoryItem>> mForecastItems;
+    private MutableLiveData<List<PlanetItem>> mPlanetsResults;
+    private MutableLiveData<List<PeopleItem>> mPeopleResults;
+    private MutableLiveData<List<FilmItem>> mFilmsResults;
+    private MutableLiveData<List<SpeciesItem>> mSpeciesResults;
+    private MutableLiveData<List<StarshipItem>> mStarshipsResults;
+    private MutableLiveData<List<VehicleItem>> mVehiclesResults;
+
     private MutableLiveData<Status> mLoadingStatus;
 
-    private String mCurrentLocation;
-    private String mCurrentUnits;
-    private MutableLiveData<PeopleItem> mCurrentPerson;
-    private MutableLiveData<FilmItem> mCurrentFilm;
-    private String mPersonURL;
-    private MutableLiveData<StarshipItem> mCurrentStarship;
-    private MutableLiveData<PlanetItem> mCurrentPlanet;
-    private String mPlanetURL;
-    private MutableLiveData<SpeciesItem> mCurrentSpecies;
-    private MutableLiveData<VehicleItem> mCurrentVehicle;
-
+    private String mCurrentCategory;
 
     public EntryRepository() {
-        mForecastItems = new MutableLiveData<>();
-        mForecastItems.setValue(null);
 
         mLoadingStatus = new MutableLiveData<>();
         mLoadingStatus.setValue(Status.SUCCESS);
 
-        mCurrentLocation = null;
-        mCurrentUnits = null;
-        mCurrentPerson = new MutableLiveData<>();
-        mCurrentPerson.setValue(null);
+        mPlanetsResults = new MutableLiveData<>();
+        mPlanetsResults.setValue(null);
 
-        mCurrentFilm = new MutableLiveData<>();
-        mCurrentFilm.setValue(null);
+        mPeopleResults = new MutableLiveData<>();
+        mPeopleResults.setValue(null);
 
-        mCurrentStarship = new MutableLiveData<>();
-        mCurrentStarship.setValue(null);
+        mFilmsResults = new MutableLiveData<>();
+        mFilmsResults.setValue(null);
 
-        mCurrentPlanet = new MutableLiveData<>();
-        mCurrentPlanet.setValue(null);
+        mSpeciesResults = new MutableLiveData<>();
+        mSpeciesResults.setValue(null);
 
-        mCurrentVehicle = new MutableLiveData<>();
-        mCurrentVehicle.setValue(null);
+        mStarshipsResults = new MutableLiveData<>();
+        mStarshipsResults.setValue(null);
 
-        mCurrentSpecies = new MutableLiveData<>();
-        mCurrentSpecies.setValue(null);
+        mVehiclesResults = new MutableLiveData<>();
+        mVehiclesResults.setValue(null);
     }
 
     /*
@@ -88,165 +81,100 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
      * units.  New data is not fetched if valid cached data exists matching the specified location
      * and units.
      */
-    public void loadEntries(String location, String units, String SWAPIUrl) {
-//        if (shouldFetchForecast(location, units)) {
-            mCurrentLocation = location;
-            mCurrentUnits = units;
-            mForecastItems.setValue(null);
-            mLoadingStatus.setValue(Status.LOADING);
-            String url = SWAPIUrl;
-            Log.d(TAG, "fetching new forecast data with this URL: " + url);
-            LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(url, this, null, null).execute();
-            while(tempTask.mNextURL != null){
-                tempTask = (LoadForecastTask) new LoadForecastTask(tempTask.mNextURL, this, null, null);
-            }
-
-            Log.d(TAG, "loadEntries: ksjdfkl");
-
-//        } else {
-//            Log.d(TAG, "using cached forecast data");
-//        }
-    }
-    public void loadIndividualSpecies(String SWAPIUrl){
-
-        SpeciesItem temp = new SpeciesItem();
-        temp.url = SWAPIUrl;
-        temp.name = "testName";
-        mCurrentSpecies.setValue(temp);
-        Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
-        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Species").execute();
-    }
-
-    public void loadIndividualPerson(String SWAPIUrl){
-        mPersonURL = SWAPIUrl;
-
-        PeopleItem temp = new PeopleItem();
-        temp.url = SWAPIUrl;
-        temp.name = "testName";
-        mCurrentPerson.setValue(temp);
-        Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
-        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "People").execute();
-    }
-
-    public void loadIndividualFilm(String SWAPIUrl){
-        FilmItem temp = new FilmItem();
-        temp.title = "testName";
-        mCurrentFilm.setValue(temp);
-        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Films").execute();
-    }
-
-    public void loadIndividualStarship(String SWAPIUrl) {
-        StarshipItem temp = new StarshipItem();
-        temp.name = "testName";
-        mCurrentStarship.setValue(temp);
-        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Starships").execute();
-    }
-
-
-    public void loadIndividualPlanet(String SWAPIUrl){
-        mPlanetURL = SWAPIUrl;
-
-        PlanetItem temp = new PlanetItem();
-        temp.url = SWAPIUrl;
-        temp.name = "testName";
-        mCurrentPlanet.setValue(temp);
-        Log.d(TAG, "fetching new person data with this URL: " + SWAPIUrl);
-        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Planet").execute();
-    }
-
-    /*
-     * Returns the LiveData object containing the forecast data.  An observer can be hooked to this
-     * to react to changes in the forecast.
-     */
-    public LiveData<List<CategoryItem>> getForecast() {
-        return mForecastItems;
-    }
-
-    /*
-     * Returns the LiveData object containing the Repository's loading status.  An observer can be
-     * hooked to this, e.g. to display a progress bar or error message when appropriate.
-     */
     public LiveData<Status> getLoadingStatus() {
         return mLoadingStatus;
     }
 
+    public String getCategory(){return mCurrentCategory;}
 
-    /*
-     * This is the callback method provided to the AsyncTask that loads new forecast data.  It
-     * updates the Repository's forecast data and loading status with new values when the loading
-     * finishes.
-     */
+    public LiveData<List<PeopleItem>> getPeople(){
+        return mPeopleResults;
+    }
 
-    //Can probably remove this
+    public LiveData<List<FilmItem>> getFilms(){
+        return mFilmsResults;
+    }
+
+    public LiveData<List<StarshipItem>> getStarships() {
+        return mStarshipsResults;
+    }
+
+    public LiveData<List<PlanetItem>> getPlanets(){
+        return mPlanetsResults;
+    }
+
+    public LiveData<List<SpeciesItem>> getSpecies(){
+        return mSpeciesResults;
+    }
+
+    public LiveData<List<VehicleItem>> getVehicles(){return mVehiclesResults;}
+
+    public void loadCategory(String category){
+        mCurrentCategory = category;
+        mLoadingStatus.setValue(Status.LOADING);
+        String url = StarWarsUtils.buildStarWarsURL(mCurrentCategory);
+        Log.d(TAG, "Executing search with url: " + url + " and Category: " + mCurrentCategory);
+        new LoadForecastTask(url, this, mCurrentCategory).execute();
+    }
+
     @Override
-    public void onForecastLoadFinished(List<CategoryItem> categoryItems) {
-        mForecastItems.setValue(categoryItems);
-        if (categoryItems != null) {
+    public void onPeopleLoadFinished(List<PeopleItem> people) {
+        mPeopleResults.setValue(people);
+        if(people != null){
             mLoadingStatus.setValue(Status.SUCCESS);
         } else {
             mLoadingStatus.setValue(Status.ERROR);
         }
     }
 
-    public LiveData<PeopleItem> getPerson(){
-        return mCurrentPerson;
-    }
-
-    public LiveData<FilmItem> getFilm(){
-        return mCurrentFilm;
+    @Override
+    public void onFilmLoadFinished(List<FilmItem> tempFilm) {
+        mFilmsResults.setValue(tempFilm);
+        if(tempFilm != null){
+            mLoadingStatus.setValue(Status.SUCCESS);
+        } else {
+            mLoadingStatus.setValue(Status.ERROR);
+        }
     }
 
     @Override
-    public void onPeopleLoadFinished(PeopleItem people) {
-        mCurrentPerson.setValue(people);
+    public void onStarshipLoadFinished(List<StarshipItem> tempStarship) {
+        mStarshipsResults.setValue(tempStarship);
+        if(tempStarship != null){
+            mLoadingStatus.setValue(Status.SUCCESS);
+        } else {
+            mLoadingStatus.setValue(Status.ERROR);
+        }
     }
 
     @Override
-    public void onFilmLoadFinished(FilmItem tempFilm) {
-        mCurrentFilm.setValue(tempFilm);
+    public void onPlanetLoadFinished(List<PlanetItem> planet) {
+        mPlanetsResults.setValue(planet);
+        if(planet != null){
+            mLoadingStatus.setValue(Status.SUCCESS);
+        } else {
+            mLoadingStatus.setValue(Status.ERROR);
+        }
     }
 
     @Override
-    public void onStarshipLoadFinished(StarshipItem tempStarship) {
-        mCurrentStarship.setValue(tempStarship);
-    }
-
-
-    public LiveData<StarshipItem> getStarship() {
-        return mCurrentStarship;
-    }
-
-
-    public LiveData<PlanetItem> getPlanet(){
-        return mCurrentPlanet;
+    public void onSpeciesLoadFinished(List<SpeciesItem> species) {
+        mSpeciesResults.setValue(species);
+        if(species != null){
+            mLoadingStatus.setValue(Status.SUCCESS);
+        } else {
+            mLoadingStatus.setValue(Status.ERROR);
+        }
     }
 
     @Override
-    public void onPlanetLoadFinished(PlanetItem planet) {
-        mCurrentPlanet.setValue(planet);
-    }
-
-    public LiveData<SpeciesItem> getSpecies(){
-        return mCurrentSpecies;
-    }
-
-    @Override
-    public void onSpeciesLoadFinished(SpeciesItem species) {
-        mCurrentSpecies.setValue(species);
-    }
-
-    @Override
-    public void onVehicleLoadFinished(VehicleItem temp) {
-        mCurrentVehicle.setValue(temp);
-    }
-
-    public LiveData<VehicleItem> getVehicle(){return mCurrentVehicle;}
-
-    public void loadIndividualVehicle(String SWAPIUrl) {
-        VehicleItem temp = new VehicleItem();
-        temp.name = "testName";
-        mCurrentVehicle.setValue(temp);
-        LoadForecastTask tempTask = (LoadForecastTask) new LoadForecastTask(SWAPIUrl, this, null, "Vehicles").execute();
+    public void onVehicleLoadFinished(List<VehicleItem> temp) {
+        mVehiclesResults.setValue(temp);
+        if(temp != null){
+            mLoadingStatus.setValue(Status.SUCCESS);
+        } else {
+            mLoadingStatus.setValue(Status.ERROR);
+        }
     }
 }
 

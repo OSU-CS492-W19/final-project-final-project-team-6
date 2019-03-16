@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/detail_rotationalperiod_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/detail_orbitalperiod_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/detail_diameter_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:id="@+id/detail_climate_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:id="@+id/detail_gravity_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:id="@+id/detail_terrain_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:id="@+id/detail_surfacewater_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:id="@+id/detail_population_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/detail_residents_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/detail_films_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/detail_created_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+
+            <TextView
+                android:id="@+id/detail_edited_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/detail_12_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+
+            <TextView
+                android:id="@+id/detail_13_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+
+            <TextView
+                android:id="@+id/detail_14_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+
+            <TextView
+                android:id="@+id/detail_15_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+        <!--
+
+
+
+
+
+
+
+
+
+-->
+
+            <!--Planet TextViews -->
+
+
+    </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
