@@ -24,12 +24,17 @@ public class FavoriteFilmsAdapter extends RecyclerView.Adapter<FavoriteFilmsAdap
         onFavoriteFilm = clickListener;
     }
 
+    public void updateFavoriteFilms(List<FilmItem> filmItems){
+        films = filmItems;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public FilmItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        inflater.inflate(R.layout.favorite_film_item, viewGroup, false);
-        return new FilmItemViewHolder(viewGroup);
+        View view = inflater.inflate(R.layout.favorite_film_item, viewGroup, false);
+        return new FilmItemViewHolder(view);
     }
 
     @Override
@@ -47,7 +52,7 @@ public class FavoriteFilmsAdapter extends RecyclerView.Adapter<FavoriteFilmsAdap
     }
 
     public class FilmItemViewHolder extends RecyclerView.ViewHolder {
-        TextView filmName;
+        private TextView filmName;
 
         public FilmItemViewHolder(@NonNull View itemView) {
             super(itemView);

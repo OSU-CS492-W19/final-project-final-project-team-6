@@ -24,6 +24,11 @@ public class FavoritePeopleAdapter extends RecyclerView.Adapter<FavoritePeopleAd
         onFavoritePeopleClickListener = clickListener;
     }
 
+    public void updateFavoritePeople(List<PeopleItem> peopleItems){
+        mPeopleItems = peopleItems;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public PeopleItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -47,7 +52,7 @@ public class FavoritePeopleAdapter extends RecyclerView.Adapter<FavoritePeopleAd
     }
 
     public class PeopleItemViewHolder extends RecyclerView.ViewHolder {
-        TextView personName;
+        private TextView personName;
 
         public PeopleItemViewHolder(@NonNull View itemView) {
             super(itemView);

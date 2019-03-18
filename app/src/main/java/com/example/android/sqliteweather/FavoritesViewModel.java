@@ -18,22 +18,22 @@ import java.util.List;
 public class FavoritesViewModel extends AndroidViewModel {
     private FavoritesRepository favoritesRepository;
 
-    private LiveData<List<PeopleItem>> mPerson;
-    private LiveData<List<PlanetItem>> mPlanet;
-    private LiveData<List<FilmItem>> mFilm;
-    private LiveData<List<StarshipItem>> mStarship;
-    private LiveData<List<SpeciesItem>> mSpecies;
-    private LiveData<List<VehicleItem>> mVehicle;
-    private LiveData<Status> mLoadingStatus;
-
     public FavoritesViewModel(Application application){
         super(application);
         favoritesRepository = new FavoritesRepository(application);
     }
 
-    public LiveData<Status> getLoadingStatus() {
-        return favoritesRepository.getLoadingStatus();
-    }
+    public void insertFavoritePlanet(PlanetItem planetItem){favoritesRepository.insertFavoritePlanet(planetItem);}
+
+    public void insertFavoriteFilm(FilmItem filmItem){favoritesRepository.insertFavoriteFilm(filmItem);}
+
+    public void insertFavoritePerson(PeopleItem peopleItem){favoritesRepository.insertFavoritePerson(peopleItem);}
+
+    public void insertFavoriteSpecies(SpeciesItem speciesItem){favoritesRepository.insertFavoriteSpecies(speciesItem);}
+
+    public void insertFavoriteStarship(StarshipItem starshipItem){favoritesRepository.insertFavoriteStarship(starshipItem);}
+
+    public void insertFavoriteVechile(VehicleItem vehicleItem){favoritesRepository.insertFavoriteVehicle(vehicleItem);}
 
     public LiveData<List<SpeciesItem>> getFavoriteSpecies(){return favoritesRepository.getSpeciesFavorites();}
 
@@ -46,4 +46,16 @@ public class FavoritesViewModel extends AndroidViewModel {
     public LiveData<List<PlanetItem>> getFavoritePlanets(){return favoritesRepository.getPlanetFavorites();}
 
     public LiveData<List<VehicleItem>> getFavoriteVehicles(){return favoritesRepository.getVehicleFavorites();}
+
+    public void deleteFavoritePlanet(PlanetItem planetItem){favoritesRepository.deleteFavoritePlanet(planetItem);}
+
+    public void deleteFavoriteFilm(FilmItem filmItem){favoritesRepository.deleteFavoriteFilm(filmItem);}
+
+    public void deleteFavoritePerson(PeopleItem peopleItem){favoritesRepository.deleteFavoritePerson(peopleItem);}
+
+    public void deleteFavoriteSpecies(SpeciesItem speciesItem){favoritesRepository.deleteFavoriteSpecies(speciesItem);}
+
+    public void deleteFavoriteStarship(StarshipItem starshipItem){favoritesRepository.deleteFavoriteStarship(starshipItem);}
+
+    public void deleteFavoriteVehicle(VehicleItem vehicleItem){favoritesRepository.deleteFavoriteVehicle(vehicleItem);}
 }

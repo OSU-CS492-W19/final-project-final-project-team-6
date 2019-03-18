@@ -1,9 +1,17 @@
 package com.example.android.sqliteweather.data;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
+@Entity(tableName = "favorite_vehicles")
 public class VehicleItem implements Serializable {
+    @NonNull
+    @PrimaryKey
     public String name;
+
     public String model;
     public String manufacturer;
     public String cost_in_credits;

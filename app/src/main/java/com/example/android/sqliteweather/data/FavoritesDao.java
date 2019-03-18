@@ -1,8 +1,12 @@
 package com.example.android.sqliteweather.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
+
+import java.util.List;
 
 @Dao
 public interface FavoritesDao {
@@ -42,5 +46,23 @@ public interface FavoritesDao {
 
     @Delete
     void deleteVehicle(VehicleItem vehicleItem);
+
+    @Query("SELECT * FROM favorite_planets")
+    LiveData<List<PlanetItem>> getFavoritePlanets();
+
+    @Query("SELECT * FROM favorite_films")
+    LiveData<List<FilmItem>> getFavoriteFilms();
+
+    @Query("SELECT * FROM favorite_people")
+    LiveData<List<PeopleItem>> getFavoritePeople();
+
+    @Query("SELECT * FROM favorite_species")
+    LiveData<List<SpeciesItem>> getFavoriteSpecies();
+
+    @Query("SELECT * FROM favorite_starships")
+    LiveData<List<StarshipItem>> getFavoriteStarships();
+
+    @Query("SELECT * FROM favorite_vehicles")
+    LiveData<List<VehicleItem>> getFavoriteVEhicles();
 
 }

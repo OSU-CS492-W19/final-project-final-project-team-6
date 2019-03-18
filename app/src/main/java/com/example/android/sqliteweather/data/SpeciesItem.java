@@ -1,9 +1,17 @@
 package com.example.android.sqliteweather.data;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
+@Entity(tableName = "favorite_species")
 public class SpeciesItem implements Serializable {
+    @NonNull
+    @PrimaryKey
     public String name;
+
     String classification;
     String designation;
     String average_height;
