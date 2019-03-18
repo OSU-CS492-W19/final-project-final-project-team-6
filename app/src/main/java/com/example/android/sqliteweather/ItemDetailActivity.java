@@ -81,6 +81,8 @@ public class ItemDetailActivity extends AppCompatActivity {
     }
 
     public String getItemFromCategory(Intent intent){
+        //TODO: Set text in Strings res file
+        //TODO: Search and set specific URLs in lists
         if(mCategory.equals("Planets")){
             planetItem = (PlanetItem) intent.getSerializableExtra("planet");
             mDataTV_1.setText("Rotation Period: " + planetItem.rotation_period);

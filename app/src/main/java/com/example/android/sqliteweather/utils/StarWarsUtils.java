@@ -25,6 +25,7 @@ public class StarWarsUtils {
     /*
      * The below several classes are used only for JSON parsing with Gson.
      */
+    //TODO: Add Nullable next to results
     static class StarWarsSearchPlanetsResults {
         Integer count;
         ArrayList<PlanetItem> results;
@@ -73,6 +74,8 @@ public class StarWarsUtils {
         }
 
     }
+
+    //TODO: figure out how to add next pages to list
 
     public static ArrayList<PlanetItem> parsePlanetsJSON(String url){
         Gson gson = new Gson();

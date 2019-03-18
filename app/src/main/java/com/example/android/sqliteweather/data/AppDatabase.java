@@ -13,6 +13,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
+                    //TODO: Problem creating database needs fixing
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "favorites_data_db").fallbackToDestructiveMigration().build();
                 }

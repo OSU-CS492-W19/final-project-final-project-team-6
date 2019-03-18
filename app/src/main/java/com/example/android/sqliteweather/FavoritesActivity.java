@@ -98,6 +98,8 @@ FavoriteVehiclesAdpater.OnFavoriteVechicleItemClickListener {
         favoriteVehiclesAdpater = new FavoriteVehiclesAdpater(this);
         mVehicleFavoritesRV.setAdapter(favoriteVehiclesAdpater);
 
+        //TODO: Once database is fixed, uncomment and test
+
         /*mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
 
         mFavoritesViewModel.getFavoritePlanets().observe(this, new Observer<List<PlanetItem>>() {
