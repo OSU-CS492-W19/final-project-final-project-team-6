@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,88 +13,136 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- People TextViews-->
-            <TextView
-                android:id="@+id/detail_height_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/detail_mass_tv"
+                android:id="@+id/detail_1_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
 
             <TextView
-                android:id="@+id/detail_haircolor_tv"
+                android:id="@+id/detail_2_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
 
             <TextView
-                android:id="@+id/detail_skincolor_tv"
+                android:id="@+id/detail_3_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
 
             <TextView
-                android:id="@+id/detail_eyecolor_tv"
+                android:id="@+id/detail_4_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
 
             <TextView
-                android:id="@+id/detail_birthyear_tv"
+                android:id="@+id/detail_5_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
 
             <TextView
-                android:id="@+id/detail_gender_tv"
+                android:id="@+id/detail_6_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
 
             <TextView
-                android:id="@+id/detail_homeworld_tv"
+                android:id="@+id/detail_7_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
 
-            <!--Planet TextViews -->
-            <TextView
-                android:id="@+id/detail_rotationalperiod_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/detail_orbitalperiod_tv"
+                android:id="@+id/detail_8_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
 
             <TextView
-                android:id="@+id/detail_diameter_tv"
+                android:id="@+id/detail_9_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
 
             <TextView
-                android:id="@+id/detail_climate_tv"
+                android:id="@+id/detail_10_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
 
             <TextView
-                android:id="@+id/detail_gravity_tv"
+                android:id="@+id/detail_11_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
 
             <TextView
-                android:id="@+id/detail_terrain_tv"
+                android:id="@+id/detail_12_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
 
             <TextView
-                android:id="@+id/detail_surfacewater_tv"
+                android:id="@+id/detail_13_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+
+            <TextView
+                android:id="@+id/detail_14_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+
+            <TextView
+                android:id="@+id/detail_15_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/detail_16_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="22sp"/>
 
         </LinearLayout>
 

@@ -58,7 +58,7 @@ public class StarWarsUtils {
     public static String buildStarWarsURL(String category) {
         if(category.equals("Films")){
             return Uri.parse(BASE_API).buildUpon().appendPath(FILMS_API).build().toString();
-        }  else if (category.equals("Spaceships")) {
+        }  else if (category.equals("Starships")) {
             return Uri.parse(BASE_API).buildUpon().appendPath(SPACESHIPS_API).build().toString();
         }else if (category.equals("Species")) {
             return Uri.parse(BASE_API).buildUpon().appendPath(SPECIES_API).build().toString();

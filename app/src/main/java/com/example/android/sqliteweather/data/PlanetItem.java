@@ -1,5 +1,6 @@
 package com.example.android.sqliteweather.data;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -10,20 +11,21 @@ import java.io.Serializable;
 public class PlanetItem implements Serializable {
     @NonNull
     @PrimaryKey
+    @ColumnInfo(name = "planet_name")
     public String name;
 
-    String rotation_period;
-    String orbital_period;
-    String diameter;
-    String climate;
-    String gravity;
-    String terrain;
-    String surface_water;
-    String population;
-    String [] residents;
-    String [] films;
-    String created;
-    String edited;
+    public String rotation_period;
+    public String orbital_period;
+    public String diameter;
+    public String climate;
+    public String gravity;
+    public String terrain;
+    public String surface_water;
+    public String population;
+    public String [] residents;
+    public String [] films;
+    public String created;
+    public String edited;
     public String url;
 
 }

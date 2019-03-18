@@ -98,7 +98,7 @@ FavoriteVehiclesAdpater.OnFavoriteVechicleItemClickListener {
         favoriteVehiclesAdpater = new FavoriteVehiclesAdpater(this);
         mVehicleFavoritesRV.setAdapter(favoriteVehiclesAdpater);
 
-        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+        /*mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
 
         mFavoritesViewModel.getFavoritePlanets().observe(this, new Observer<List<PlanetItem>>() {
             @Override
@@ -140,7 +140,7 @@ FavoriteVehiclesAdpater.OnFavoriteVechicleItemClickListener {
             public void onChanged(@Nullable List<VehicleItem> vehicleItems) {
                 favoriteVehiclesAdpater.updateFavoriteVehicles(vehicleItems);
             }
-        });
+        });*/
     }
 
     @Override
@@ -183,7 +183,7 @@ FavoriteVehiclesAdpater.OnFavoriteVechicleItemClickListener {
     @Override
     public void onFavoriteStarshipItemClick(StarshipItem item) {
         Intent intent = new Intent(this, ItemDetailActivity.class);
-        intent.putExtra("category", "Starships");
+        intent.putExtra("category", "Spaceships");
         intent.putExtra("starship", item);
         startActivity(intent);
     }
