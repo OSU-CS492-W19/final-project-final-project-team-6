@@ -21,7 +21,7 @@ public class FavoritePlanetsAdapter extends RecyclerView.Adapter<FavoritePlanets
         void onFavoritePlanetClick(PlanetItem planet);
     }
 
-    FavoritePlanetsAdapter(OnFavoritePlanetClickListener clickListener){
+    public FavoritePlanetsAdapter(OnFavoritePlanetClickListener clickListener){
         onFavoritePlanetClickListener = clickListener;
     }
 
@@ -53,7 +53,6 @@ public class FavoritePlanetsAdapter extends RecyclerView.Adapter<FavoritePlanets
     }
 
     public class PlanetItemViewHolder extends RecyclerView.ViewHolder {
-
         private TextView planetName;
 
         public PlanetItemViewHolder(@NonNull View itemView) {

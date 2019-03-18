@@ -1,7 +1,9 @@
 package com.example.android.sqliteweather.data;
 
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import java.util.List;
 
@@ -18,27 +20,7 @@ public class FavoritesRepository {
 
     private MutableLiveData<Status> mLoadingStatus;
 
-    public FavoritesRepository(){
-        mLoadingStatus = new MutableLiveData<>();
-        mLoadingStatus.setValue(Status.SUCCESS);
-
-        mPlanetsFavorites = new MutableLiveData<>();
-        mPlanetsFavorites.setValue(null);
-
-        mPeopleFavorites = new MutableLiveData<>();
-        mPeopleFavorites.setValue(null);
-
-        mFilmsFavorites = new MutableLiveData<>();
-        mFilmsFavorites.setValue(null);
-
-        mSpeciesFavorites = new MutableLiveData<>();
-        mSpeciesFavorites.setValue(null);
-
-        mStarshipsFavorites = new MutableLiveData<>();
-        mStarshipsFavorites.setValue(null);
-
-        mVehiclesFavorites = new MutableLiveData<>();
-        mVehiclesFavorites.setValue(null);
+    public FavoritesRepository(Application application){
     }
 
     public LiveData<Status> getLoadingStatus() {
@@ -66,4 +48,8 @@ public class FavoritesRepository {
     }
 
     public LiveData<List<VehicleItem>> getVehicleFavorites(){return mVehiclesFavorites;}
+
+    public void LoadFavorites(String mCurrentCategory){
+
+    }
 }
