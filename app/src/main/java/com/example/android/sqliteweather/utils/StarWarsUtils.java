@@ -90,6 +90,7 @@ public class StarWarsUtils {
         ArrayList<PlanetItem> allPlanets = new ArrayList<>();
         StarWarsSearchPlanetsResults planetsResults = gson.fromJson(url, StarWarsSearchPlanetsResults.class);
         if(planetsResults != null && planetsResults.results != null){
+            planetsResults.results.get(planetsResults.results.size()-1).nextUrl = planetsResults.next;
             allPlanets.addAll(planetsResults.results);
             /*String next = planetsResults.next;
             if(next != null){

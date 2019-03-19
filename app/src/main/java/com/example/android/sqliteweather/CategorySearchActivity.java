@@ -151,7 +151,9 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
         startActivity(intent);
     }
 
+    ArrayList<PlanetItem> planetsList;
     public void setObserverCategory(){
+        planetsList = new ArrayList<PlanetItem>();
         if(mCategory.equals("Planets")){
             mEntryViewModel.getPlanet().observe(this, new Observer<List<PlanetItem>>() {
                 @Override
@@ -162,9 +164,18 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
                             categoryItem.name = item.name;
                             categoryItem.title = null;
                             categoryItem.url = item.url;
+                            categoryItem.nextURL = item.nextUrl;
                             mCategoryItems.add(categoryItem);
+
                         }
-                        mEntryAdapter.updateEntryItems(mCategoryItems);
+
+                        if(mCategoryItems.get(mCategoryItems.size()-1).nextURL != null){
+                            mEntryViewModel.loadCategoryItems(mCategory, mCategoryItems.get(mCategoryItems.size()-1).nextURL);
+                        }else{
+                            mEntryAdapter.updateEntryItems(mCategoryItems);
+                        }
+
+
                     }
                 }
             });

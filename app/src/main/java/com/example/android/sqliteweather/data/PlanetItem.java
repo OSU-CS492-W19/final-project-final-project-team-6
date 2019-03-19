@@ -27,5 +27,6 @@ public class PlanetItem implements Serializable {
     public String created;
     public String edited;
     public String url;
+    public String nextUrl;
 
 }

@@ -11,5 +11,5 @@ public class CategoryItem implements Serializable {
     public String name;
     public String title;
     public String url;
-
+    public String nextURL;
 }
