@@ -1,7 +1,10 @@
 package com.example.android.sqliteweather;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -32,12 +35,12 @@ public class ItemDetailActivity extends AppCompatActivity {
     private StarshipItem starshipItem;
     private VehicleItem vehicleItem;
 
-    private boolean planetIsSaved;
-    private boolean filmIsSaved;
-    private boolean personIsSaved;
-    private boolean speciesIsSaved;
-    private boolean starshipIsSaved;
-    private boolean vehicleIsSaved;
+    private boolean planetIsSaved = false;
+    private boolean filmIsSaved = false;
+    private boolean personIsSaved = false;
+    private boolean speciesIsSaved = false;
+    private boolean starshipIsSaved = false;
+    private boolean vehicleIsSaved = false;
 
     //at most need 16 text views
     private TextView mDataTV_1;
@@ -100,7 +103,97 @@ public class ItemDetailActivity extends AppCompatActivity {
         mName = getItemFromCategory(intent);
         getSupportActionBar().setTitle(mName);
 
+        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+
+        setObservers();
         checkFavorite();
+    }
+
+    public void setObservers(){
+        if(mCategory.equals("Planets")){
+            mFavoritesViewModel.getPlanetByName(mName).observe(this, new Observer<PlanetItem>() {
+                @Override
+                public void onChanged(@Nullable PlanetItem planetItem) {
+                    if(planetItem != null){
+                        planetIsSaved = true;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_favorite_black);
+                    } else {
+                        planetIsSaved = false;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_empty_favorite_black);
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("Films")){
+            mFavoritesViewModel.getFilmByName(mName).observe(this, new Observer<FilmItem>() {
+                @Override
+                public void onChanged(@Nullable FilmItem filmItem) {
+                    if(filmItem != null){
+                        filmIsSaved = true;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_favorite_black);
+                    } else {
+                        filmIsSaved = false;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_empty_favorite_black);
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("People")){
+            mFavoritesViewModel.getPersonByName(mName).observe(this, new Observer<PeopleItem>() {
+                @Override
+                public void onChanged(@Nullable PeopleItem peopleItem) {
+                    if(peopleItem != null){
+                        personIsSaved = true;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_favorite_black);
+                    } else {
+                        personIsSaved = false;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_empty_favorite_black);
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("Species")){
+            mFavoritesViewModel.getSpeciesByName(mName).observe(this, new Observer<SpeciesItem>() {
+                @Override
+                public void onChanged(@Nullable SpeciesItem speciesItem) {
+                    if(speciesItem != null){
+                        speciesIsSaved = true;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_favorite_black);
+                    } else {
+                        speciesIsSaved = false;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_empty_favorite_black);
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("Starships")){
+            mFavoritesViewModel.getStarshipByName(mName).observe(this, new Observer<StarshipItem>() {
+                @Override
+                public void onChanged(@Nullable StarshipItem starshipItem) {
+                    if(starshipItem != null){
+                        starshipIsSaved = true;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_favorite_black);
+                    } else {
+                        starshipIsSaved = false;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_empty_favorite_black);
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("Vehicles")){
+            mFavoritesViewModel.getVehicleByName(mName).observe(this, new Observer<VehicleItem>() {
+                @Override
+                public void onChanged(@Nullable VehicleItem vehicleItem) {
+                    if(vehicleItem != null){
+                        vehicleIsSaved = true;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_favorite_black);
+                    } else {
+                        vehicleIsSaved = false;
+                        mFavoriteImage.setImageResource(R.drawable.ic_action_empty_favorite_black);
+                    }
+                }
+            });
+        }
     }
 
     public void checkFavorite(){
@@ -110,7 +203,9 @@ public class ItemDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if(planetItem != null){
                         if(!planetIsSaved){
+                            mFavoritesViewModel.insertFavoritePlanet(planetItem);
                         } else{
+                            mFavoritesViewModel.deleteFavoritePlanet(planetItem);
                         }
                     }
                 }
@@ -122,7 +217,9 @@ public class ItemDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if(filmItem != null){
                         if(!filmIsSaved){
+                            mFavoritesViewModel.insertFavoriteFilm(filmItem);
                         } else{
+                            mFavoritesViewModel.deleteFavoriteFilm(filmItem);
                         }
                     }
                 }
@@ -134,7 +231,9 @@ public class ItemDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if(peopleItem != null){
                         if(!personIsSaved){
+                            mFavoritesViewModel.insertFavoritePerson(peopleItem);
                         } else{
+                            mFavoritesViewModel.deleteFavoritePerson(peopleItem);
                         }
                     }
                 }
@@ -143,7 +242,9 @@ public class ItemDetailActivity extends AppCompatActivity {
         if(mCategory.equals("Species")){
             if(speciesItem != null){
                 if(!speciesIsSaved){
+                    mFavoritesViewModel.insertFavoriteSpecies(speciesItem);
                 } else{
+                    mFavoritesViewModel.deleteFavoriteSpecies(speciesItem);
                 }
             }
         }
@@ -153,7 +254,9 @@ public class ItemDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if(starshipItem != null){
                         if(!starshipIsSaved){
+                            mFavoritesViewModel.insertFavoriteStarship(starshipItem);
                         } else{
+                            mFavoritesViewModel.deleteFavoriteStarship(starshipItem);
                         }
                     }
                 }
@@ -162,7 +265,9 @@ public class ItemDetailActivity extends AppCompatActivity {
         if(mCategory.equals("Vehicles")){
             if(vehicleItem != null){
                 if(!vehicleIsSaved){
+                    mFavoritesViewModel.insertFavoriteVechile(vehicleItem);
                 } else{
+                    mFavoritesViewModel.deleteFavoriteVehicle(vehicleItem);
                 }
             }
         }

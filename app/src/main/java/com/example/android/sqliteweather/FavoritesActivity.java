@@ -98,9 +98,7 @@ FavoriteVehiclesAdpater.OnFavoriteVechicleItemClickListener {
         favoriteVehiclesAdpater = new FavoriteVehiclesAdpater(this);
         mVehicleFavoritesRV.setAdapter(favoriteVehiclesAdpater);
 
-        //TODO: Once database is fixed, uncomment and test
-
-        /*mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+        mFavoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
 
         mFavoritesViewModel.getFavoritePlanets().observe(this, new Observer<List<PlanetItem>>() {
             @Override
@@ -142,7 +140,7 @@ FavoriteVehiclesAdpater.OnFavoriteVechicleItemClickListener {
             public void onChanged(@Nullable List<VehicleItem> vehicleItems) {
                 favoriteVehiclesAdpater.updateFavoriteVehicles(vehicleItems);
             }
-        });*/
+        });
     }
 
     @Override
