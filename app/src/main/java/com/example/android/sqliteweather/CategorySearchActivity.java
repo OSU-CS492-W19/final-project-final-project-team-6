@@ -166,13 +166,22 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
                             categoryItem.url = item.url;
                             categoryItem.nextURL = item.nextUrl;
                             mCategoryItems.add(categoryItem);
-
                         }
 
                         if(mCategoryItems.get(mCategoryItems.size()-1).nextURL != null){
                             mEntryViewModel.loadCategoryItems(mCategory, mCategoryItems.get(mCategoryItems.size()-1).nextURL);
                         }else{
-                            mEntryAdapter.updateEntryItems(mCategoryItems);
+                            List<CategoryItem> tempCategoryItemsList;
+                            tempCategoryItemsList = new ArrayList<>();
+                            for(PlanetItem item : planetItems){
+                                CategoryItem temp = new CategoryItem();
+                                temp.nextURL = item.nextUrl;
+                                temp.name = item.name;
+                                temp.title = null;
+                                temp.url = item.url;
+                                tempCategoryItemsList.add(temp);
+                            }
+                            mEntryAdapter.updateEntryItems(tempCategoryItemsList);
                         }
 
 
