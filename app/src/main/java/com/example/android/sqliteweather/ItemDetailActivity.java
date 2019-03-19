@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.sqliteweather.data.FilmItem;
@@ -31,7 +32,14 @@ public class ItemDetailActivity extends AppCompatActivity {
     private StarshipItem starshipItem;
     private VehicleItem vehicleItem;
 
-    //at most need at least 16 text views
+    private boolean planetIsSaved;
+    private boolean filmIsSaved;
+    private boolean personIsSaved;
+    private boolean speciesIsSaved;
+    private boolean starshipIsSaved;
+    private boolean vehicleIsSaved;
+
+    //at most need 16 text views
     private TextView mDataTV_1;
     private TextView mDataTV_2;
     private TextView mDataTV_3;
@@ -49,6 +57,10 @@ public class ItemDetailActivity extends AppCompatActivity {
     private TextView mDataTV_15;
     private TextView mDataTV_16;
 
+    private ImageView mFavoriteImage;
+
+    private FavoritesViewModel mFavoritesViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +68,13 @@ public class ItemDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        planetItem = null;
+        peopleItem = null;
+        filmItem = null;
+        speciesItem = null;
+        starshipItem = null;
+        vehicleItem = null;
 
         mDataTV_1 = findViewById(R.id.detail_1_tv);
         mDataTV_2 = findViewById(R.id.detail_2_tv);
@@ -74,10 +93,79 @@ public class ItemDetailActivity extends AppCompatActivity {
         mDataTV_15 = findViewById(R.id.detail_15_tv);
         mDataTV_16 = findViewById(R.id.detail_16_tv);
 
+        mFavoriteImage = findViewById(R.id.favorite_IV);
+
         Intent intent = getIntent();
         mCategory = intent.getStringExtra("category");
         mName = getItemFromCategory(intent);
         getSupportActionBar().setTitle(mName);
+
+        checkFavorite();
+    }
+
+    public void checkFavorite(){
+        if(mCategory.equals("Planets")){
+            mFavoriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(planetItem != null){
+                        if(!planetIsSaved){
+                        } else{
+                        }
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("Films")){
+            mFavoriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(filmItem != null){
+                        if(!filmIsSaved){
+                        } else{
+                        }
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("People")){
+            mFavoriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(peopleItem != null){
+                        if(!personIsSaved){
+                        } else{
+                        }
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("Species")){
+            if(speciesItem != null){
+                if(!speciesIsSaved){
+                } else{
+                }
+            }
+        }
+        if(mCategory.equals("Starships")){
+            mFavoriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(starshipItem != null){
+                        if(!starshipIsSaved){
+                        } else{
+                        }
+                    }
+                }
+            });
+        }
+        if(mCategory.equals("Vehicles")){
+            if(vehicleItem != null){
+                if(!vehicleIsSaved){
+                } else{
+                }
+            }
+        }
     }
 
     public String getItemFromCategory(Intent intent){

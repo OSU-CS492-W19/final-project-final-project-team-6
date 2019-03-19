@@ -47,6 +47,18 @@ public class FavoritesViewModel extends AndroidViewModel {
 
     public LiveData<List<VehicleItem>> getFavoriteVehicles(){return favoritesRepository.getVehicleFavorites();}
 
+    public LiveData<PlanetItem> getPlanetByName(String planetItem){return favoritesRepository.getPlanetByName(planetItem);}
+
+    public LiveData<FilmItem> getFilmByName(String filmItem){return favoritesRepository.getFilmByName(filmItem);}
+
+    public LiveData<PeopleItem> getPersonByName(String peopleItem){return favoritesRepository.getPersonByName(peopleItem);}
+
+    public LiveData<SpeciesItem> getSpeciesByName(String speciesItem){return favoritesRepository.getSpeciesByName(speciesItem);}
+
+    public LiveData<StarshipItem> getStarshipByName(String starshipItem){return favoritesRepository.getStarshipByName(starshipItem);}
+
+    public LiveData<VehicleItem> getVehicleByName(String vehicleItem){return favoritesRepository.getVehicleByName(vehicleItem);}
+
     public void deleteFavoritePlanet(PlanetItem planetItem){favoritesRepository.deleteFavoritePlanet(planetItem);}
 
     public void deleteFavoriteFilm(FilmItem filmItem){favoritesRepository.deleteFavoriteFilm(filmItem);}

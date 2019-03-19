@@ -41,6 +41,18 @@ public class FavoritesRepository {
 
     public LiveData<List<VehicleItem>> getVehicleFavorites(){return mFavoritesDao.getFavoriteVEhicles();}
 
+    public LiveData<PlanetItem> getPlanetByName(String planetItem){return mFavoritesDao.getPlanetByName(planetItem);}
+
+    public LiveData<FilmItem> getFilmByName(String filmItem){return mFavoritesDao.getFilmByName(filmItem);}
+
+    public LiveData<PeopleItem> getPersonByName(String peopleItem){return mFavoritesDao.getPersonByName(peopleItem);}
+
+    public LiveData<SpeciesItem> getSpeciesByName(String speciesItem){return mFavoritesDao.getSpeciesByName(speciesItem);}
+
+    public LiveData<StarshipItem> getStarshipByName(String starshipItem){return mFavoritesDao.getStarshipByName(starshipItem);}
+
+    public LiveData<VehicleItem> getVehicleByName(String vehicleItem){return mFavoritesDao.getVehicleByName(vehicleItem);}
+
     public void insertFavoritePlanet(PlanetItem planetItem){new InsertFavoritePlanetAsyncTask(mFavoritesDao).execute(planetItem);}
 
     public void insertFavoriteFilm(FilmItem filmItem){new InsertFavoriteFilmAsyncTask(mFavoritesDao).execute(filmItem);}

@@ -65,4 +65,22 @@ public interface FavoritesDao {
     @Query("SELECT * FROM favorite_vehicles")
     LiveData<List<VehicleItem>> getFavoriteVEhicles();
 
+    @Query("SELECT * FROM favorite_planets WHERE planet_name = :planetItem LIMIT 1")
+    LiveData<PlanetItem> getPlanetByName(String planetItem);
+
+    @Query("SELECT * FROM favorite_films WHERE film_name = :filmItem LIMIT 1")
+    LiveData<FilmItem> getFilmByName(String filmItem);
+
+    @Query("SELECT * FROM favorite_people WHERE person_name = :peopleItem LIMIT 1")
+    LiveData<PeopleItem> getPersonByName(String peopleItem);
+
+    @Query("SELECT * FROM favorite_species WHERE species_name = :speciesItem LIMIT 1")
+    LiveData<SpeciesItem> getSpeciesByName(String speciesItem);
+
+    @Query("SELECT * FROM favorite_starships WHERE starship_name = :starshipItem LIMIT 1")
+    LiveData<StarshipItem> getStarshipByName(String starshipItem);
+
+    @Query("SELECT * FROM favorite_vehicles WHERE vehicle_name = :vehicleItem LIMIT 1")
+    LiveData<VehicleItem> getVehicleByName(String vehicleItem);
+
 }
