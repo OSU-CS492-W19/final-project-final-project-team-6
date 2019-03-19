@@ -1,6 +1,7 @@
 package com.example.android.sqliteweather;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.android.sqliteweather.data.CategoryItem;
@@ -13,6 +14,7 @@ import com.example.android.sqliteweather.data.SpeciesItem;
 import com.example.android.sqliteweather.data.StarshipItem;
 import com.example.android.sqliteweather.data.VehicleItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -23,6 +25,8 @@ public class EntryViewModel extends ViewModel {
     private LiveData<Status> mLoadingStatus;
     private EntryRepository mRepository;
     private String mCategory;
+
+    private LiveData<List<CategoryItem>> mCategoryItems;
 
     private LiveData<List<PeopleItem>> mPerson;
     private LiveData<List<PlanetItem>> mPlanet;
@@ -41,6 +45,13 @@ public class EntryViewModel extends ViewModel {
         mPlanet = mRepository.getPlanets();
         mVehicle = mRepository.getVehicles();
         mSpecies = mRepository.getSpecies();
+    }
+
+    public LiveData<List<CategoryItem>> getCategoryItems(String category){
+        if(category.equals("Planets")){
+
+        }
+        return mCategoryItems;
     }
 
     public LiveData<Status> getLoadingStatus() {
@@ -63,8 +74,8 @@ public class EntryViewModel extends ViewModel {
 
     public LiveData<List<VehicleItem>> getVehicle(){return mVehicle;}
 
-    public void loadCategoryItems(String category){
-        mRepository.loadCategory(category);
+    public void loadCategoryItems(String category, String next){
+        mRepository.loadCategory(category, next);
     }
 
 }

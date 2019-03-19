@@ -79,7 +79,7 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
         });
 
         setObserverCategory();
-        mEntryViewModel.loadCategoryItems(mCategory);
+        mEntryViewModel.loadCategoryItems(mCategory, null);
 
     }
 

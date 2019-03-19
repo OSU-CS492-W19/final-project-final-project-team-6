@@ -18,7 +18,7 @@ import java.util.List;
  * so it can no longer directly access the fields it needs to update when loading is finished.
  * Instead, we provide a callback function (using AsyncCallback) to perform those updates.
  */
-class LoadForecastTask extends AsyncTask<Void, Void, String> {
+public class LoadForecastTask extends AsyncTask<Void, Void, String> {
 
     private static String TAG = LoadForecastTask.class.getSimpleName();
 
@@ -32,10 +32,11 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
     }
 
     private String mURL;
+    private String mNextURL;
     private AsyncCallback mCallback;
     private String mCurrentCategory;
 
-    LoadForecastTask(String url, AsyncCallback callback, String category) {
+    public LoadForecastTask(String url, AsyncCallback callback, String category) {
         mURL = url;
         mCallback = callback;
         mCurrentCategory = category;

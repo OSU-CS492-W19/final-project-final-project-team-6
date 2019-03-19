@@ -3,6 +3,7 @@ package com.example.android.sqliteweather.utils;
 import android.net.Uri;
 
 import com.example.android.sqliteweather.data.CategoryItem;
+import com.example.android.sqliteweather.data.EntryRepository;
 import com.example.android.sqliteweather.data.FilmItem;
 import com.example.android.sqliteweather.data.PeopleItem;
 import com.example.android.sqliteweather.data.PlanetItem;
@@ -12,6 +13,7 @@ import com.example.android.sqliteweather.data.VehicleItem;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StarWarsUtils {
     private final static String BASE_API = "https://swapi.co/api/";
@@ -28,21 +30,25 @@ public class StarWarsUtils {
     //TODO: Add Nullable next to results
     static class StarWarsSearchPlanetsResults {
         Integer count;
+        String next;
         ArrayList<PlanetItem> results;
     }
 
     static class StarWarsSearchPeopleResults {
         Integer count;
+        String next;
         ArrayList<PeopleItem> results;
     }
 
     static class StarWarsSearchStarshipsResults {
         Integer count;
+        String next;
         ArrayList<StarshipItem> results;
     }
 
     static class StarWarsSearchVehiclesResults {
         Integer count;
+        String next;
         ArrayList<VehicleItem> results;
     }
 
@@ -53,6 +59,7 @@ public class StarWarsUtils {
 
     static class StarWarsSearchSpeciesResults {
         Integer count;
+        String next;
         ArrayList<SpeciesItem> results;
     }
 
@@ -79,9 +86,16 @@ public class StarWarsUtils {
 
     public static ArrayList<PlanetItem> parsePlanetsJSON(String url){
         Gson gson = new Gson();
+        //EntryRepository mEntryRepo = new EntryRepository();
+        ArrayList<PlanetItem> allPlanets = new ArrayList<>();
         StarWarsSearchPlanetsResults planetsResults = gson.fromJson(url, StarWarsSearchPlanetsResults.class);
         if(planetsResults != null && planetsResults.results != null){
-            return planetsResults.results;
+            allPlanets.addAll(planetsResults.results);
+            /*String next = planetsResults.next;
+            if(next != null){
+                mEntryRepo.loadCategory("Planets", planetsResults.next);
+            }*/
+            return allPlanets;
         } else {
             return null;
         }
@@ -89,9 +103,11 @@ public class StarWarsUtils {
 
     public static ArrayList<PeopleItem> parsePeopleJSON(String url){
         Gson gson = new Gson();
+        ArrayList<PeopleItem> allPeople = new ArrayList<>();
         StarWarsSearchPeopleResults peopleResults = gson.fromJson(url, StarWarsSearchPeopleResults.class);
         if(peopleResults != null && peopleResults.results != null){
-            return peopleResults.results;
+            allPeople.addAll(peopleResults.results);
+            return allPeople;
         } else {
             return null;
         }

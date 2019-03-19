@@ -6,7 +6,11 @@ import android.util.Log;
 
 import com.example.android.sqliteweather.utils.StarWarsUtils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /*
  * This is our Repository class for fetching forecast data from OpenWeatherMap.  One of the keys
@@ -38,6 +42,8 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
     private MutableLiveData<List<StarshipItem>> mStarshipsResults;
     private MutableLiveData<List<VehicleItem>> mVehiclesResults;
 
+    private List<PlanetItem> curPlanets;
+
     private MutableLiveData<Status> mLoadingStatus;
 
     private String mCurrentCategory;
@@ -67,6 +73,8 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
         mVehiclesResults = new MutableLiveData<>();
         mVehiclesResults.setValue(null);
+
+        curPlanets = new ArrayList<>();
     }
 
     /*
@@ -101,10 +109,15 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
     public LiveData<List<VehicleItem>> getVehicles(){return mVehiclesResults;}
 
-    public void loadCategory(String category){
+    public void loadCategory(String category, String next){
         mCurrentCategory = category;
         mLoadingStatus.setValue(Status.LOADING);
-        String url = StarWarsUtils.buildStarWarsURL(mCurrentCategory);
+        String url;
+        if(next == null) {
+            url = StarWarsUtils.buildStarWarsURL(mCurrentCategory);
+        } else {
+            url = next;
+        }
         Log.d(TAG, "Executing search with url: " + url + " and Category: " + mCurrentCategory);
         new LoadForecastTask(url, this, mCurrentCategory).execute();
     }
@@ -141,7 +154,9 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
     @Override
     public void onPlanetLoadFinished(List<PlanetItem> planet) {
-        mPlanetsResults.setValue(planet);
+        curPlanets.addAll(planet);
+        mPlanetsResults.setValue(curPlanets);
+        Log.d(TAG, "First planet in list: " + planet.get(0).name + ", list size: " + Integer.toString(curPlanets.size()));
         if(planet != null){
             mLoadingStatus.setValue(Status.SUCCESS);
         } else {
