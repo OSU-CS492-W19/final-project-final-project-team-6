@@ -43,7 +43,11 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
     private MutableLiveData<List<VehicleItem>> mVehiclesResults;
 
     private List<PlanetItem> curPlanets;
-
+    private List<PeopleItem> curPeople;
+    private List<SpeciesItem> curSpecies;
+    private List<FilmItem> curFilm;
+    private List<VehicleItem> curVehicle;
+    private List<StarshipItem> curStarship;
     private MutableLiveData<Status> mLoadingStatus;
 
     private String mCurrentCategory;
@@ -75,6 +79,12 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
         mVehiclesResults.setValue(null);
 
         curPlanets = new ArrayList<>();
+        curPeople = new ArrayList<>();
+        curVehicle = new ArrayList<>();
+        curSpecies = new ArrayList<>();
+        curStarship = new ArrayList<>();
+        curFilm = new ArrayList<>();
+
     }
 
     /*
@@ -124,7 +134,9 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
     @Override
     public void onPeopleLoadFinished(List<PeopleItem> people) {
-        mPeopleResults.setValue(people);
+
+        curPeople.addAll(people);
+        mPeopleResults.setValue(curPeople);
         if(people != null){
             mLoadingStatus.setValue(Status.SUCCESS);
         } else {
@@ -134,7 +146,8 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
     @Override
     public void onFilmLoadFinished(List<FilmItem> tempFilm) {
-        mFilmsResults.setValue(tempFilm);
+        curFilm.addAll(tempFilm);
+        mFilmsResults.setValue(curFilm);
         if(tempFilm != null){
             mLoadingStatus.setValue(Status.SUCCESS);
         } else {
@@ -144,7 +157,8 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
     @Override
     public void onStarshipLoadFinished(List<StarshipItem> tempStarship) {
-        mStarshipsResults.setValue(tempStarship);
+        curStarship.addAll(tempStarship);
+        mStarshipsResults.setValue(curStarship);
         if(tempStarship != null){
             mLoadingStatus.setValue(Status.SUCCESS);
         } else {
@@ -166,7 +180,8 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
     @Override
     public void onSpeciesLoadFinished(List<SpeciesItem> species) {
-        mSpeciesResults.setValue(species);
+        curSpecies.addAll(species);
+        mSpeciesResults.setValue(curSpecies);
         if(species != null){
             mLoadingStatus.setValue(Status.SUCCESS);
         } else {
@@ -176,7 +191,8 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
     @Override
     public void onVehicleLoadFinished(List<VehicleItem> temp) {
-        mVehiclesResults.setValue(temp);
+        curVehicle.addAll(temp);
+        mVehiclesResults.setValue(curVehicle);
         if(temp != null){
             mLoadingStatus.setValue(Status.SUCCESS);
         } else {

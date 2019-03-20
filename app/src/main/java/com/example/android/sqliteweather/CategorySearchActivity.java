@@ -152,7 +152,15 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
     }
 
     ArrayList<PlanetItem> planetsList;
+    ArrayList<PeopleItem> peopleList;
+    ArrayList<VehicleItem> vehiclesList;
+    ArrayList<StarshipItem> starshipsList;
+    ArrayList<SpeciesItem> speciesList;
+    ArrayList<FilmItem> filmsList;
+
+
     public void setObserverCategory(){
+        peopleList = new ArrayList<PeopleItem>();
         planetsList = new ArrayList<PlanetItem>();
         if(mCategory.equals("Planets")){
             mEntryViewModel.getPlanet().observe(this, new Observer<List<PlanetItem>>() {
@@ -199,9 +207,24 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
                             categoryItem.name = item.title;
                             categoryItem.title = item.title;
                             categoryItem.url = item.url;
+                            categoryItem.nextURL = item.nextUrl;
                             mCategoryItems.add(categoryItem);
                         }
-                        mEntryAdapter.updateEntryItems(mCategoryItems);
+                        if(mCategoryItems.get(mCategoryItems.size()-1).nextURL != null){
+                            mEntryViewModel.loadCategoryItems(mCategory, mCategoryItems.get(mCategoryItems.size()-1).nextURL);
+                        }else{
+                            List<CategoryItem> tempCategoryItemsList;
+                            tempCategoryItemsList = new ArrayList<>();
+                            for(FilmItem item : filmItems){
+                                CategoryItem temp = new CategoryItem();
+                                temp.nextURL = item.nextUrl;
+                                temp.name = item.title;
+                                temp.title = null;
+                                temp.url = item.url;
+                                tempCategoryItemsList.add(temp);
+                            }
+                            mEntryAdapter.updateEntryItems(tempCategoryItemsList);
+                        }
                     }
                 }
             });
@@ -216,9 +239,24 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
                             categoryItem.name = item.name;
                             categoryItem.title = null;
                             categoryItem.url = item.url;
+                            categoryItem.nextURL = item.nextUrl;
                             mCategoryItems.add(categoryItem);
                         }
-                        mEntryAdapter.updateEntryItems(mCategoryItems);
+                        if(mCategoryItems.get(mCategoryItems.size()-1).nextURL != null){
+                            mEntryViewModel.loadCategoryItems(mCategory, mCategoryItems.get(mCategoryItems.size()-1).nextURL);
+                        }else{
+                            List<CategoryItem> tempCategoryItemsList;
+                            tempCategoryItemsList = new ArrayList<>();
+                            for(PeopleItem item : peopleItems){
+                                CategoryItem temp = new CategoryItem();
+                                temp.nextURL = item.nextUrl;
+                                temp.name = item.name;
+                                temp.title = null;
+                                temp.url = item.url;
+                                tempCategoryItemsList.add(temp);
+                            }
+                            mEntryAdapter.updateEntryItems(tempCategoryItemsList);
+                        }
                     }
                 }
             });
@@ -233,9 +271,23 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
                             categoryItem.name = item.name;
                             categoryItem.title = null;
                             categoryItem.url = item.url;
+                            categoryItem.nextURL = item.nextUrl;
                             mCategoryItems.add(categoryItem);
                         }
-                        mEntryAdapter.updateEntryItems(mCategoryItems);
+                        if(mCategoryItems.get(mCategoryItems.size()-1).nextURL != null){
+                            mEntryViewModel.loadCategoryItems(mCategory, mCategoryItems.get(mCategoryItems.size()-1).nextURL);
+                        }else{
+                            List<CategoryItem> tempCategoryItemsList;
+                            tempCategoryItemsList = new ArrayList<>();
+                            for(SpeciesItem item : speciesItems){
+                                CategoryItem temp = new CategoryItem();
+                                temp.nextURL = item.nextUrl;
+                                temp.name = item.name;
+                                temp.title = null;
+                                temp.url = item.url;
+                                tempCategoryItemsList.add(temp);
+                            }
+                            mEntryAdapter.updateEntryItems(tempCategoryItemsList);                        }
                     }
                 }
             });
@@ -250,9 +302,23 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
                             categoryItem.name = item.name;
                             categoryItem.title = null;
                             categoryItem.url = item.url;
+                            categoryItem.nextURL = item.nextUrl;
                             mCategoryItems.add(categoryItem);
                         }
-                        mEntryAdapter.updateEntryItems(mCategoryItems);
+                        if(mCategoryItems.get(mCategoryItems.size()-1).nextURL != null){
+                            mEntryViewModel.loadCategoryItems(mCategory, mCategoryItems.get(mCategoryItems.size()-1).nextURL);
+                        }else{
+                            List<CategoryItem> tempCategoryItemsList;
+                            tempCategoryItemsList = new ArrayList<>();
+                            for(VehicleItem item : vehicleItems){
+                                CategoryItem temp = new CategoryItem();
+                                temp.nextURL = item.nextUrl;
+                                temp.name = item.name;
+                                temp.title = null;
+                                temp.url = item.url;
+                                tempCategoryItemsList.add(temp);
+                            }
+                            mEntryAdapter.updateEntryItems(tempCategoryItemsList);                        }
                     }
                 }
             });
@@ -267,9 +333,23 @@ public class CategorySearchActivity extends AppCompatActivity implements EntryAd
                             categoryItem.name = item.name;
                             categoryItem.title = null;
                             categoryItem.url = item.url;
+                            categoryItem.nextURL = item.nextUrl;
                             mCategoryItems.add(categoryItem);
                         }
-                        mEntryAdapter.updateEntryItems(mCategoryItems);
+                        if(mCategoryItems.get(mCategoryItems.size()-1).nextURL != null){
+                            mEntryViewModel.loadCategoryItems(mCategory, mCategoryItems.get(mCategoryItems.size()-1).nextURL);
+                        }else{
+                            List<CategoryItem> tempCategoryItemsList;
+                            tempCategoryItemsList = new ArrayList<>();
+                            for(StarshipItem item : starshipItems){
+                                CategoryItem temp = new CategoryItem();
+                                temp.nextURL = item.nextUrl;
+                                temp.name = item.name;
+                                temp.title = null;
+                                temp.url = item.url;
+                                tempCategoryItemsList.add(temp);
+                            }
+                            mEntryAdapter.updateEntryItems(tempCategoryItemsList);                        }
                     }
                 }
             });

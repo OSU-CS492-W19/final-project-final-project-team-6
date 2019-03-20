@@ -29,4 +29,5 @@ public class VehicleItem implements Serializable {
     public String created;
     public String edited;
     public String url;
+    public String nextUrl;
 }

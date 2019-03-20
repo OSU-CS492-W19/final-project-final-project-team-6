@@ -54,6 +54,7 @@ public class StarWarsUtils {
 
     static class StarWarsSearchFilmsResults {
         Integer count;
+        String next;
         ArrayList<FilmItem> results;
     }
 
@@ -91,12 +92,12 @@ public class StarWarsUtils {
         StarWarsSearchPlanetsResults planetsResults = gson.fromJson(url, StarWarsSearchPlanetsResults.class);
         if(planetsResults != null && planetsResults.results != null){
             planetsResults.results.get(planetsResults.results.size()-1).nextUrl = planetsResults.next;
-            allPlanets.addAll(planetsResults.results);
+          //  allPlanets.addAll(planetsResults.results);
             /*String next = planetsResults.next;
             if(next != null){
                 mEntryRepo.loadCategory("Planets", planetsResults.next);
             }*/
-            return allPlanets;
+            return planetsResults.results;
         } else {
             return null;
         }
@@ -107,8 +108,9 @@ public class StarWarsUtils {
         ArrayList<PeopleItem> allPeople = new ArrayList<>();
         StarWarsSearchPeopleResults peopleResults = gson.fromJson(url, StarWarsSearchPeopleResults.class);
         if(peopleResults != null && peopleResults.results != null){
-            allPeople.addAll(peopleResults.results);
-            return allPeople;
+            peopleResults.results.get(peopleResults.results.size()-1).nextUrl = peopleResults.next;
+         //   allPeople.addAll(peopleResults.results);
+            return peopleResults.results;
         } else {
             return null;
         }
@@ -118,6 +120,8 @@ public class StarWarsUtils {
         Gson gson = new Gson();
         StarWarsSearchStarshipsResults starshipsResults = gson.fromJson(url, StarWarsSearchStarshipsResults.class);
         if(starshipsResults != null && starshipsResults.results != null){
+           starshipsResults.results.get(starshipsResults.results.size()-1).nextUrl = starshipsResults.next;
+
             return starshipsResults.results;
         } else {
             return null;
@@ -128,6 +132,8 @@ public class StarWarsUtils {
         Gson gson = new Gson();
         StarWarsSearchSpeciesResults speciesResult = gson.fromJson(url, StarWarsSearchSpeciesResults.class);
         if(speciesResult != null && speciesResult.results != null){
+            speciesResult.results.get(speciesResult.results.size()-1).nextUrl = speciesResult.next;
+
             return speciesResult.results;
         } else {
             return null;
@@ -138,6 +144,8 @@ public class StarWarsUtils {
         Gson gson = new Gson();
         StarWarsSearchFilmsResults filmsResults = gson.fromJson(url, StarWarsSearchFilmsResults.class);
         if(filmsResults != null && filmsResults.results != null){
+            filmsResults.results.get(filmsResults.results.size()-1).nextUrl = filmsResults.next;
+
             return filmsResults.results;
         } else {
             return null;
@@ -148,6 +156,8 @@ public class StarWarsUtils {
         Gson gson = new Gson();
         StarWarsSearchVehiclesResults vehiclesResults = gson.fromJson(url, StarWarsSearchVehiclesResults.class);
         if(vehiclesResults != null && vehiclesResults.results != null){
+            vehiclesResults.results.get(vehiclesResults.results.size()-1).nextUrl = vehiclesResults.next;
+
             return vehiclesResults.results;
         } else {
             return null;
