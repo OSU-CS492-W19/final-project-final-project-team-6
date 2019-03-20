@@ -240,13 +240,18 @@ public class ItemDetailActivity extends AppCompatActivity {
             });
         }
         if(mCategory.equals("Species")){
-            if(speciesItem != null){
-                if(!speciesIsSaved){
-                    mFavoritesViewModel.insertFavoriteSpecies(speciesItem);
-                } else{
-                    mFavoritesViewModel.deleteFavoriteSpecies(speciesItem);
+            mFavoriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(speciesItem != null){
+                        if(!speciesIsSaved){
+                            mFavoritesViewModel.insertFavoriteSpecies(speciesItem);
+                        } else{
+                            mFavoritesViewModel.deleteFavoriteSpecies(speciesItem);
+                        }
+                    }
                 }
-            }
+            });
         }
         if(mCategory.equals("Starships")){
             mFavoriteImage.setOnClickListener(new View.OnClickListener() {
