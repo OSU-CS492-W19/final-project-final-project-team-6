@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,89 +22,41 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements EntryAdapter.OnEntryItemClickListener {
+public class MainActivity extends AppCompatActivity implements CategoryAdapter.OnCategoryItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-
     private RecyclerView mCategoryItemsRV;
-    private ProgressBar mLoadingIndicatorPB;
-    private TextView mLoadingErrorMessageTV;
 
-    private EntryAdapter mEntryAdapter;
-    private EntryViewModel mEntryViewModel;
-    private List<CategoryItem> mCategoryItems;
+    private CategoryAdapter mEntryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mCategoryItems = new ArrayList<CategoryItem>();
 
         // Remove shadow under action bar.
         getSupportActionBar().setElevation(0);
 
         getSupportActionBar().setTitle("Star Wars Wiki");
 
-        mLoadingIndicatorPB = findViewById(R.id.pb_loading_indicator);
-        mLoadingErrorMessageTV = findViewById(R.id.tv_loading_error_message);
-        mCategoryItemsRV = findViewById(R.id.rv_forecast_items);
+        mCategoryItemsRV = findViewById(R.id.rv_category_items);
 
-        mEntryAdapter = new EntryAdapter(this);
+        mEntryAdapter = new CategoryAdapter(this);
         mCategoryItemsRV.setAdapter(mEntryAdapter);
         mCategoryItemsRV.setLayoutManager(new LinearLayoutManager(this));
         mCategoryItemsRV.setHasFixedSize(true);
 
-        /*
-         * This version of the app code uses the new ViewModel architecture to manage data for
-         * the activity.  See the classes in the data package for more about how the ViewModel
-         * is set up.  Here, we simply grab the forecast data ViewModel.
-         */
-        mEntryViewModel = ViewModelProviders.of(this).get(EntryViewModel.class);
-
-        /*
-         * Attach an Observer to the forecast data.  Whenever the forecast data changes, this
-         * Observer will send the new data into our RecyclerView's adapter.
-         */
-
         List<String> mCategoriesList = Arrays.asList(getResources().getStringArray(R.array.SWAPI_categories));
-        mEntryAdapter.updateForecastItems(mCategoriesList);
-
-
-        /*
-         * Attach an Observer to the network loading status.  Whenever the loading status changes,
-         * this Observer will ensure that the correct layout components are visible.  Specifically,
-         * it will make the loading indicator visible only when the forecast is being loaded.
-         * Otherwise, it will display the RecyclerView if forecast data was successfully fetched,
-         * or it will display the error message if there was an error fetching data.
-         */
-
-        //Can probably remove this
-        mEntryViewModel.getLoadingStatus().observe(this, new Observer<Status>() {
-            @Override
-            public void onChanged(@Nullable Status status) {
-                if (status == Status.LOADING) {
-                    mLoadingIndicatorPB.setVisibility(View.VISIBLE);
-                } else if (status == Status.SUCCESS) {
-                    mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
-                    mLoadingErrorMessageTV.setVisibility(View.INVISIBLE);
-                    mCategoryItemsRV.setVisibility(View.VISIBLE);
-                } else {
-                    mLoadingIndicatorPB.setVisibility(View.INVISIBLE);
-                    mCategoryItemsRV.setVisibility(View.INVISIBLE);
-                    mLoadingErrorMessageTV.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        mEntryAdapter.updateCategoryItems(mCategoriesList);
 
     }
 
-
     @Override
-    public void onEntryItemClick(String forecastItem) {
+    public void onCategoryItemClick(String categoryItem) {
         Intent intent = new Intent(this, CategorySearchActivity.class);
-        intent.putExtra("category", forecastItem);
+        intent.putExtra("category", categoryItem);
+        Log.d(TAG, "Selected Category: " + categoryItem);
         startActivity(intent);
     }
 
@@ -115,19 +68,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_location:
-                return true;
-            case R.id.action_settings:
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        switch (item.getItemId()){
+            case R.id.action_favorites:
+                Intent settingsIntent = new Intent(this, FavoritesActivity.class);
                 startActivity(settingsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-
 
 }

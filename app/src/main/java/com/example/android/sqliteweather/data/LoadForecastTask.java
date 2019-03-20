@@ -1,16 +1,10 @@
 package com.example.android.sqliteweather.data;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
-import com.example.android.sqliteweather.utils.FilmItem;
 import com.example.android.sqliteweather.utils.NetworkUtils;
-import com.example.android.sqliteweather.utils.PeopleItem;
-import com.example.android.sqliteweather.utils.PlanetItem;
-import com.example.android.sqliteweather.utils.PeopleItem;
-import com.example.android.sqliteweather.utils.SpeciesItem;
 import com.example.android.sqliteweather.utils.StarWarsUtils;
-import com.example.android.sqliteweather.utils.StarshipItem;
-import com.example.android.sqliteweather.utils.VehicleItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,84 +18,80 @@ import java.util.List;
  * so it can no longer directly access the fields it needs to update when loading is finished.
  * Instead, we provide a callback function (using AsyncCallback) to perform those updates.
  */
-class LoadForecastTask extends AsyncTask<Void, Void, String> {
+public class LoadForecastTask extends AsyncTask<Void, Void, String> {
+
+    private static String TAG = LoadForecastTask.class.getSimpleName();
 
     public interface AsyncCallback {
-        void onForecastLoadFinished(List<CategoryItem> categoryItems);
-        void onPeopleLoadFinished(PeopleItem people);
-
-        void onFilmLoadFinished(FilmItem tempFilm);
-
-        void onStarshipLoadFinished(StarshipItem tempStarship);
-
-        void onPlanetLoadFinished(PlanetItem planet);
-
-        void onVehicleLoadFinished(VehicleItem temp);
-        void onSpeciesLoadFinished(SpeciesItem species);
+        void onPeopleLoadFinished(List<PeopleItem> people);
+        void onFilmLoadFinished(List<FilmItem> films);
+        void onStarshipLoadFinished(List<StarshipItem> starships);
+        void onPlanetLoadFinished(List<PlanetItem> planets);
+        void onVehicleLoadFinished(List<VehicleItem> vehicles);
+        void onSpeciesLoadFinished(List<SpeciesItem> species);
     }
 
     private String mURL;
-    String mNextURL;
+    private String mNextURL;
     private AsyncCallback mCallback;
     private String mCurrentCategory;
 
-    LoadForecastTask(String url, AsyncCallback callback, String next, String category) {
+    public LoadForecastTask(String url, AsyncCallback callback, String category) {
         mURL = url;
         mCallback = callback;
-        mNextURL = next;
         mCurrentCategory = category;
     }
 
     @Override
     protected String doInBackground(Void... voids) {
-        String forecastJSON = null;
+        String starwarsJSON = null;
         try {
-            forecastJSON = NetworkUtils.doHTTPGet(mURL);
+            starwarsJSON = NetworkUtils.doHTTPGet(mURL);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return forecastJSON;
+        return starwarsJSON;
     }
 
     @Override
     protected void onPostExecute(String s) {
-        ArrayList<CategoryItem> categoryItems = null;
-
-        if(s != null && mCurrentCategory != null && mCurrentCategory.equals("People")){
-            PeopleItem person = StarWarsUtils.parsePeopleJSON(s);
-            mCallback.onPeopleLoadFinished(person);
-            return;
-        }else if (s != null && mCurrentCategory != null && mCurrentCategory.equals("Films")){
-            FilmItem tempFilm = StarWarsUtils.parseFilmJSON(s);
-            mCallback.onFilmLoadFinished(tempFilm);
-            return;
-        }else if (s != null && mCurrentCategory != null && mCurrentCategory.equals("Starships")){
-            StarshipItem tempStarship = StarWarsUtils.parseStarshipJSON(s);
-            mCallback.onStarshipLoadFinished(tempStarship);
-            return;
-        }else if(s != null && mCurrentCategory != null && mCurrentCategory.equals("Planet")){
-            PlanetItem planet = StarWarsUtils.parsePlanetJSON(s);
-            mCallback.onPlanetLoadFinished(planet);
-            return;
-        }else if(s != null && mCurrentCategory != null && mCurrentCategory.equals("Vehicles")){
-            VehicleItem temp = StarWarsUtils.parseVehicleJSON(s);
-            mCallback.onVehicleLoadFinished(temp);
-            return;
-        }else if(s != null && mCurrentCategory != null && mCurrentCategory.equals("Species")){
-            SpeciesItem species = StarWarsUtils.parseSpeciesJSON(s);
-            mCallback.onSpeciesLoadFinished(species);
-            return;
+        if(s != null){
+            if(mCurrentCategory.equals("Planets")){
+                Log.d(TAG, "Planets Loading: " + s);
+                List<PlanetItem> planets = StarWarsUtils.parsePlanetsJSON(s);
+                mCallback.onPlanetLoadFinished(planets);
+                return;
+            }
+            else if(mCurrentCategory.equals("People")){
+                Log.d(TAG, "People Loading: " + s);
+                List<PeopleItem> people = StarWarsUtils.parsePeopleJSON(s);
+                mCallback.onPeopleLoadFinished(people);
+                return;
+            }
+            else if(mCurrentCategory.equals("Films")){
+                Log.d(TAG, "Films Loading: " + s);
+                List<FilmItem> films = StarWarsUtils.parseFilmsJSON(s);
+                mCallback.onFilmLoadFinished(films);
+                return;
+            }
+            else if(mCurrentCategory.equals("Species")){
+                Log.d(TAG, "Species Loading: " + s);
+                List<SpeciesItem> species = StarWarsUtils.parseSpeciesJSON(s);
+                mCallback.onSpeciesLoadFinished(species);
+                return;
+            }
+            else if(mCurrentCategory.equals("Starships")){
+                Log.d(TAG, "Spaceships Loading: " + s);
+                List<StarshipItem> starships = StarWarsUtils.parseStarshipsJSON(s);
+                mCallback.onStarshipLoadFinished(starships);
+                return;
+            }
+            else if(mCurrentCategory.equals("Vehicles")){
+                Log.d(TAG, "Vehicles Loading: " + s);
+                List<VehicleItem> vehicles = StarWarsUtils.parseVehiclesJSON(s);
+                mCallback.onVehicleLoadFinished(vehicles);
+                return;
+            }
         }
-
-
-        if (s != null) {
-            categoryItems = StarWarsUtils.parseCategoryJSON(s);
-            mNextURL = categoryItems.get(categoryItems.size() - 1).next;
-
-//            while(categoryItems.get(categoryItems.size() - 1) != null){
-//                categoryItems.addAll(StarWarsUtils.parseCategoryJSON(categoryItems.get(categoryItems.size() - 1).next));
-//            }
-        }
-        mCallback.onForecastLoadFinished(categoryItems);
     }
 }

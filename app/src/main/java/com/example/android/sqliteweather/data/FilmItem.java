@@ -1,9 +1,19 @@
-package com.example.android.sqliteweather.utils;
+package com.example.android.sqliteweather.data;
+
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
+@Entity(tableName = "favorite_films")
 public class FilmItem implements Serializable {
+    @NonNull
+    @PrimaryKey
+    @ColumnInfo(name = "film_name")
     public String title;
+
     public String episode_id;
     public String opening_crawl;
     public String director;

@@ -4,13 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /*
- * This is the class that's used to represent an individual forecast item throughout the app.
+ * This is the class that's used to represent an individual category item throughout the app.
  */
 public class CategoryItem implements Serializable {
 
     public String name;
-    public String next;
-    public String query;
-    public String height;
-
+    public String title;
+    public String url;
+    public String nextURL;
 }
