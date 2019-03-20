@@ -151,7 +151,7 @@ FavoriteVehiclesAdpater.OnFavoriteVechicleItemClickListener {
     @Override
     public void onFavoritePlanetClick(PlanetItem planet) {
         Intent intent = new Intent(this, ItemDetailActivity.class);
-        intent.putExtra("category", "Planet");
+        intent.putExtra("category", "Planets");
         intent.putExtra("planet", planet);
         startActivity(intent);
     }
@@ -159,7 +159,7 @@ FavoriteVehiclesAdpater.OnFavoriteVechicleItemClickListener {
     @Override
     public void onFavoriteFilmClick(FilmItem filmItem) {
         Intent intent = new Intent(this, ItemDetailActivity.class);
-        intent.putExtra("category", "Film");
+        intent.putExtra("category", "Films");
         intent.putExtra("film", filmItem);
         startActivity(intent);
     }
@@ -183,7 +183,7 @@ FavoriteVehiclesAdpater.OnFavoriteVechicleItemClickListener {
     @Override
     public void onFavoriteStarshipItemClick(StarshipItem item) {
         Intent intent = new Intent(this, ItemDetailActivity.class);
-        intent.putExtra("category", "Spaceships");
+        intent.putExtra("category", "Starships");
         intent.putExtra("starship", item);
         startActivity(intent);
     }
