@@ -540,6 +540,7 @@ public class ItemDetailActivity extends AppCompatActivity {
                 return true;
             case R.id.detail_action_share:
                 shareText();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
