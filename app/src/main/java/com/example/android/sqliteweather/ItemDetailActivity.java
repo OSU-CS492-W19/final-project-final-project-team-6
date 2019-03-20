@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -279,8 +280,7 @@ public class ItemDetailActivity extends AppCompatActivity {
     }
 
     public String getItemFromCategory(Intent intent){
-        //TODO: Set text in Strings res file
-        //TODO: Search and set specific URLs in lists
+
         if(mCategory.equals("Planets")){
             planetItem = (PlanetItem) intent.getSerializableExtra("planet");
             mDataTV_1.setText("Rotation Period: " + planetItem.rotation_period);
@@ -302,13 +302,13 @@ public class ItemDetailActivity extends AppCompatActivity {
             if(planetItem.residents.length < 1){
                 mDataTV_9.setText("Residents: None");
             } else {
-                mDataTV_9.setText("Residents: " + Arrays.toString(planetItem.residents).replaceAll("\\[|\\]", ""));
+                mDataTV_9.setText("Residents: " + planetItem.residents.length);
             }
 
             if(planetItem.films.length < 1){
                 mDataTV_10.setText("Films: None");
             } else {
-                mDataTV_10.setText("Films: " + Arrays.toString(planetItem.films).replaceAll("\\[|\\]", ""));
+                mDataTV_10.setText("Films: " + planetItem.films.length);
             }
 
             mDataTV_11.setText("Date Created: " + planetItem.created);
@@ -316,6 +316,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             mDataTV_12.setText("Last Edited: " + planetItem.edited);
             return planetItem.name;
         }
+
         if(mCategory.equals("Films")){
             filmItem = (FilmItem) intent.getSerializableExtra("film");
             mDataTV_1.setText("Episode: " + filmItem.episode_id);
@@ -331,19 +332,19 @@ public class ItemDetailActivity extends AppCompatActivity {
             if(filmItem.characters.length < 1){
                 mDataTV_6.setText("Characters: None");
             } else {
-                mDataTV_6.setText("Characters: " + Arrays.toString(filmItem.characters).replaceAll("\\[|\\]", ""));
+                mDataTV_6.setText("Characters: " + filmItem.characters.length);
             }
 
             if(filmItem.vehicles.length < 1){
                 mDataTV_7.setText("Vehicles: None");
             } else {
-                mDataTV_7.setText("Vehicles: " + Arrays.toString(filmItem.vehicles).replaceAll("\\[|\\]", ""));
+                mDataTV_7.setText("Vehicles: " + filmItem.vehicles.length);
             }
 
             if(filmItem.species.length < 1){
                 mDataTV_8.setText("Species: None");
             } else {
-                mDataTV_8.setText("Species: " + Arrays.toString(filmItem.species).replaceAll("\\[|\\]", ""));
+                mDataTV_8.setText("Species: " + filmItem.species.length);
             }
 
             mDataTV_9.setText("Date Created: " + filmItem.created);
@@ -372,25 +373,25 @@ public class ItemDetailActivity extends AppCompatActivity {
             if(peopleItem.films.length < 1){
                 mDataTV_9.setText("Films: None");
             } else {
-                mDataTV_9.setText("Films: " + Arrays.toString(peopleItem.films).replaceAll("\\[|\\]", ""));
+                mDataTV_9.setText("Films: " + peopleItem.films.length);
             }
 
             if(peopleItem.species.length < 1){
                 mDataTV_10.setText("Species: None");
             } else {
-                mDataTV_10.setText("Species: " + Arrays.toString(peopleItem.species).replaceAll("\\[|\\]", ""));
+                mDataTV_10.setText("Species: " + peopleItem.species.length);
             }
 
             if(peopleItem.vehicles.length < 1){
                 mDataTV_11.setText("Vehicles: None");
             } else {
-                mDataTV_11.setText("Vehicles: " + Arrays.toString(peopleItem.vehicles).replaceAll("\\[|\\]", ""));
+                mDataTV_11.setText("Vehicles: " + peopleItem.vehicles.length);
             }
 
             if(peopleItem.starships.length < 1){
                 mDataTV_12.setText("Starships: None");
             } else {
-                mDataTV_12.setText("Starships: " + Arrays.toString(peopleItem.starships).replaceAll("\\[|\\]", ""));
+                mDataTV_12.setText("Starships: " + peopleItem.starships.length);
             }
 
             mDataTV_13.setText("Date Created: " + peopleItem.created);
@@ -421,13 +422,13 @@ public class ItemDetailActivity extends AppCompatActivity {
             if(speciesItem.people.length < 1){
                 mDataTV_10.setText("People: None");
             } else {
-                mDataTV_10.setText("People: " + Arrays.toString(speciesItem.people).replaceAll("\\[|\\]", ""));
+                mDataTV_10.setText("People: " + speciesItem.people.length);
             }
 
             if(speciesItem.films.length < 1){
                 mDataTV_11.setText("Films: None");
             } else {
-                mDataTV_11.setText("Films: " + Arrays.toString(speciesItem.films).replaceAll("\\[|\\]", ""));
+                mDataTV_11.setText("Films: " + speciesItem.films.length);
             }
 
             mDataTV_12.setText("Date Created: " + speciesItem.created);
@@ -460,13 +461,13 @@ public class ItemDetailActivity extends AppCompatActivity {
             if(vehicleItem.pilots.length < 1){
                 mDataTV_11.setText("Pilots: None");
             } else {
-                mDataTV_11.setText("Pilots: " + Arrays.toString(vehicleItem.pilots).replaceAll("\\[|\\]", ""));
+                mDataTV_11.setText("Pilots: " + vehicleItem.pilots.length);
             }
 
             if(vehicleItem.films.length < 1){
                 mDataTV_12.setText("Films: None");
             } else {
-                mDataTV_12.setText("Films: " + Arrays.toString(vehicleItem.films).replaceAll("\\[|\\]", ""));
+                mDataTV_12.setText("Films: " + vehicleItem.films.length);
             }
 
             mDataTV_13.setText("Date Created: " + vehicleItem.created);
@@ -501,12 +502,12 @@ public class ItemDetailActivity extends AppCompatActivity {
             if(starshipItem.pilots.length < 1){
                 mDataTV_12.setText("Pilots: None");
             } else{
-                mDataTV_12.setText("Pilots: " + Arrays.toString(starshipItem.pilots).replaceAll("\\[|\\]", ""));
+                mDataTV_12.setText("Pilots: " + starshipItem.pilots.length);
             }
             if(starshipItem.films.length < 1){
                 mDataTV_13.setText("Films: None");
             } else {
-                mDataTV_13.setText("Films: " + Arrays.toString(starshipItem.films).replaceAll("\\[|\\]", ""));
+                mDataTV_13.setText("Films: " + starshipItem.films.length);
             }
 
             mDataTV_14.setText("Date Created: " + starshipItem.created);
@@ -537,8 +538,27 @@ public class ItemDetailActivity extends AppCompatActivity {
                 intent.putExtra("category", mCategory);
                 startActivity(intent);
                 return true;
+            case R.id.detail_action_share:
+                shareText();
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void shareText(){
+        String shareText = mCategory+": "+ mName+ "\n"+ "\n"+ mDataTV_1.getText().toString() +"\n"
+                + mDataTV_2.getText().toString()+"\n"+mDataTV_3.getText().toString()
+                +"\n"+mDataTV_4.getText().toString()+"\n"+mDataTV_5.getText().toString()+"\n"+mDataTV_6.getText().toString()+"\n"+
+                mDataTV_7.getText().toString() +"\n"+mDataTV_8.getText().toString()+"\n"
+                +mDataTV_9.getText().toString()+"\n"+mDataTV_10.getText().toString()
+                +"\n"+mDataTV_11.getText().toString()+"\n"+mDataTV_12.getText().toString()+
+                "\n"+mDataTV_13.getText().toString()+"\n"+mDataTV_14.getText().toString()+"\n"+mDataTV_15.getText().toString()+
+                "\n"+mDataTV_16.getText().toString();
+        ;
+        ShareCompat.IntentBuilder.from(this)
+                .setType("text/plain")
+                .setText(shareText)
+                .setChooserTitle(R.string.share_chooser_title)
+                .startChooser();
     }
 }
