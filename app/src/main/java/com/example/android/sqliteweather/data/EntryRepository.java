@@ -43,6 +43,8 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
     private MutableLiveData<List<VehicleItem>> mVehiclesResults;
 
     private List<PlanetItem> curPlanets;
+    private List<PeopleItem> curPeople;
+
 
     private MutableLiveData<Status> mLoadingStatus;
 
@@ -75,6 +77,7 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
         mVehiclesResults.setValue(null);
 
         curPlanets = new ArrayList<>();
+        curPeople = new ArrayList<>();
     }
 
     /*
@@ -124,7 +127,9 @@ public class EntryRepository implements LoadForecastTask.AsyncCallback {
 
     @Override
     public void onPeopleLoadFinished(List<PeopleItem> people) {
-        mPeopleResults.setValue(people);
+
+        curPeople.addAll(people);
+        mPeopleResults.setValue(curPeople);
         if(people != null){
             mLoadingStatus.setValue(Status.SUCCESS);
         } else {
