@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -537,8 +538,30 @@ public class ItemDetailActivity extends AppCompatActivity {
                 intent.putExtra("category", mCategory);
                 startActivity(intent);
                 return true;
+            case R.id.detail_action_share:
+                shareText();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    public void shareText() {
+
+            String shareText = mCategory+": "+ mName+ "\n"+ "\n"+ mDataTV_1.getText().toString() +"\n"
+                    + mDataTV_2.getText().toString()+"\n"+mDataTV_3.getText().toString()
+                    +"\n"+mDataTV_4.getText().toString()+"\n"+mDataTV_5.getText().toString()+"\n"+mDataTV_6.getText().toString()+"\n"+
+                    mDataTV_7.getText().toString() +"\n"+mDataTV_8.getText().toString()+"\n"
+                    +mDataTV_9.getText().toString()+"\n"+mDataTV_10.getText().toString()
+                    +"\n"+mDataTV_11.getText().toString()+"\n"+mDataTV_12.getText().toString()+
+                    "\n"+mDataTV_13.getText().toString()+"\n"+mDataTV_14.getText().toString()+"\n"+mDataTV_15.getText().toString()+
+                    "\n"+mDataTV_16.getText().toString();
+                ;
+            ShareCompat.IntentBuilder.from(this)
+                    .setType("text/plain")
+                    .setText(shareText)
+                    .setChooserTitle(R.string.share_chooser_title)
+                    .startChooser();
+
     }
 }
