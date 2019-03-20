@@ -2,6 +2,7 @@ package com.example.android.sqliteweather.utils;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.example.android.sqliteweather.R;
 import com.example.android.sqliteweather.data.CategoryItem;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.TimeZone;
 
 public class StarWarsUtils {
+    private static String TAG = StarWarsUtils.class.getSimpleName();
 
    private final static String BASE_API = "https://swapi.co/api/";
 
@@ -66,6 +68,30 @@ public class StarWarsUtils {
         ArrayList<SpeciesItem> results;
     }
 
+    static class SinglePeopleItem{
+        String name;
+    }
+
+    static class SinglePlanetItem{
+        String name;
+    }
+
+    static class SingleStarshipsItem{
+        String name;
+    }
+
+    static class SingleVehiclesItem{
+        String name;
+    }
+
+    static class SingleFilmsItem{
+        String title;
+    }
+
+    static class SingleSpeciesItem{
+        String name;
+    }
+
     public static String buildStarWarsURL(String category) {
         if(category.equals("Films")){
             return Uri.parse(BASE_API).buildUpon().appendPath(FILMS_API).build().toString();
@@ -100,8 +126,11 @@ public class StarWarsUtils {
         Gson gson = new Gson();
         StarWarsSearchPeopleResults peopleResults = gson.fromJson(url, StarWarsSearchPeopleResults.class);
         if(peopleResults != null && peopleResults.results != null){
+            Log.d(TAG, "not null :)");
             return peopleResults.results;
-        } else {
+        }
+        else {
+            Log.d(TAG, "its null :/");
             return null;
         }
     }
@@ -147,6 +176,87 @@ public class StarWarsUtils {
         }
     }
 
+
+
+
+
+
+    public static PlanetItem parseSinglePlanetsJSON(String url){
+        Gson gson = new Gson();
+        SinglePlanetItem planetsResults = gson.fromJson(url, SinglePlanetItem.class);
+        PlanetItem temp = new PlanetItem();
+        temp.name = planetsResults.name;
+        if(planetsResults != null && planetsResults.name != null){
+            return temp;
+        } else {
+            return null;
+        }
+    }
+
+    public static PeopleItem parseSinglePeopleJSON(String url){
+        Gson gson = new Gson();
+        SinglePeopleItem peopleResults = gson.fromJson(url, SinglePeopleItem.class);
+        PeopleItem temp = new PeopleItem();
+        temp.name = peopleResults.name;
+        if(peopleResults != null && peopleResults.name != null){
+            Log.d(TAG, "not null :)");
+            return temp;
+        }
+        else {
+            Log.d(TAG, "its null :/");
+            return null;
+        }
+    }
+
+    public static StarshipItem parseSingleStarshipsJSON(String url){
+        Gson gson = new Gson();
+        SingleStarshipsItem starshipsResults = gson.fromJson(url, SingleStarshipsItem.class);
+        StarshipItem temp = new StarshipItem();
+        temp.name = starshipsResults.name;
+        if(starshipsResults != null && starshipsResults.name != null){
+            return temp;
+        } else {
+            return null;
+        }
+    }
+    //Parses the query for films
+
+    public static SpeciesItem parseSingleSpeciesJSON(String url){
+        Gson gson = new Gson();
+        SingleSpeciesItem speciesResult = gson.fromJson(url, SingleSpeciesItem.class);
+        SpeciesItem temp = new SpeciesItem();
+        temp.name = speciesResult.name;
+        if(speciesResult != null && speciesResult.name != null){
+            return temp;
+        } else {
+            return null;
+        }
+    }
+
+    public static FilmItem parseSingleFilmsJSON(String url){
+        Gson gson = new Gson();
+        SingleFilmsItem filmsResults = gson.fromJson(url, SingleFilmsItem.class);
+        FilmItem temp = new FilmItem();
+        Log.d(TAG, "film name: " + filmsResults.title);
+        temp.title = filmsResults.title;
+        if(filmsResults != null && filmsResults.title != null){
+            return temp;
+        } else {
+            return null;
+        }
+    }
+
+    public static VehicleItem parseSingleVehiclesJSON(String url){
+        Gson gson = new Gson();
+        SingleVehiclesItem vehiclesResults = gson.fromJson(url, SingleVehiclesItem.class);
+        VehicleItem temp = new VehicleItem();
+        temp.name = vehiclesResults.name;
+        if(vehiclesResults != null && vehiclesResults.name != null){
+            return temp;
+        } else {
+            return null;
+        }
+    }
 
 
 

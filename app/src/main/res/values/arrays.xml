@@ -14,7 +14,7 @@
 
     <string-array name="SWAPI_categories">
         <item>Planets</item>
-        <item>Spaceships</item>
+        <item>Starships</item>
         <item>Vehicles</item>
         <item>People</item>
         <item>Films</item>

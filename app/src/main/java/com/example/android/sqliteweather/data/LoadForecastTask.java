@@ -86,7 +86,7 @@ class LoadForecastTask extends AsyncTask<Void, Void, String> {
                 mCallback.onSpeciesLoadFinished(species);
                 return;
             }
-            else if(mCurrentCategory.equals("Spaceships")){
+            else if(mCurrentCategory.equals("Starships")){
                 Log.d(TAG, "Spaceships Loading: " + s);
                 List<StarshipItem> starships = StarWarsUtils.parseStarshipsJSON(s);
                 mCallback.onStarshipLoadFinished(starships);
